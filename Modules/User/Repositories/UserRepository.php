@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Repositories;
+namespace Modules\User\Repositories;
 
-use App\Interfaces\UserRepositoryInterface;
 use App\Models\User;
+use Modules\User\Interfaces\UserRepositoryInterface;
 
 class UserRepository implements UserRepositoryInterface
 {
@@ -20,5 +20,10 @@ class UserRepository implements UserRepositoryInterface
     public function deleteUser(int $userId)
     {
         return User::query()->where('id', $userId)->delete();
+    }
+
+    public function getUserByPhone(string $phone)
+    {
+        return User::query()->where('phone', $phone)->first();
     }
 }

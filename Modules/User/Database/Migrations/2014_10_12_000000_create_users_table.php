@@ -16,13 +16,10 @@ return new class extends Migration {
             $table->id();
             $table->string('fullname');
             $table->string('phone')->unique();
-            $table->string('region')->nullable();
             $table->enum('gender', ['MALE', 'FEMALE'])->nullable();
-            $table->string('age')->nullable();
-            $table->string('email')->unique();
+            $table->date('birthdate')->nullable();
+            $table->string('email')->nullable()->unique();
             $table->string('region')->nullable();
-            $table->string('age')->nullable();
-            $table->enum('gender', ['MALE', 'FEMALE'])->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();

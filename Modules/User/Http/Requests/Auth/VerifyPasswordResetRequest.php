@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace Modules\User\Http\Requests\Auth;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class RegisterVerifyUserRequest extends FormRequest
+class VerifyPasswordResetRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,7 +13,7 @@ class RegisterVerifyUserRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,9 @@ class RegisterVerifyUserRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'code' => ['required', 'string'],
+            'payload.phone' => ['required', 'string'],
+            'payload.password' => ['required', 'min:8', 'confirmed']
         ];
     }
 }
