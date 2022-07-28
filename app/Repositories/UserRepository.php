@@ -7,7 +7,6 @@ use App\Models\User;
 
 class UserRepository implements UserRepositoryInterface
 {
-
     public function createUser(array $payload)
     {
         return User::query()->create($payload);
