@@ -8,8 +8,7 @@ use Illuminate\Support\Facades\Hash;
 use Modules\User\Http\Requests\Auth\LoginRequest;
 use Modules\User\Http\Requests\Auth\RegisterUserRequest;
 use Modules\User\Http\Requests\Auth\RegisterVerifyUserRequest;
-use Modules\User\Http\Resources\UserResource;
-use Modules\User\Interfaces\UserRepositoryInterface;
+use Modules\User\Repositories\Interfaces\UserRepositoryInterface;
 use Modules\User\Service\SmsTokenService;
 use function response;
 

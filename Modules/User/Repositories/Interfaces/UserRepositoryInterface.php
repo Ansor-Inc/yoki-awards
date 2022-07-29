@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\User\Interfaces;
+namespace Modules\User\Repositories\Interfaces;
 
 interface UserRepositoryInterface
 {
@@ -11,6 +11,4 @@ interface UserRepositoryInterface
     public function updateUser(int $userId, array $payload);
 
     public function deleteUser(int $userId);
-
-
 }

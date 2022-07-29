@@ -5,7 +5,7 @@ namespace Modules\User\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Modules\User\Http\Requests\Auth\PasswordResetRequest;
 use Modules\User\Http\Requests\Auth\VerifyPasswordResetRequest;
-use Modules\User\Interfaces\UserRepositoryInterface;
+use Modules\User\Repositories\Interfaces\UserRepositoryInterface;
 use Modules\User\Service\SmsTokenService;
 use function response;
 
@@ -38,14 +38,14 @@ class PasswordResetController extends Controller
         return response()->json(['message' => 'Sms successfully sent!'])->setStatusCode(200);
     }
 
-    public function verifyResetPassword(VerifyPasswordResetRequest $request, SmsTokenService $smsTokenService, UserRepositoryInterface $userRepository)
+    public function verifyResetPassword(VerifyPasswordResetRequest $request)
     {
         $data = $request->validated();
 
-        $check = $smsTokenService->phone($data['payload']['phone'])->check($data['code']);
+        $check = $this->smsTokenService->phone($data['payload']['phone'])->check($data['code']);
 
         if ($check) {
-            $userRepository->getUserByPhone($data['payload']['phone'])
+            $this->userRepository->getUserByPhone($data['payload']['phone'])
                 ->update([
                     'password' => $data['payload']['password']
                 ]);
