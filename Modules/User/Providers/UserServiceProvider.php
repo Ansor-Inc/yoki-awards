@@ -2,9 +2,9 @@
 
 namespace Modules\User\Providers;
 
-use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Factory;
-use Modules\User\Interfaces\UserRepositoryInterface;
+use Illuminate\Support\ServiceProvider;
+use Modules\User\Repositories\Interfaces\UserRepositoryInterface;
 use Modules\User\Repositories\UserRepository;
 
 class UserServiceProvider extends ServiceProvider
