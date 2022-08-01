@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BlogController;
 use Illuminate\Support\Facades\Route;
 use Modules\User\Http\Controllers\Auth\AuthController;
 use Modules\User\Http\Controllers\Auth\PasswordResetController;
@@ -15,4 +16,8 @@ use Modules\User\Http\Controllers\Auth\PasswordResetController;
 |
 */
 
+Route::get('/articles', [BlogController::class, 'index']);
+Route::get('/articles/tags', [BlogController::class, 'tags']);
+Route::get('/articles/{article}', [BlogController::class, 'show']);
+Route::put('/articles/{article}', [BlogController::class, 'incrementViewsCount']);
 
