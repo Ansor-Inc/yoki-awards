@@ -13,6 +13,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::any('*', function () {
+Route::fallback(function () {
     return 'Yoki-api - v1';
 });
