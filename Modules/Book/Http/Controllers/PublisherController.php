@@ -2,9 +2,10 @@
 
 namespace Modules\Book\Http\Controllers;
 
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Modules\Book\Repositories\Interfaces\PublisherRepositoryInterface;
-use Modules\Book\Repositories\PublisherRepository;
+use Modules\Book\Transformers\BookResource;
 use Modules\Book\Transformers\PublisherResource;
 
 class PublisherController extends Controller
@@ -28,5 +29,13 @@ class PublisherController extends Controller
         $publisher = $this->repository->getPublisherById($id);
 
         return PublisherResource::make($publisher);
+    }
+
+    public function publisherBooks(int $id, Request $request)
+    {
+        $publisher = $this->repository->getPublisherById($id);
+        $books = $publisher->books()->paginate($request->input('limit'));
+
+        return BookResource::collection($books);
     }
 }

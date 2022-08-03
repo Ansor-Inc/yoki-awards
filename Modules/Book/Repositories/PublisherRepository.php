@@ -10,7 +10,7 @@ class PublisherRepository implements PublisherRepositoryInterface
 
     public function getPublisherById(int $id)
     {
-
+        return Publisher::query()->findOrFail($id);
     }
 
     public function getAllPublishers()

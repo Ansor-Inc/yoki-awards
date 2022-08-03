@@ -21,4 +21,10 @@ class Publisher extends Model implements HasMedia
 
         return 'https://maxler.com/local/templates/maxler/assets/img/not-found.png';
     }
+
+    public function books()
+    {
+        return $this->hasMany(Book::class);
+    }
+
 }

@@ -17,3 +17,4 @@ use Modules\Book\Http\Controllers\PublisherController;
 
 Route::get('/publishers', [PublisherController::class, 'index']);
 Route::get('/publishers/{id}', [PublisherController::class, 'show']);
+Route::get('/publishers/{id}/books', [PublisherController::class, 'publisherBooks']);
