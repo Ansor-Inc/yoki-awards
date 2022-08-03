@@ -19,7 +19,7 @@ class Publisher extends Model implements HasMedia
             return Str::replace(config('app.url'), config('app.admin_url'), $mediaItems[0]->getUrl());
         }
 
-        return 'https://maxler.com/local/templates/maxler/assets/img/not-found.png';
+        return asset('media/not-found.png');
     }
 
     public function books()
