@@ -2,8 +2,7 @@
 
 namespace Modules\User\Service;
 
-use Exception;
-use Modules\User\Entities\SmsToken;
+use App\Models\SmsToken;
 
 class SmsTokenService
 {

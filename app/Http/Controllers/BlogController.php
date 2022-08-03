@@ -5,9 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\IndexBlog;
 use App\Http\Resources\ArticleResource;
 use App\Models\Article;
-use App\Models\Tag;
 use App\Repositories\Interfaces\BlogRepositoryInterface;
-use Illuminate\Support\Facades\DB;
 
 class BlogController extends Controller
 {
