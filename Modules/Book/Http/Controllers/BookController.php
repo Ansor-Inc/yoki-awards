@@ -2,78 +2,31 @@
 
 namespace Modules\Book\Http\Controllers;
 
-use Illuminate\Contracts\Support\Renderable;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Modules\Book\Http\Requests\BookIndexRequest;
+use Modules\Book\Repositories\Interfaces\BookRepositoryInterface;
+use Modules\Book\Transformers\BookResource;
 
 class BookController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     * @return Renderable
-     */
-    public function index()
+    protected BookRepositoryInterface $repository;
+
+    public function __construct(BookRepositoryInterface $repository)
     {
-        return view('book::index');
+        $this->repository = $repository;
     }
 
-    /**
-     * Show the form for creating a new resource.
-     * @return Renderable
-     */
-    public function create()
+    public function index(BookIndexRequest $request)
     {
-        return view('book::create');
+        $books = $this->repository->getBooks($request->validated());
+
+        return BookResource::collection($books);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     * @param Request $request
-     * @return Renderable
-     */
-    public function store(Request $request)
+    public function show(int $id)
     {
-        //
-    }
+        $book = $this->repository->getBookById($id);
 
-    /**
-     * Show the specified resource.
-     * @param int $id
-     * @return Renderable
-     */
-    public function show($id)
-    {
-        return view('book::show');
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     * @param int $id
-     * @return Renderable
-     */
-    public function edit($id)
-    {
-        return view('book::edit');
-    }
-
-    /**
-     * Update the specified resource in storage.
-     * @param Request $request
-     * @param int $id
-     * @return Renderable
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     * @param int $id
-     * @return Renderable
-     */
-    public function destroy($id)
-    {
-        //
+        return BookResource::make($book);
     }
 }
