@@ -30,6 +30,11 @@ class Book extends Model implements HasMedia
         (new BookFilter($query))->apply($filters);
     }
 
+    public function scopeOnlyListingFields($query)
+    {
+        $query->select(['id', 'title', 'author_id', 'is_free', 'book_type']);
+    }
+
     public function author()
     {
         return $this->belongsTo(Author::class);
@@ -43,6 +48,11 @@ class Book extends Model implements HasMedia
     public function publisher()
     {
         return $this->belongsTo(Publisher::class);
+    }
+
+    public function tags()
+    {
+        return $this->morphToMany(Tag::class, 'taggable');
     }
 
     public function getImageAttribute()
@@ -59,11 +69,4 @@ class Book extends Model implements HasMedia
     {
         return $this->getFileFromCollection('book_file');
     }
-
-    public function tags()
-    {
-        return $this->morphToMany(Tag::class, 'taggable');
-    }
-
-
 }

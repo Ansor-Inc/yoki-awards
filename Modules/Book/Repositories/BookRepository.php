@@ -7,13 +7,11 @@ use Modules\Book\Repositories\Interfaces\BookRepositoryInterface;
 
 class BookRepository implements BookRepositoryInterface
 {
-    protected array $bookListFields = ['id', 'title', 'author_id', 'is_free', 'book_type'];
-
     public function getBooks(array $filters)
     {
         $query = Book::query()
             ->filter($filters)
-            ->select($this->bookListFields)
+            ->onlyListingFields()
             ->with('author:id,firstname,lastname');
 
         if (isset($filters['per_page'])) {
@@ -35,7 +33,9 @@ class BookRepository implements BookRepositoryInterface
     {
         $book = $this->getBookById($id);
 
-        return Book::query()->where('genre_id', $book->genre_id)->select($this->bookListFields)->get();
+        return Book::query()->where('genre_id', $book->genre_id)
+            ->onlyListingFields()
+            ->get();
     }
 
     public function searchBooks(string $search)
@@ -43,7 +43,7 @@ class BookRepository implements BookRepositoryInterface
         return Book::query()
             ->where('title', 'like', "%{$search}%")
             ->orWhere('description', 'like', "%{$search}%")
-            ->select('id', 'title', 'author_id', 'publisher_id')
+            ->onlyListingFields()
             ->get();
     }
 
