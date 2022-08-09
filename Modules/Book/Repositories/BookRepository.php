@@ -37,14 +37,4 @@ class BookRepository implements BookRepositoryInterface
             ->onlyListingFields()
             ->get();
     }
-
-    public function searchBooks(string $search)
-    {
-        return Book::query()
-            ->where('title', 'like', "%{$search}%")
-            ->orWhere('description', 'like', "%{$search}%")
-            ->onlyListingFields()
-            ->get();
-    }
-
 }

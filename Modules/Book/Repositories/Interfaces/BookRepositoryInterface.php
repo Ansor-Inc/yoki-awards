@@ -9,6 +9,4 @@ interface BookRepositoryInterface
     public function getBookById(int $id);
 
     public function getSimilarBooks(int $id);
-
-    public function searchBooks(string $search);
 }

@@ -21,6 +21,7 @@ class BookIndexRequest extends FormRequest
             'trending' => ['nullable'],
             'type' => ['sometimes', new Enum(BookType::class), 'string'],
             'free' => ['sometimes', 'boolean'],
+            'search' => ['sometimes', 'string']
         ];
     }
 

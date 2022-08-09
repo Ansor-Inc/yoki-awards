@@ -33,4 +33,10 @@ class BookFilter extends AbstractFilter
     {
         $this->query->where('genreId', $genreId);
     }
+
+    public function search($search)
+    {
+        $this->query->where('title', 'like', "%{$search}%");
+    }
+
 }
