@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Laravel\Socialite\Facades\Socialite;
 use Modules\User\Http\Controllers\Auth\AuthController;
 use Modules\User\Http\Controllers\Auth\PasswordResetController;
 use Modules\User\Http\Controllers\UserController;
@@ -25,7 +26,13 @@ Route::post('/reset-password-verify', [PasswordResetController::class, 'verifyRe
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/me', [UserController::class, 'getMe']);
     Route::put('/me', [UserController::class, 'updateMe']);
-
     Route::post('/logout', [AuthController::class, 'logout']);
+});
 
+Route::get('/auth/redirect', [AuthController::class,]);
+
+Route::get('/auth/callback', function () {
+    $user = Socialite::driver('github')->user();
+
+    // $user->token
 });
