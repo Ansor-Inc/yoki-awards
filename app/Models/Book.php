@@ -55,6 +55,11 @@ class Book extends Model implements HasMedia
         return $this->morphToMany(Tag::class, 'taggable');
     }
 
+    public function getRatingAttribute()
+    {
+        return BookUserStatus::query()->avg('rating');
+    }
+
     public function getImageAttribute()
     {
         return $this->getImageFromCollection('image');
@@ -68,5 +73,13 @@ class Book extends Model implements HasMedia
     public function getBookFileAttribute()
     {
         return $this->getFileFromCollection('book_file');
+    }
+
+    public function statusOf(User $user)
+    {
+        return BookUserStatus::query()
+            ->where(['book_id' => $this->id, 'user_id' => $user->id])
+            ->select('rating', 'bookmarked')
+            ->first();
     }
 }

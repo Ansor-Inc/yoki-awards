@@ -5,7 +5,6 @@ namespace Modules\Book\Http\Controllers;
 use App\Models\Book;
 use App\Models\Bookmark;
 use App\Models\Rating;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Modules\Book\Http\Requests\BookIndexRequest;
 use Modules\Book\Http\Requests\BookRatingRequest;

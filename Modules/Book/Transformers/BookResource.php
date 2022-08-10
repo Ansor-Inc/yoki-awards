@@ -20,6 +20,7 @@ class BookResource extends JsonResource
             'image' => $this->image,
             'description' => $this->whenNotNull($this->description),
             'language' => $this->whenNotNull($this->language),
+            'rating' => round($this->rating, 1),
             'page_count' => $this->whenNotNull($this->page_count),
             'publication_date' => $this->whenNotNull($this->publication_date),
             'is_free' => (bool)$this->is_free,
@@ -31,7 +32,11 @@ class BookResource extends JsonResource
             'publisher' => PublisherResource::make($this->whenLoaded('publisher')),
             'book_type' => $this->whenNotNull($this->book_type),
             'fragment' => $this->whenAppended('fragment'),
-            'book_file' => $this->when($this->is_free, $this->whenAppended('book_file'))
+            'book_file' => $this->when($this->is_free, $this->whenAppended('book_file')),
+            'user_status' => $this->when(
+                auth('sanctum')->check(),
+                BookUserStatusResource::make($this->statusOf($request->user('sanctum')))
+            )
         ];
     }
 }
