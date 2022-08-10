@@ -2,6 +2,8 @@
 
 namespace Modules\Book\Repositories\Interfaces;
 
+use App\Models\User;
+
 interface BookRepositoryInterface
 {
     public function getBooks(array $filters);

@@ -26,3 +26,8 @@ Route::get('/books/{id}', [BookController::class, 'show']);
 
 Route::get('/genres', [GenreController::class, 'index']);
 Route::get('/genres/{genre}/books', [GenreController::class, 'genreBooks']);
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::put('/books/{book}/bookmark', [BookController::class, 'bookmark']);
+    Route::put('/books/{book}/rate', [BookController::class, 'rate']);
+});

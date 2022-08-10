@@ -37,4 +37,5 @@ class BookRepository implements BookRepositoryInterface
             ->onlyListingFields()
             ->get();
     }
+
 }
