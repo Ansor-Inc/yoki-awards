@@ -1,0 +1,37 @@
+<?php
+
+namespace Modules\Book\Http\Requests;
+
+use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Enum;
+use Modules\Book\Enums\BookType;
+
+class BookIndexRequest extends FormRequest
+{
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
+    public function rules()
+    {
+        return [
+            'per_page' => ['sometimes', 'integer'],
+            'limit' => ['sometimes', 'integer'],
+            'trending' => ['nullable'],
+            'type' => ['sometimes', new Enum(BookType::class), 'string'],
+            'free' => ['sometimes', 'boolean'],
+            'search' => ['sometimes', 'string']
+        ];
+    }
+
+    /**
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
+     */
+    public function authorize()
+    {
+        return true;
+    }
+}

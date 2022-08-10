@@ -2,78 +2,57 @@
 
 namespace Modules\Book\Http\Controllers;
 
-use Illuminate\Contracts\Support\Renderable;
-use Illuminate\Http\Request;
+use App\Models\Book;
+use App\Models\Bookmark;
+use App\Models\Rating;
 use Illuminate\Routing\Controller;
+use Modules\Book\Http\Requests\BookIndexRequest;
+use Modules\Book\Http\Requests\BookRatingRequest;
+use Modules\Book\Repositories\Interfaces\BookRepositoryInterface;
+use Modules\Book\Transformers\BookResource;
 
 class BookController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     * @return Renderable
-     */
-    public function index()
+    protected BookRepositoryInterface $repository;
+
+    public function __construct(BookRepositoryInterface $repository)
     {
-        return view('book::index');
+        $this->repository = $repository;
     }
 
-    /**
-     * Show the form for creating a new resource.
-     * @return Renderable
-     */
-    public function create()
+    public function index(BookIndexRequest $request)
     {
-        return view('book::create');
+        $books = $this->repository->getBooks($request->validated());
+
+        return BookResource::collection($books);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     * @param Request $request
-     * @return Renderable
-     */
-    public function store(Request $request)
+    public function show(int $id)
     {
-        //
+        $book = $this->repository->getBookById($id);
+
+        return BookResource::make($book);
     }
 
-    /**
-     * Show the specified resource.
-     * @param int $id
-     * @return Renderable
-     */
-    public function show($id)
+    public function bookmark(Book $book)
     {
-        return view('book::show');
+        $user = request()->user();
+
+        $status = Bookmark::toggle($user, $book);
+
+        return response()->json([
+            'bookmarked' => $status->bookmarked
+        ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     * @param int $id
-     * @return Renderable
-     */
-    public function edit($id)
+    public function rate(Book $book, BookRatingRequest $request)
     {
-        return view('book::edit');
-    }
+        $user = request()->user();
 
-    /**
-     * Update the specified resource in storage.
-     * @param Request $request
-     * @param int $id
-     * @return Renderable
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
+        $status = Rating::rate($user, $book, $request->input('value'));
 
-    /**
-     * Remove the specified resource from storage.
-     * @param int $id
-     * @return Renderable
-     */
-    public function destroy($id)
-    {
-        //
+        return response()->json([
+            'rating' => $status->rating
+        ]);
     }
 }
