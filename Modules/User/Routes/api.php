@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Laravel\Socialite\Facades\Socialite;
 use Modules\User\Http\Controllers\Auth\AuthController;
 use Modules\User\Http\Controllers\Auth\PasswordResetController;
+use Modules\User\Http\Controllers\Auth\SocialAuthController;
 use Modules\User\Http\Controllers\UserController;
 
 /*
@@ -29,10 +30,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 });
 
-Route::get('/auth/redirect', [AuthController::class,]);
-
-Route::get('/auth/callback', function () {
-    $user = Socialite::driver('github')->user();
-
-    // $user->token
-});
+Route::get('/auth/{driver}/redirect', [SocialAuthController::class, 'redirect']);
+Route::get('/auth/{driver}/callback', [SocialAuthController::class, 'callback']);
