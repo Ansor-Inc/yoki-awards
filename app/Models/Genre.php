@@ -21,4 +21,9 @@ class Genre extends Model implements HasMedia
     {
         return $this->getImageFromCollection('icon');
     }
+
+    public function getIconActiveAttribute()
+    {
+        return $this->getImageFromCollection('icon_active');
+    }
 }

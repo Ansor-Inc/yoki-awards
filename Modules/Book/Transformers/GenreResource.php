@@ -17,6 +17,7 @@ class GenreResource extends JsonResource
         return [
             'id' => $this->id,
             'icon' => $this->icon,
+            'icon_active' => $this->icon_active,
             'title' => $this->title
         ];
     }
