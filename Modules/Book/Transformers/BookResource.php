@@ -35,7 +35,7 @@ class BookResource extends JsonResource
             'book_file' => $this->when($this->is_free, $this->whenAppended('book_file')),
             'user_status' => $this->when(
                 auth('sanctum')->check(),
-                BookUserStatusResource::make($this->statusOf($request->user('sanctum')))
+                BookUserStatusResource::make($this->statusOf(auth('sanctum')->user()))
             )
         ];
     }
