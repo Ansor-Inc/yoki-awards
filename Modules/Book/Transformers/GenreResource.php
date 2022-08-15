@@ -9,7 +9,7 @@ class GenreResource extends JsonResource
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request
+     * @param \Illuminate\Http\Request
      * @return array
      */
     public function toArray($request)
@@ -17,6 +17,7 @@ class GenreResource extends JsonResource
         return [
             'id' => $this->id,
             'icon' => $this->icon,
+            'icon_active' => $this->icon_active,
             'title' => $this->title
         ];
     }

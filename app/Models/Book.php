@@ -75,11 +75,16 @@ class Book extends Model implements HasMedia
         return $this->getFileFromCollection('book_file');
     }
 
-    public function statusOf(User $user)
+    public function statusOf(User $user = null)
     {
-        return BookUserStatus::query()
-            ->where(['book_id' => $this->id, 'user_id' => $user->id])
-            ->select('rating', 'bookmarked')
-            ->first();
+        if ($user) {
+            return BookUserStatus::query()
+                ->where(['book_id' => $this->id, 'user_id' => $user->id])
+                ->select('rating', 'bookmarked')
+                ->first();
+        }
+
+        return null;
+
     }
 }
