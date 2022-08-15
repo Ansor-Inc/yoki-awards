@@ -15,19 +15,33 @@ class SocialAuthController extends Controller
     {
         $this->validateDriver($driver);
 
-        return Socialite::driver($driver)->stateless()->redirect();
+        return Socialite::driver($driver)->stateless()->redirect()->getTargetUrl();
     }
 
     public function callback(string $driver)
     {
         $this->validateDriver($driver);
-        $googleUser = Socialite::driver('google')->stateless()->user();
 
-        $user = User::query()->updateOrCreate([
-            'email' => $googleUser->email
+        $socialNetworkUser = Socialite::driver($driver)->stateless()->user();
+
+        $user = User::query()->updateOrCreate(
+            [
+                'email' => $socialNetworkUser->getEmail(),
+                'social_auth_id' => $socialNetworkUser->getId(),
+                'social_auth_type' => $driver
+            ],
+            [
+                'fullname' => $socialNetworkUser->getName(),
+                'avatar' => $socialNetworkUser->getAvatar()
+            ]
+        );
+
+        $token = $user->createToken('auth_token')->plainTextToken;
+        
+        return response()->json([
+            'token_type' => 'bearer',
+            'token' => $token
         ]);
-
-        dd($user);
     }
 
     protected function validateDriver($driver)
