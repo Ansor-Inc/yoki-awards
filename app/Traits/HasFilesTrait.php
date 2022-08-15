@@ -14,7 +14,7 @@ trait HasFilesTrait
             return $this->getUrl($mediaItems[0]);
         }
 
-        return asset('media/not-found.png');
+        return null;
     }
 
     public function getFileFromCollection(string $collectionName)
