@@ -10,9 +10,12 @@
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^9.19",
         "laravel/sanctum": "^2.14.1",
+        "laravel/socialite": "^5.5",
         "laravel/telescope": "^4.9",
         "laravel/tinker": "^2.7",
-        "nwidart/laravel-modules": "^9.0"
+        "nwidart/laravel-modules": "^9.0",
+        "socialiteproviders/facebook": "^4.1",
+        "socialiteproviders/google": "^4.1"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
