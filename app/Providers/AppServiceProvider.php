@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use App\Repositories\BlogRepository;
 use App\Repositories\Interfaces\BlogRepositoryInterface;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider

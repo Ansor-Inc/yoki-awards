@@ -27,10 +27,8 @@ class BookController extends Controller
         return BookResource::collection($books);
     }
 
-    public function show(int $id)
+    public function show(Book $book)
     {
-        $book = $this->repository->getBookById($id);
-
         return BookResource::make($book);
     }
 
