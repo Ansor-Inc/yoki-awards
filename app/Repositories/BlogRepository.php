@@ -42,10 +42,11 @@ class BlogRepository implements BlogRepositoryInterface
 
     public function getAllTags()
     {
-        $tagIds = DB::table('taggables')->where('taggable_type', Article::class)
-            ->get('tag_id')
-            ->pluck('tag_id');
-
-        return Tag::query()->whereIn('id', $tagIds)->get('name')->pluck('name');
+        return DB::table('taggables')
+            ->join('tags', 'tags.id', '=', 'taggables.tag_id')
+            ->where('taggable_type', Article::class)
+            ->select('name')
+            ->distinct()
+            ->pluck('name');
     }
 }
