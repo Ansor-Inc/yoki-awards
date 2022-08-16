@@ -31,10 +31,13 @@ class BlogRepository implements BlogRepositoryInterface
     public function getSimilarArticles(int $id)
     {
         $article = $this->getArticleById($id);
+        $tags = $article->tags->pluck('name')->toArray();
 
-        return $article->tags
-            ->map(fn($tag) => $tag->articles()->limit(4)->get())
-            ->collapse();
+        return Article::query()
+            ->whereNot('id', $article->id)
+            ->whereHas('tags', fn($query) => $query->whereIn('name', $tags))
+            ->limit(4)
+            ->get();
     }
 
     public function getAllTags()
