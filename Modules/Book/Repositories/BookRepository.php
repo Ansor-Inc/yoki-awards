@@ -38,4 +38,15 @@ class BookRepository implements BookRepositoryInterface
             ->get();
     }
 
+    public function getSavedBooks()
+    {
+        return Book::query()
+            ->onlyListingFields()
+            ->whereHas('bookUserStatuses', function ($query) {
+                $query->where('user_id', auth('sanctum')->user()->id)
+                    ->where('bookmarked', true);
+            })->get();
+    }
+
+
 }

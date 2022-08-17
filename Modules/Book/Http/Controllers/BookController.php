@@ -8,6 +8,7 @@ use App\Models\Rating;
 use Illuminate\Routing\Controller;
 use Modules\Book\Http\Requests\BookIndexRequest;
 use Modules\Book\Http\Requests\BookRatingRequest;
+use Modules\Book\Repositories\BookSectionsRepository;
 use Modules\Book\Repositories\Interfaces\BookRepositoryInterface;
 use Modules\Book\Transformers\BookResource;
 
@@ -27,10 +28,18 @@ class BookController extends Controller
         return BookResource::collection($books);
     }
 
-    public function show(int $id)
+    public function sections(BookSectionsRepository $repository)
     {
-        $book = $this->repository->getBookById($id);
+        return $repository->getBooksBySections();
+    }
 
+    public function savedBooks()
+    {
+        return BookResource::collection($this->repository->getSavedBooks());
+    }
+
+    public function show(Book $book)
+    {
         return BookResource::make($book);
     }
 

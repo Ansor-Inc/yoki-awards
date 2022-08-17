@@ -31,18 +31,22 @@ class BlogRepository implements BlogRepositoryInterface
     public function getSimilarArticles(int $id)
     {
         $article = $this->getArticleById($id);
+        $tags = $article->tags->pluck('name')->toArray();
 
-        return $article->tags
-            ->map(fn($tag) => $tag->articles()->limit(4)->get())
-            ->collapse();
+        return Article::query()
+            ->whereNot('id', $article->id)
+            ->whereHas('tags', fn($query) => $query->whereIn('name', $tags))
+            ->limit(4)
+            ->get();
     }
 
     public function getAllTags()
     {
-        $tagIds = DB::table('taggables')->where('taggable_type', Article::class)
-            ->get('tag_id')
-            ->pluck('tag_id');
-
-        return Tag::query()->whereIn('id', $tagIds)->get('name')->pluck('name');
+        return DB::table('taggables')
+            ->join('tags', 'tags.id', '=', 'taggables.tag_id')
+            ->where('taggable_type', Article::class)
+            ->select('name')
+            ->distinct()
+            ->pluck('name');
     }
 }
