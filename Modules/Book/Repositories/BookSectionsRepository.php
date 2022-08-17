@@ -50,10 +50,22 @@ class BookSectionsRepository implements BookSectionsRepositoryInterface
     public function getBooksBySections()
     {
         return [
-            'Trenddagi kitoblar' => BookResource::collection($this->getTrendingBooks()),
-            'Siz uchun maxsus' => BookResource::collection($this->getSpecialBooks()),
-            'Trenddagi audio kitoblar' => BookResource::collection($this->getTrendingAudioBooks()),
-            'Akademiklar tanlovi' => BookResource::collection($this->getAcademicsBooks())
+            [
+                'title' => 'Trenddagi kitoblar',
+                'books' => BookResource::collection($this->getTrendingBooks())
+            ],
+            [
+                'title' => 'Siz uchun maxsus',
+                'books' => BookResource::collection($this->getSpecialBooks())
+            ],
+            [
+                'title' => 'Trenddagi audio kitoblar',
+                'books' => BookResource::collection($this->getTrendingAudioBooks())
+            ],
+            [
+                'title' => 'Akademiklar tanlovi',
+                'books' => BookResource::collection($this->getAcademicsBooks())
+            ]
         ];
     }
 }
