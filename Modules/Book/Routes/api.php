@@ -27,20 +27,22 @@ Route::get('/genres/{genre}/books', [GenreController::class, 'genreBooks']);
 
 Route::prefix('books')->group(function () {
     Route::get('/', [BookController::class, 'index']);
-    Route::get('/{book}', [BookController::class, 'show']);
-    Route::get('/{book}/comments', [BookCommentController::class, 'index']);
+    Route::get('/sections', [BookController::class, 'sections']);
 
     Route::middleware('auth:sanctum')->group(function () {
+        Route::get('/saved', [BookController::class, 'savedBooks']);
         Route::put('/{book}/bookmark', [BookController::class, 'bookmark']);
         Route::put('/{book}/rate', [BookController::class, 'rate']);
         Route::post('/{book}/comments', [BookCommentController::class, 'store']);
-
     });
+
+    Route::get('/{book}', [BookController::class, 'show']);
+    Route::get('/{book}/comments', [BookCommentController::class, 'index']);
+
 });
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::put('/comments/{comment}', [BookCommentController::class, 'update']);
     Route::delete('/comments/{comment}', [BookCommentController::class, 'destroy']);
-
 });
 

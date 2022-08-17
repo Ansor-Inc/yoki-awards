@@ -55,6 +55,11 @@ class Book extends Model implements HasMedia
         return $this->morphMany(Comment::class, 'commentable');
     }
 
+    public function bookUserStatuses()
+    {
+        return $this->hasMany(BookUserStatus::class);
+    }
+
     public function tags()
     {
         return $this->morphToMany(Tag::class, 'taggable');

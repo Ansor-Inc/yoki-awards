@@ -19,7 +19,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
 
-    protected $guarded = ['id','remember_token'];
+    protected $guarded = ['id', 'remember_token'];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -44,6 +44,11 @@ class User extends Authenticatable
     public function setPasswordAttribute($password)
     {
         $this->attributes['password'] = Hash::make($password);
+    }
+
+    public function bookUserStatuses()
+    {
+        return $this->hasMany(BookUserStatus::class);
     }
 }
 

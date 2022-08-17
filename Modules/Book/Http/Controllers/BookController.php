@@ -8,6 +8,7 @@ use App\Models\Rating;
 use Illuminate\Routing\Controller;
 use Modules\Book\Http\Requests\BookIndexRequest;
 use Modules\Book\Http\Requests\BookRatingRequest;
+use Modules\Book\Repositories\BookSectionsRepository;
 use Modules\Book\Repositories\Interfaces\BookRepositoryInterface;
 use Modules\Book\Transformers\BookResource;
 
@@ -25,6 +26,16 @@ class BookController extends Controller
         $books = $this->repository->getBooks($request->validated());
 
         return BookResource::collection($books);
+    }
+
+    public function sections(BookSectionsRepository $repository)
+    {
+        return $repository->getBooksBySections();
+    }
+
+    public function savedBooks()
+    {
+        return BookResource::collection($this->repository->getSavedBooks());
     }
 
     public function show(Book $book)
