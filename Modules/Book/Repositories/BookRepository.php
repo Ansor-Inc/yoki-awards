@@ -25,8 +25,8 @@ class BookRepository implements BookRepositoryInterface
     {
         return Book::query()
             ->with(['author:id,firstname,lastname,about,copyright', 'publisher:id,title', 'genre:id,title', 'tags:name'])
-            ->find($id)
-            ->setAppends(['fragment', 'book_file']);
+            ->findOrFail($id)
+            ->setAppends(['book_variant_ids']);
     }
 
     public function getSimilarBooks(int $id)
@@ -46,14 +46,5 @@ class BookRepository implements BookRepositoryInterface
                 $query->where('user_id', auth('sanctum')->user()->id)
                     ->where('bookmarked', true);
             })->get();
-    }
-
-
-    public function getBooksWithSimilarTitle(string $title)
-    {
-        return Book::query()
-            ->with(['author:id,firstname,lastname,about,copyright', 'publisher:id,title', 'genre:id,title', 'tags:name'])
-            ->where('title', 'LIKE', "%{$title}%")
-            ->get();
     }
 }

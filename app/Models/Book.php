@@ -60,6 +60,16 @@ class Book extends Model implements HasMedia
         return $this->hasMany(BookUserStatus::class);
     }
 
+    public function getBookVariantIdsAttribute()
+    {
+        return Book::query()
+            ->whereNot('id', $this->id)
+            ->where('title', 'LIKE', "%{$this->title}%")
+            ->select('id')
+            ->pluck('id');
+    }
+
+
     public function tags()
     {
         return $this->morphToMany(Tag::class, 'taggable');

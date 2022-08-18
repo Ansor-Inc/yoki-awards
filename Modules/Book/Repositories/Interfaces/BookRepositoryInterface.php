@@ -13,6 +13,4 @@ interface BookRepositoryInterface
     public function getSimilarBooks(int $id);
 
     public function getSavedBooks();
-
-    public function getBooksWithSimilarTitle(string $title);
 }
