@@ -60,12 +60,13 @@ class Book extends Model implements HasMedia
         return $this->hasMany(BookUserStatus::class);
     }
 
-    public function getBookVariantIdsAttribute()
+    public function getBookVariantIdAttribute()
     {
         return Book::query()
             ->whereNot('id', $this->id)
             ->where('title', 'LIKE', "%{$this->title}%")
             ->select('id')
+            ->first()
             ->pluck('id');
     }
 
