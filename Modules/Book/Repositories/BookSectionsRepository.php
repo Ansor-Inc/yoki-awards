@@ -9,9 +9,12 @@ use Modules\Book\Transformers\BookResource;
 
 class BookSectionsRepository implements BookSectionsRepositoryInterface
 {
+    protected $with = ['author:id,firstname,lastname'];
+
     public function getTrendingBooks()
     {
         return Book::query()
+            ->with($this->with)
             ->onlyListingFields()
             ->where('book_type', BookType::E_BOOK)
             ->whereRelation('tags', 'name', 'trending')
@@ -22,6 +25,7 @@ class BookSectionsRepository implements BookSectionsRepositoryInterface
     public function getTrendingAudioBooks()
     {
         return Book::query()
+            ->with($this->with)
             ->onlyListingFields()
             ->where('book_type', BookType::AUDIO_BOOK)
             ->whereRelation('tags', 'name', 'trending')
@@ -32,6 +36,7 @@ class BookSectionsRepository implements BookSectionsRepositoryInterface
     public function getSpecialBooks()
     {
         return Book::query()
+            ->with($this->with)
             ->onlyListingFields()
             ->whereRelation('tags', 'name', 'special')
             ->limit(2)
@@ -42,6 +47,7 @@ class BookSectionsRepository implements BookSectionsRepositoryInterface
     public function getAcademicsBooks()
     {
         return Book::query()
+            ->with($this->with)
             ->onlyListingFields()
             ->limit(4)
             ->get();
