@@ -66,8 +66,7 @@ class Book extends Model implements HasMedia
             ->whereNot('id', $this->id)
             ->where('title', 'LIKE', "%{$this->title}%")
             ->select('id')
-            ->first()
-            ->pluck('id');
+            ->first()->id;
     }
 
 
