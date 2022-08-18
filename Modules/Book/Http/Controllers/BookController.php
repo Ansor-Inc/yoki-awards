@@ -40,7 +40,14 @@ class BookController extends Controller
 
     public function show($id)
     {
-        return BookResource::make($this->repository->getBookById($id));
+        $book = $this->repository->getBookById($id);
+        $books = $this->repository->getBooksWithSimilarTitle($book->title);
+
+        if ($books->count() > 1) {
+            return BookResource::collection($books);
+        }
+
+        return BookResource::make($book);
     }
 
     public function bookmark(Book $book)

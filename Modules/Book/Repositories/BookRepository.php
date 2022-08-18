@@ -32,7 +32,7 @@ class BookRepository implements BookRepositoryInterface
     public function getSimilarBooks(int $id)
     {
         $book = $this->getBookById($id);
-        
+
         return Book::query()->where('genre_id', $book->genre_id)
             ->onlyListingFields()
             ->get();
@@ -49,4 +49,11 @@ class BookRepository implements BookRepositoryInterface
     }
 
 
+    public function getBooksWithSimilarTitle(string $title)
+    {
+        return Book::query()
+            ->with(['author:id,firstname,lastname,about,copyright', 'publisher:id,title', 'genre:id,title', 'tags:name'])
+            ->where('title', 'LIKE', "%{$title}%")
+            ->get();
+    }
 }

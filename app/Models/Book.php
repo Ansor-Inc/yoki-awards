@@ -32,7 +32,7 @@ class Book extends Model implements HasMedia
 
     public function scopeOnlyListingFields($query)
     {
-        $query->select(['id', 'title', 'author_id', 'is_free', 'book_type','price']);
+        $query->select(['id', 'title', 'author_id', 'is_free', 'book_type', 'price']);
     }
 
     public function author()
