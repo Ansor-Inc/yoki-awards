@@ -26,7 +26,7 @@ class BookRepository implements BookRepositoryInterface
         return Book::query()
             ->with(['author:id,firstname,lastname,about,copyright', 'publisher:id,title', 'genre:id,title', 'tags:name'])
             ->findOrFail($id)
-            ->setAppends(['book_variant_id']);
+            ->setAppends(['book_variants']);
     }
 
     public function getSimilarBooks(int $id)
