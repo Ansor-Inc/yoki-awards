@@ -24,6 +24,7 @@ class BookRepository implements BookRepositoryInterface
     public function getBookById(int $id)
     {
         return Book::query()
+            ->onlyNecessaryFields()
             ->with(['author:id,firstname,lastname,about,copyright', 'publisher:id,title', 'genre:id,title', 'tags:name'])
             ->findOrFail($id)
             ->setAppends(['book_variants']);

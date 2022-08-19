@@ -35,6 +35,11 @@ class Book extends Model implements HasMedia
         $query->select(['id', 'title', 'author_id', 'is_free', 'book_type', 'price']);
     }
 
+    public function scopeOnlyNecessaryFields($query)
+    {
+        $query->select(['id', 'title', 'description', 'language', 'page_count', 'publication_date', 'price', 'compare_price', 'is_free', 'book_type', 'publisher_id', 'genre_id', 'author_id']);
+    }
+
     public function author()
     {
         return $this->belongsTo(Author::class);
@@ -60,15 +65,6 @@ class Book extends Model implements HasMedia
         return $this->hasMany(BookUserStatus::class);
     }
 
-    public function getBookVariantsAttribute()
-    {
-        return Book::query()
-            ->whereNot('id', $this->id)
-            ->with(['author:id,firstname,lastname,about,copyright', 'publisher:id,title', 'genre:id,title', 'tags:name'])
-            ->where('title', 'LIKE', "%{$this->title}%")
-            ->get();
-    }
-
     public function tags()
     {
         return $this->morphToMany(Tag::class, 'taggable');
@@ -92,6 +88,16 @@ class Book extends Model implements HasMedia
     public function getBookFileAttribute()
     {
         return $this->getFileFromCollection('book_file');
+    }
+
+    public function getBookVariantsAttribute()
+    {
+        return Book::query()
+            ->onlyNecessaryFields()
+            ->whereNot('id', $this->id)
+            ->with(['author:id,firstname,lastname,about,copyright', 'publisher:id,title', 'genre:id,title', 'tags:name'])
+            ->where('title', 'LIKE', "%{$this->title}%")
+            ->get();
     }
 
     public function statusOf(User $user = null)

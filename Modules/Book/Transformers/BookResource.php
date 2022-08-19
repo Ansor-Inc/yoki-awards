@@ -37,7 +37,7 @@ class BookResource extends JsonResource
                 auth('sanctum')->check(),
                 BookUserStatusResource::make($this->statusOf(auth('sanctum')->user()))
             ),
-            'book_variants' => self::collection($this->whenAppended('book_variants'))
+            'book_variants' => $this->when($request->has('withVariants'), self::collection($this->whenAppended('book_variants')))
         ];
     }
 }
