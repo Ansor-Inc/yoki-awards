@@ -1,4 +1,5 @@
 {
     "User": true,
-    "Book": true
+    "Book": true,
+    "Group": true
 }
