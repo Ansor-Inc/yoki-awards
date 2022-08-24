@@ -50,5 +50,24 @@ class User extends Authenticatable
     {
         return $this->hasMany(BookUserStatus::class);
     }
+
+    public function groups()
+    {
+        return $this->hasMany(Group::class, 'owner_id');
+    }
+
+    public function joinedGroups()
+    {
+        return $this->belongsToMany(Group::class, 'memberships');
+    }
+
+    public function isWaitingForJoinApproval(Group $group)
+    {
+        return $this->joinedGroups()
+            ->withoutGlobalScopes()
+            ->where(['group_id' => $group->id, 'approved' => false])
+            ->exists();
+    }
+
 }
 

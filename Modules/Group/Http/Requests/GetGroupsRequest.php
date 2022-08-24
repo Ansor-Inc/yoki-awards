@@ -14,7 +14,8 @@ class GetGroupsRequest extends FormRequest
     public function rules()
     {
         return [
-            'per_page' => ['sometimes', 'numeric']
+            'per_page' => ['sometimes', 'numeric'],
+            'category_id' => ['sometimes', 'numeric']
         ];
     }
 

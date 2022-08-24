@@ -4,7 +4,7 @@ namespace Modules\Group\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class GroupCreateRequest extends FormRequest
+class UpdateGroupRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -16,6 +16,13 @@ class GroupCreateRequest extends FormRequest
         return [
             //
         ];
+    }
+
+    public function getSanitized()
+    {
+        $sanitized = $this->validated();
+
+        return $sanitized;
     }
 
     /**
