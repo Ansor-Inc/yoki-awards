@@ -31,7 +31,7 @@ class BookResource extends JsonResource
             'author' => AuthorResource::make($this->whenLoaded('author')),
             'publisher' => PublisherResource::make($this->whenLoaded('publisher')),
             'book_type' => $this->whenNotNull($this->book_type),
-            'fragment' => $this->fragment,
+            'fragment' => $this->whenNotNull($this->fragment),
             'book_file' => $this->when($this->is_free, $this->book_file),
             'user_status' => $this->when(
                 auth('sanctum')->check(),
