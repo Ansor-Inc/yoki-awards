@@ -3,9 +3,9 @@
 namespace Modules\User\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\File;
 
-class ResetPasswordSendCodeRequest extends FormRequest
+class UpdateUserAvatarRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -15,14 +15,7 @@ class ResetPasswordSendCodeRequest extends FormRequest
     public function rules()
     {
         return [
-            'phone' => ['required', 'exists:users,phone']
-        ];
-    }
-
-    public function messages()
-    {
-        return [
-            'phone.exists' => 'No users with this phone!',
+            'image' => ['required', File::image()->max(3 * 1024)]
         ];
     }
 

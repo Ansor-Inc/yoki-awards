@@ -41,6 +41,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/me', [UserController::class, 'getMe']);
     Route::put('/me', [UserController::class, 'updateMe']);
     Route::post('/update/phone', [UserController::class, 'updatePhone']);
+    Route::post('/update/avatar', [UserController::class, 'updateAvatar']);
 });
 
 

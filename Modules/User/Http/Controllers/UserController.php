@@ -4,6 +4,10 @@ namespace Modules\User\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use Modules\User\Http\Requests\UpdateUserAvatarRequest;
 use Modules\User\Http\Requests\UpdateUserPhoneRequest;
 use Modules\User\Http\Requests\UpdateUserRequest;
 use Modules\User\Http\Resources\UserResource;
@@ -35,5 +39,17 @@ class UserController extends Controller
         }
 
         return response(['message' => 'Invalid or expired code!'], 500);
+    }
+
+    public function updateAvatar(UpdateUserAvatarRequest $request)
+    {
+        $path = $request->file('image')->store('avatars', ['disk' => 'public']);
+        $request->user()->update(['avatar' => '/storage/' . $path]);
+
+        return response([
+            'message' => 'Avatar changed successfully!',
+            'avatar' => $request->user()->avatar
+        ]);
+
     }
 }

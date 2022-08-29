@@ -28,4 +28,12 @@ class VerifyPasswordResetRequest extends FormRequest
             'code' => ['required', 'digits:4']
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'phone.exists' => 'No users with this phone!',
+        ];
+    }
+
 }

@@ -16,12 +16,12 @@ class PublisherResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'logo' => $this->whenNotNull($this->logo),
-            'title' => $this->whenNotNull($this->title),
-            'description' => $this->whenNotNull($this->description),
-            'phone' => $this->whenNotNull($this->phone),
-            'address' => $this->whenNotNull($this->address),
-            'location_url' => $this->whenNotNull($this->location_url)
+            'logo' => $this->logo,
+            'title' => $this->title,
+            'description' => $this->description,
+            'phone' => $this->phone,
+            'address' => $this->address,
+            'location_url' => $this->location_url
         ];
     }
 }
