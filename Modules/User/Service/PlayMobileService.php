@@ -8,7 +8,7 @@ class PlayMobileService
 {
     protected static string $baseUrl = 'http://91.204.239.44/broker-api/send';
 
-    public static function sendSms(string $phone, string $code): int
+    public static function sendSms(string $phone, string $code)
     {
         $data = [
             'messages' => [
@@ -28,6 +28,6 @@ class PlayMobileService
         ])->withBasicAuth('wasaf2', 'EDs4Br65a7')
             ->post(self::$baseUrl, $data);
 
-        return $sendSms->status();
+        return $sendSms->body();
     }
 }

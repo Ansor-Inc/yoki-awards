@@ -2,14 +2,13 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Contracts\CanResetPasswordContract;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable
+class User extends Authenticatable implements CanResetPasswordContract
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -29,7 +28,7 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
-        'email_verified_at'
+        'phone_verified_at'
     ];
 
     /**
@@ -38,13 +37,8 @@ class User extends Authenticatable
      * @var array<string, string>
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
+        'phone_verified_at' => 'datetime',
     ];
-
-    public function setPasswordAttribute($password)
-    {
-        $this->attributes['password'] = Hash::make($password);
-    }
 
     public function bookUserStatuses()
     {
@@ -69,5 +63,21 @@ class User extends Authenticatable
             ->exists();
     }
 
+    public function hasVerifiedPhone()
+    {
+        return !is_null($this->phone_verified_at);
+    }
+
+    public function markPhoneAsVerified()
+    {
+        return $this->forceFill([
+            'phone_verified_at' => $this->freshTimestamp(),
+        ])->save();
+    }
+
+    public function getPhoneForPasswordReset()
+    {
+        return $this->phone;
+    }
 }
 

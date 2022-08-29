@@ -3,6 +3,7 @@
 namespace Modules\User\Repositories;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 use Modules\User\Repositories\Interfaces\UserRepositoryInterface;
 
 class UserRepository implements UserRepositoryInterface
@@ -25,5 +26,13 @@ class UserRepository implements UserRepositoryInterface
     public function getUserByPhone(string $phone)
     {
         return User::query()->where('phone', $phone)->first();
+    }
+
+    public function registerUser(array $payload)
+    {
+        return User::query()->updateOrCreate(
+            ['phone' => $payload['phone'], 'phone_verified_at' => null],
+            ['fullname' => $payload['fullname'], 'password' => Hash::make($payload['password'])]
+        );
     }
 }

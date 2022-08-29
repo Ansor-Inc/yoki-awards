@@ -2,10 +2,12 @@
 
 namespace Modules\User\Providers;
 
-use Illuminate\Database\Eloquent\Factory;
+use Modules\User\Repositories\Interfaces\PasswordResetsRepositoryInterface;
+use Modules\User\Repositories\PasswordResetsRepository;
 use Illuminate\Support\ServiceProvider;
 use Modules\User\Repositories\Interfaces\UserRepositoryInterface;
 use Modules\User\Repositories\UserRepository;
+use Modules\User\Service\SmsTokenService;
 
 class UserServiceProvider extends ServiceProvider
 {
@@ -41,7 +43,8 @@ class UserServiceProvider extends ServiceProvider
     {
         $this->app->register(RouteServiceProvider::class);
         $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
-
+        $this->app->bind(PasswordResetsRepositoryInterface::class, fn() => new PasswordResetsRepository(config('auth.passwords.users.expire'), config('auth.passwords.users.throttle')));
+        $this->app->bind('sms-token-service', fn() => new SmsTokenService());
     }
 
     /**

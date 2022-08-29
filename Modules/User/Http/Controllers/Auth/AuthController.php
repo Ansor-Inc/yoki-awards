@@ -3,6 +3,7 @@
 namespace Modules\User\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Modules\User\Http\Requests\Auth\LoginRequest;
@@ -15,43 +16,25 @@ use function response;
 class AuthController extends Controller
 {
     protected UserRepositoryInterface $userRepository;
-    protected SmsTokenService $smsTokenService;
 
-    public function __construct(UserRepositoryInterface $userRepository, SmsTokenService $smsTokenService)
+    public function __construct(UserRepositoryInterface $userRepository)
     {
         $this->userRepository = $userRepository;
-        $this->smsTokenService = $smsTokenService;
     }
 
     public function register(RegisterUserRequest $request)
     {
-        $data = $request->validated();
+        $registeredUser = $this->userRepository->registerUser($request->validated());
 
-        try {
-            $this->smsTokenService->phone($data['phone'])->sendSmsCode();
-        } catch (\Exception $e) {
-            return response()->json(['message' => 'Error sending sms code!'])->setStatusCode(500);
+        if (!isset($registeredUser)) {
+            return response(['message' => 'Something went wrong while registering!'], 500);
         }
 
-        return response()->json(['message' => 'Sms successfully sent!'])->setStatusCode(200);
-    }
-
-    public function registerVerify(RegisterVerifyUserRequest $request)
-    {
-        $data = $request->validated();
-
-        $check = $this->smsTokenService->phone($data['payload']['phone'])->check($data['code']);
-
-        if ($check) {
-            $user = $this->userRepository->createUser($data['payload']);
-            $token = $user->createToken('auth_token')->plainTextToken;
-            return $this->respondWithToken($token);
-        }
-
-        return response()->json([
-            'message' => 'Invalid code or phone!'
+        return response([
+            'message' => 'Your account has been created! Please verify your phone number!',
+            'token_type' => 'bearer',
+            'token' => $registeredUser->createToken('auth_token')->plainTextToken
         ]);
-
     }
 
     public function login(LoginRequest $request)

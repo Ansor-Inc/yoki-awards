@@ -27,12 +27,10 @@ class UpdateUserRequest extends FormRequest
     public function rules()
     {
         return [
-            'id' => ['required'],
             'fullname' => ['required', 'string'],
-            'email' => ['sometimes', 'email', Rule::unique('users', 'email')->ignore($this->id)],
+            'email' => ['sometimes', 'email', Rule::unique('users', 'email')],
             'region' => ['sometimes', 'string'],
             'birthdate' => ['sometimes', 'date'],
-          // 'phone' => ['sometimes', Rule::unique('users', 'phone')->ignore($this->id)],
             'gender' => ['sometimes', new Enum(Gender::class)],
             'old_password' => ['sometimes', 'string'],
             'new_password' => ['sometimes', 'string', 'confirmed', 'min:8']

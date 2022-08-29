@@ -3,6 +3,7 @@
 namespace Modules\User\Http\Requests\Auth;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class RegisterUserRequest extends FormRequest
 {
@@ -24,7 +25,9 @@ class RegisterUserRequest extends FormRequest
     public function rules()
     {
         return [
-            'phone' => 'required|unique:users,phone'
+            'fullname' => ['required', 'string'],
+            'phone' => ['required', Rule::unique('users')->whereNotNull('phone_verified_at')],
+            'password' => ['required', 'string', 'min:8', 'confirmed']
         ];
     }
 }

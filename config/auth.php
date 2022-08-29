@@ -108,4 +108,6 @@ return [
 
     'password_timeout' => 10800,
 
+    'sms_code_lifetime' => env('SMS_CODE_LIFETIME', 30)
+
 ];

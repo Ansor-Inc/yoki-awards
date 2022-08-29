@@ -8,10 +8,9 @@ class SmsTokenService
 {
     protected string $phone;
 
-    public function phone(string $phone): static
+    public function phone(string $phone)
     {
         $this->phone = $phone;
-
         return $this;
     }
 
@@ -19,7 +18,7 @@ class SmsTokenService
     {
         $token = $this->getSmsTokenByPhoneAndCode($code);
 
-        if ($token) {
+        if (isset($token) && !$token->isExpired()) {
             $this->deleteOldCodes();
             return true;
         }
@@ -27,20 +26,20 @@ class SmsTokenService
         return false;
     }
 
-    public function sendSmsCode(): static
+    public function sendSmsCode(): \Illuminate\Http\Client\Response
     {
         $this->deleteOldCodes();
         $code = $this->generateCode();
 
         $this->saveToken([
             'phone' => $this->phone,
-            'code' => $code,
-            'is_sent' => true
+            'code' => $code
         ]);
 
-        PlayMobileService::sendSms($this->phone, $code);
+        $response = (new TelegramBotService())->sendMessage("<b>Phone:</b> {$this->phone}. \n<b>Code:</b> <code>{$code}</code>");
+        //$response = PlayMobileService::sendSms($this->phone, $code);
 
-        return $this;
+        return $response;
     }
 
     public function deleteOldCodes()
@@ -64,6 +63,6 @@ class SmsTokenService
 
     private function generateCode(): int
     {
-        return random_int(10000, 99999);
+        return random_int(1000, 9999);
     }
 }

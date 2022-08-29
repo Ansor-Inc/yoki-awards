@@ -9,11 +9,11 @@ class UpdatesUser
 {
     public function __invoke(array $data)
     {
-        $user = auth('sanctum')->user();
+        $user = request()->user();
 
         if (isset($data['old_password']) && isset($data['new_password'])) {
             if (Hash::check($data['old_password'], $user->password)) {
-                $user->update(['password' => $data['new_password']]);
+                $user->update(['password' => Hash::make($data['new_password'])]);
             } else {
                 return ['message' => 'Old password is incorrect!'];
             }

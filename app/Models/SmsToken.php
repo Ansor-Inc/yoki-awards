@@ -10,7 +10,12 @@ class SmsToken extends Model
 
     protected $fillable = [
         'phone',
-        'code',
-        'is_sent'
+        'code'
     ];
+
+    public function isExpired()
+    {
+        return $this->created_at?->diffInSeconds(now()) > (int)config('auth.sms_code_lifetime');
+    }
+
 }

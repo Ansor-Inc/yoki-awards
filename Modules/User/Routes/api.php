@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Laravel\Socialite\Facades\Socialite;
 use Modules\User\Http\Controllers\Auth\AuthController;
 use Modules\User\Http\Controllers\Auth\PasswordResetController;
+use Modules\User\Http\Controllers\Auth\PhoneVerifyController;
 use Modules\User\Http\Controllers\Auth\SocialAuthController;
 use Modules\User\Http\Controllers\UserController;
 
@@ -17,17 +18,24 @@ use Modules\User\Http\Controllers\UserController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
-Route::post('/register', [AuthController::class, 'register']);
-Route::post('/register-verify', [AuthController::class, 'registerVerify']);
-Route::post('/login', [AuthController::class, 'login']);
-Route::post('/reset-password', [PasswordResetController::class, 'resetPassword']);
-Route::post('/reset-password-verify', [PasswordResetController::class, 'verifyResetPassword']);
+Route::post('/verification/sendsms', [PhoneVerifyController::class, 'sendCode'])->middleware('throttle:60,1');
 
 Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/verification/verify', [PhoneVerifyController::class, 'verify']);
+    Route::post('/logout', [AuthController::class, 'logout']);
+});
+
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
+
+Route::post('/reset-password/send-code', [PasswordResetController::class, 'sendCode']);
+Route::post('/reset-password/verify', [PasswordResetController::class, 'verifyResetPassword']);
+Route::post('/reset-password', [PasswordResetController::class, 'reset']);
+
+Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/me', [UserController::class, 'getMe']);
     Route::put('/me', [UserController::class, 'updateMe']);
-    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::post('/update/phone', [UserController::class, 'updatePhone']);
 });
 
 Route::get('/auth/{driver}/redirect', [SocialAuthController::class, 'redirect']);
