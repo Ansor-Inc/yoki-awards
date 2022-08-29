@@ -24,7 +24,7 @@ class VerifyPasswordResetRequest extends FormRequest
     public function rules()
     {
         return [
-            'phone' => ['required', 'string'],
+            'phone' => ['required', 'string', 'exists:users,phone'],
             'code' => ['required', 'digits:4']
         ];
     }

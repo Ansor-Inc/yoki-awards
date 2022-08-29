@@ -3,8 +3,8 @@
 namespace Modules\User\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 use Modules\User\Http\Requests\Auth\VerifyPasswordResetRequest;
 use Modules\User\Http\Requests\ResetPasswordRequest;
 use Modules\User\Http\Requests\ResetPasswordSendCodeRequest;
@@ -36,10 +36,6 @@ class PasswordResetController extends Controller
     {
         $user = $this->userRepository->getUserByPhone($request->input('phone'));
 
-        if (!isset($user)) {
-            return response(['message' => 'User with this phone does not exists!'], 404);
-        }
-
         $checkCode = SmsTokenServiceFacade::phone($user->getPhoneForPasswordReset())->check($request->input('code'));
 
         if (!$checkCode) {
@@ -47,7 +43,7 @@ class PasswordResetController extends Controller
         }
 
         if ($this->passwordResetsRepository->recentlyCreatedToken($user)) {
-            return response(['Too many attempts! Please try again after 60 seconds!']);
+            return response(['message' => 'Too many attempts! Please try again after 60 seconds!']);
         }
 
         $token = $this->passwordResetsRepository->create($user);
@@ -58,15 +54,17 @@ class PasswordResetController extends Controller
     public function reset(ResetPasswordRequest $request)
     {
         $data = $request->validated();
-        $user = $request->user();
+        $user = $this->userRepository->getUserByPhone($request->input('phone'));
 
         if (!$this->passwordResetsRepository->exists($user, $data['password_reset_token'])) {
             return response(['message' => 'Invalid or expired token!'], 401);
         }
 
-        $user->forceFill(['password' => Hash::make($data['password'])]);
-        $user->save();
-        $this->passwordResetsRepository->delete($user);
+        DB::transaction(function () use ($user, $data) {
+            $user->forceFill(['password' => Hash::make($data['password'])]);
+            $user->save();
+            $this->passwordResetsRepository->delete($user);
+        });
 
         return response(['message' => 'Password changed successfully!']);
     }

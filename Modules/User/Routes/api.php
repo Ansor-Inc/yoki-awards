@@ -25,12 +25,17 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 });
 
-Route::post('/register', [AuthController::class, 'register']);
-Route::post('/login', [AuthController::class, 'login']);
+Route::middleware(['guest:sanctum'])->group(function () {
+    Route::post('/register', [AuthController::class, 'register']);
+    Route::post('/login', [AuthController::class, 'login']);
 
-Route::post('/reset-password/send-code', [PasswordResetController::class, 'sendCode']);
-Route::post('/reset-password/verify', [PasswordResetController::class, 'verifyResetPassword']);
-Route::post('/reset-password', [PasswordResetController::class, 'reset']);
+    Route::post('/reset-password/send-code', [PasswordResetController::class, 'sendCode']);
+    Route::post('/reset-password/verify', [PasswordResetController::class, 'verifyResetPassword']);
+    Route::post('/reset-password', [PasswordResetController::class, 'reset']);
+
+    Route::get('/auth/{driver}/redirect', [SocialAuthController::class, 'redirect']);
+    Route::get('/auth/{driver}/callback', [SocialAuthController::class, 'callback']);
+});
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/me', [UserController::class, 'getMe']);
@@ -38,5 +43,4 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::post('/update/phone', [UserController::class, 'updatePhone']);
 });
 
-Route::get('/auth/{driver}/redirect', [SocialAuthController::class, 'redirect']);
-Route::get('/auth/{driver}/callback', [SocialAuthController::class, 'callback']);
+
