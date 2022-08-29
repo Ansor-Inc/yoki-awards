@@ -29,7 +29,7 @@ Route::prefix('books')->group(function () {
     Route::get('/', [BookController::class, 'index']);
     Route::get('/sections', [BookController::class, 'sections']);
 
-    Route::middleware('auth:sanctum')->group(function () {
+    Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::get('/saved', [BookController::class, 'savedBooks']);
         Route::put('/{book}/bookmark', [BookController::class, 'bookmark']);
         Route::put('/{book}/rate', [BookController::class, 'rate']);
