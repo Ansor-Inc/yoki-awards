@@ -18,7 +18,7 @@ use Modules\User\Http\Controllers\UserController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::post('/verification/sendsms', [PhoneVerifyController::class, 'sendCode'])->middleware('throttle:60,1');
+Route::post('/verification/sendsms', [PhoneVerifyController::class, 'sendCode'])->middleware('throttle:3,1');
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/verification/verify', [PhoneVerifyController::class, 'verify']);
@@ -27,9 +27,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
 Route::middleware(['guest:sanctum'])->group(function () {
     Route::post('/register', [AuthController::class, 'register']);
-    Route::post('/login', [AuthController::class, 'login']);
+    Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:6,1');
 
-    Route::post('/reset-password/send-code', [PasswordResetController::class, 'sendCode']);
+    Route::post('/reset-password/send-code', [PasswordResetController::class, 'sendCode'])->middleware('throttle:3,1');
     Route::post('/reset-password/verify', [PasswordResetController::class, 'verifyResetPassword']);
     Route::post('/reset-password', [PasswordResetController::class, 'reset']);
 
