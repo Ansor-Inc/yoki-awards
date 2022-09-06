@@ -30,26 +30,30 @@ class GroupAdminController extends Controller
     public function create(Group $group, User $user)
     {
         $this->authorize('assignAsAdmin', [$group, $user]);
-        $this->groupAdminRepository->assignAsAdmin($group, $user);
+        $groupAdmin = $this->groupAdminRepository->assignAsAdmin($group, $user);
 
-        return response(['message' => 'Successfully assigned as admin!']);
-    }
-
-    public function remove(Group $group, GroupAdmin $groupAdmin)
-    {
-        $this->authorize('dischargeAdmin', $group);
-        $this->groupAdminRepository->dischargeAdmin($groupAdmin);
-
-        return response(['message' => 'Admin removed successfully!']);
+        return $groupAdmin
+            ? response(['message' => 'Successfully assigned as admin!'])
+            : response(['message' => 'Something went wrong!'], 500);
     }
 
     public function updatePermissions(Group $group, GroupAdmin $groupAdmin, UpdateAdminPermissionsRequest $request)
     {
         $this->authorize('updateAdminPermissions', $group);
-        $this->groupAdminRepository->updateAdminPermissions($groupAdmin, $request->validated());
+        $affectedRows = $this->groupAdminRepository->updateAdminPermissions($groupAdmin, $request->validated());
 
-        return response(['message' => 'Permissions updated!']);
+        return $affectedRows > 0
+            ? response(['message' => 'Permissions updated!'])
+            : response(['message' => 'Something went wrong!'], 500);
     }
 
+    public function remove(Group $group, GroupAdmin $groupAdmin)
+    {
+        $this->authorize('dischargeAdmin', $group);
+        $removed = $this->groupAdminRepository->dischargeAdmin($groupAdmin);
 
+        return $removed
+            ? response(['message' => 'Admin removed successfully!'])
+            : response(['message' => 'Something went wrong!'], 500);
+    }
 }

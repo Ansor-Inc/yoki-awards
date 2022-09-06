@@ -21,17 +21,19 @@ class GroupAdminRepository implements GroupAdminRepositoryInterface
         $membership = Membership::query()->approved()->where(['user_id' => $user->id, 'group_id' => $group->id])->first();
 
         if ($membership) {
-            GroupAdmin::query()->create(['membership_id' => $membership->id]);
+            return GroupAdmin::query()->create(['membership_id' => $membership->id]);
         }
+
+        return null;
     }
 
     public function updateAdminPermissions(GroupAdmin $groupAdmin, array $permissions)
     {
-        $groupAdmin->update($permissions);
+        return $groupAdmin->update($permissions);
     }
 
     public function dischargeAdmin(GroupAdmin $groupAdmin)
     {
-        $groupAdmin->delete();
+        return $groupAdmin->delete();
     }
 }
