@@ -4,7 +4,11 @@ namespace Modules\Group\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Factory;
+use Modules\Group\Repositories\BlackListRepository;
+use Modules\Group\Repositories\GroupAdminRepository;
 use Modules\Group\Repositories\GroupRepository;
+use Modules\Group\Repositories\Interfaces\BlackListRepositoryInterface;
+use Modules\Group\Repositories\Interfaces\GroupAdminRepositoryInterface;
 use Modules\Group\Repositories\Interfaces\GroupRepositoryInterface;
 use Modules\Group\Repositories\Interfaces\MembershipRepositoryInterface;
 use Modules\Group\Repositories\MembershipRepository;
@@ -44,6 +48,8 @@ class GroupServiceProvider extends ServiceProvider
         $this->app->register(RouteServiceProvider::class);
         $this->app->bind(GroupRepositoryInterface::class, GroupRepository::class);
         $this->app->bind(MembershipRepositoryInterface::class, MembershipRepository::class);
+        $this->app->bind(GroupAdminRepositoryInterface::class, GroupAdminRepository::class);
+        $this->app->bind(BlackListRepositoryInterface::class, BlackListRepository::class);
     }
 
     /**

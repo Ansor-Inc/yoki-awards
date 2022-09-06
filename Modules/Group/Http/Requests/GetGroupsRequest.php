@@ -3,6 +3,7 @@
 namespace Modules\Group\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class GetGroupsRequest extends FormRequest
 {
@@ -15,7 +16,7 @@ class GetGroupsRequest extends FormRequest
     {
         return [
             'per_page' => ['sometimes', 'numeric'],
-            'category_id' => ['sometimes', 'numeric']
+            'category_id' => ['sometimes', 'numeric', Rule::exists('group_categories', 'id')]
         ];
     }
 

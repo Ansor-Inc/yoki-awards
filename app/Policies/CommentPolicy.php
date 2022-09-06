@@ -12,12 +12,12 @@ class CommentPolicy
 
     public function update(User $user, Comment $comment)
     {
-        return $user->id === $comment->user_id;
+        return (int)$user->id === (int)$comment->user_id;
     }
 
     public function delete(User $user, Comment $comment)
     {
-        return $user->id === $comment->user_id;
+        return (int)$user->id === (int)$comment->user_id;
     }
 
 }

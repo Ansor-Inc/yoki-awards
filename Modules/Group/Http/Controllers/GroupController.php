@@ -36,6 +36,11 @@ class GroupController extends Controller
         return GroupResource::collection($groups);
     }
 
+    public function getByInviteLink($inviteLink)
+    {
+
+    }
+
     public function createGroup(CreateGroupRequest $request)
     {
         $group = $this->groupRepository->createGroup($request->getSanitized());
@@ -46,11 +51,18 @@ class GroupController extends Controller
         ];
     }
 
+    public function showGroup(Group $group)
+    {
+        $this->authorize('show', $group);
+
+        return GroupResource::make($group);
+    }
+
     public function updateGroup(Group $group, UpdateGroupRequest $request)
     {
         $this->authorize('update', $group);
 
-        $this->groupRepository->updateGroup($group->id, $request->getSanitized());
+        $this->groupRepository->updateGroup($group->id, $request->validated());
 
         return [
             'message' => 'Group updated successfully'

@@ -19,7 +19,8 @@ class CreateGroupRequest extends FormRequest
             'group_category_id' => ['required', 'integer', 'exists:group_categories,id'],
             'member_limit' => ['required', 'integer', 'min:0'],
             'title' => ['required', 'string', 'unique:groups,title'],
-            'degree' => ['required', 'string', new Enum(UserDegree::class)],
+            'degree' => ['required', 'array'],
+            'degree.*' => new Enum(UserDegree::class),
             'is_private' => ['required', 'boolean']
         ];
     }
