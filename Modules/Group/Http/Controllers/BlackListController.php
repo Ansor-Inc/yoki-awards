@@ -31,9 +31,9 @@ class BlackListController extends Controller
     {
         $this->authorize('addToBlackList', [$group, $user]);
 
-        $added = $this->blackListRepository->addToBlackList($group, $user);
+        $blackListMember = $this->blackListRepository->addToBlackList($group, $user);
 
-        return isset($added)
+        return $blackListMember
             ? response(['message' => 'Added to blacklist!'])
             : response(['message' => 'Something went wrong!'], 500);
     }
