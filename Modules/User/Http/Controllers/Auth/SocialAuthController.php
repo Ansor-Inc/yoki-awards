@@ -15,7 +15,7 @@ class SocialAuthController extends Controller
     {
         $this->validateDriver($driver);
 
-        return response(['redirect_url' => Socialite::driver($driver)->stateless()->redirect()->getTargetUrl()]);
+        return Socialite::driver($driver)->stateless()->redirect();
     }
 
     public function callback(string $driver)
@@ -38,10 +38,7 @@ class SocialAuthController extends Controller
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
-        return response()->json([
-            'token_type' => 'bearer',
-            'token' => $token
-        ]);
+        return redirect()->to('/auth/social?token=' . $token);
     }
 
     protected function validateDriver($driver)
