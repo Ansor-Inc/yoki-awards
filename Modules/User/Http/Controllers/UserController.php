@@ -48,7 +48,7 @@ class UserController extends Controller
 
         return response([
             'message' => 'Avatar changed successfully!',
-            'avatar' => $request->user()->refresh()->avatar
+            'avatar' => url($request->user()->refresh()->avatar)
         ]);
 
     }
