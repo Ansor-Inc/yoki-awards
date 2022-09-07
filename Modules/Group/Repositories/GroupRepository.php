@@ -55,14 +55,13 @@ class GroupRepository implements GroupRepositoryInterface
         return Group::query()->create($payload);
     }
 
-    public function updateGroup(int $id, array $payload)
+    public function updateGroup(Group $group, array $payload)
     {
-        Group::query()->where('id', $id)->update($payload);
+        return $group->update($payload);
     }
 
-
-    public function deleteGroup(int $id)
+    public function deleteGroup(Group $group)
     {
-        Group::destroy($id);
+        return $group->delete();
     }
 }

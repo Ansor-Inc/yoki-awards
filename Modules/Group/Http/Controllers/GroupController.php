@@ -62,11 +62,11 @@ class GroupController extends Controller
     {
         $this->authorize('update', $group);
 
-        $this->groupRepository->updateGroup($group->id, $request->validated());
+        $affectedRows = $this->groupRepository->updateGroup($group, $request->validated());
 
-        return [
-            'message' => 'Group updated successfully'
-        ];
+        return $affectedRows > 0
+            ? response(['message' => 'Group updated successfully', 'group' => GroupResource::make($group->refresh())])
+            : $this->failed();
     }
 
     public function groupCategories()
@@ -79,9 +79,9 @@ class GroupController extends Controller
     public function deleteGroup(Group $group)
     {
         $this->authorize('delete', $group);
-        $this->repository->deleteGroup($group->id);
+        $deleted = $this->groupRepository->deleteGroup($group->id);
 
-        return ['message' => 'Group deleted successfully!'];
+        return $deleted ? response(['message' => 'Group deleted successfully!']) : $this->failed();
     }
 
 }

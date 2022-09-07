@@ -8,13 +8,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Modules\User\Http\Requests\Auth\LoginRequest;
 use Modules\User\Http\Requests\Auth\RegisterUserRequest;
-use Modules\User\Http\Requests\Auth\RegisterVerifyUserRequest;
 use Modules\User\Repositories\Interfaces\UserRepositoryInterface;
-use Modules\User\Service\SmsTokenService;
-use function response;
 
 class AuthController extends Controller
 {
+
     protected UserRepositoryInterface $userRepository;
 
     public function __construct(UserRepositoryInterface $userRepository)
