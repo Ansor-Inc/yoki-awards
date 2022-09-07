@@ -32,9 +32,6 @@ Route::middleware(['guest:sanctum'])->group(function () {
     Route::post('/reset-password/send-code', [PasswordResetController::class, 'sendCode'])->middleware('throttle:3,1');
     Route::post('/reset-password/verify', [PasswordResetController::class, 'verifyResetPassword']);
     Route::post('/reset-password', [PasswordResetController::class, 'reset']);
-
-    Route::get('/auth/{driver}/redirect', [SocialAuthController::class, 'redirect']);
-    Route::get('/auth/{driver}/callback', [SocialAuthController::class, 'callback']);
 });
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {

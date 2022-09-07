@@ -11,6 +11,10 @@
 |
 */
 
-Route::prefix('user')->group(function() {
-    Route::get('/', 'UserController@index');
+use Illuminate\Support\Facades\Route;
+use Modules\User\Http\Controllers\Auth\SocialAuthController;
+
+Route::middleware(['guest:sanctum'])->group(function () {
+    Route::get('/auth/{driver}/redirect', [SocialAuthController::class, 'redirect']);
+    Route::get('/auth/{driver}/callback', [SocialAuthController::class, 'callback']);
 });
