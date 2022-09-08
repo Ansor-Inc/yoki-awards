@@ -9,7 +9,6 @@ use Modules\Group\Http\Requests\getGroupsRequest;
 use Modules\Group\Http\Requests\CreateGroupRequest;
 use Modules\Group\Http\Requests\UpdateGroupRequest;
 use Modules\Group\Repositories\Interfaces\GroupRepositoryInterface;
-use Modules\Group\Repositories\Interfaces\MembershipRepositoryInterface;
 use Modules\Group\Transformers\GroupCategoryResource;
 use Modules\Group\Transformers\GroupResource;
 
@@ -45,10 +44,10 @@ class GroupController extends Controller
     {
         $group = $this->groupRepository->createGroup($request->getSanitized());
 
-        return [
+        return $group ? response([
             'message' => 'Group created successfully, Please wait for admin approval!',
             'group' => GroupResource::make($group)
-        ];
+        ]) : $this->failed();
     }
 
     public function showGroup(Group $group)
