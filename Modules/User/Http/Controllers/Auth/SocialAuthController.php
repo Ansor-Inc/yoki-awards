@@ -38,7 +38,7 @@ class SocialAuthController extends Controller
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
-        return redirect()->to('/auth/social?token=' . $token);
+        return redirect()->to(config('auth.social_auth_redirect_url') . "?token={$token}");
     }
 
     protected function validateDriver($driver)

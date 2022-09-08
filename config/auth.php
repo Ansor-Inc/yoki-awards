@@ -108,6 +108,7 @@ return [
 
     'password_timeout' => 10800,
 
-    'sms_code_lifetime' => env('SMS_CODE_LIFETIME', 120)
+    'sms_code_lifetime' => env('SMS_CODE_LIFETIME', 120),
 
+    'social_auth_redirect_url' => env('SOCIAL_AUTH_REDIRECT_URL', '/auth/social')
 ];
