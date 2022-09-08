@@ -3,9 +3,8 @@
 namespace Modules\Group\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
-class GetGroupsRequest extends FormRequest
+class UpdateBlackListPermissionsRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -15,8 +14,8 @@ class GetGroupsRequest extends FormRequest
     public function rules()
     {
         return [
-            'per_page' => ['sometimes', 'numeric'],
-            'category_id' => ['sometimes', 'numeric', Rule::exists('group_categories', 'id')]
+            'can_comment' => ['sometimes', 'boolean'],
+            'can_see_post' => ['sometimes', 'boolean']
         ];
     }
 

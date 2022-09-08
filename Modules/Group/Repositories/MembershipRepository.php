@@ -44,7 +44,7 @@ class MembershipRepository implements MembershipRepositoryInterface
 
     public function acceptMembership(Group $group, User|Authenticatable $user)
     {
-        $group->memberships()->where('user_id', $user)->update(['approved' => true]);
+        $group->memberships()->where('user_id', $user->id)->update(['approved' => true]);
     }
 
     public function rejectMembership(Group $group, User|Authenticatable $user)

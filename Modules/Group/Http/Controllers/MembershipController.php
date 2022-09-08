@@ -69,5 +69,13 @@ class MembershipController extends Controller
         return response(['message' => 'Rejected the new member!']);
     }
 
+    public function removeMember(Group $group, User $user)
+    {
+        $this->authorize('removeMember', [$group, $user]);
+        $this->membershipRepository->removeMembership($group, $user);
+
+        return response(['message' => 'The user has been removed from group!']);
+    }
+
 
 }

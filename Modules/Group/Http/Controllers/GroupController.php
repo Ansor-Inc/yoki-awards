@@ -9,7 +9,6 @@ use Modules\Group\Http\Requests\getGroupsRequest;
 use Modules\Group\Http\Requests\CreateGroupRequest;
 use Modules\Group\Http\Requests\UpdateGroupRequest;
 use Modules\Group\Repositories\Interfaces\GroupRepositoryInterface;
-use Modules\Group\Repositories\Interfaces\MembershipRepositoryInterface;
 use Modules\Group\Transformers\GroupCategoryResource;
 use Modules\Group\Transformers\GroupResource;
 
@@ -36,25 +35,37 @@ class GroupController extends Controller
         return GroupResource::collection($groups);
     }
 
+    public function getByInviteLink($inviteLink)
+    {
+
+    }
+
     public function createGroup(CreateGroupRequest $request)
     {
         $group = $this->groupRepository->createGroup($request->getSanitized());
 
-        return [
+        return $group ? response([
             'message' => 'Group created successfully, Please wait for admin approval!',
             'group' => GroupResource::make($group)
-        ];
+        ]) : $this->failed();
+    }
+
+    public function showGroup(Group $group)
+    {
+        $this->authorize('show', $group);
+
+        return GroupResource::make($group);
     }
 
     public function updateGroup(Group $group, UpdateGroupRequest $request)
     {
         $this->authorize('update', $group);
 
-        $this->groupRepository->updateGroup($group->id, $request->getSanitized());
+        $affectedRows = $this->groupRepository->updateGroup($group, $request->validated());
 
-        return [
-            'message' => 'Group updated successfully'
-        ];
+        return $affectedRows > 0
+            ? response(['message' => 'Group updated successfully', 'group' => GroupResource::make($group->refresh())])
+            : $this->failed();
     }
 
     public function groupCategories()
@@ -67,9 +78,9 @@ class GroupController extends Controller
     public function deleteGroup(Group $group)
     {
         $this->authorize('delete', $group);
-        $this->repository->deleteGroup($group->id);
+        $deleted = $this->groupRepository->deleteGroup($group->id);
 
-        return ['message' => 'Group deleted successfully!'];
+        return $deleted ? response(['message' => 'Group deleted successfully!']) : $this->failed();
     }
 
 }

@@ -2,6 +2,8 @@
 
 namespace Modules\Group\Repositories\Interfaces;
 
+use App\Models\Group;
+
 interface GroupRepositoryInterface
 {
     public function getGroupsExceptMine(array $filters);
@@ -14,7 +16,7 @@ interface GroupRepositoryInterface
 
     public function createGroup(array $payload);
 
-    public function updateGroup(int $id, array $payload);
+    public function updateGroup(Group $group, array $payload);
 
-    public function deleteGroup(int $id);
+    public function deleteGroup(Group $group);
 }

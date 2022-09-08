@@ -52,15 +52,17 @@ class User extends Authenticatable implements CanResetPasswordContract
 
     public function joinedGroups()
     {
-        return $this->belongsToMany(Group::class, 'memberships');
+        return $this->belongsToMany(Group::class, 'memberships')->wherePivot('approved', true);
+    }
+
+    public function memberships()
+    {
+        return $this->hasMany(Membership::class);
     }
 
     public function isWaitingForJoinApproval(Group $group)
     {
-        return $this->joinedGroups()
-            ->withoutGlobalScopes()
-            ->where(['group_id' => $group->id, 'approved' => false])
-            ->exists();
+        return $this->memberships()->where('approved', false)->exists();
     }
 
     public function hasVerifiedPhone()
@@ -70,9 +72,7 @@ class User extends Authenticatable implements CanResetPasswordContract
 
     public function markPhoneAsVerified()
     {
-        return $this->forceFill([
-            'phone_verified_at' => $this->freshTimestamp(),
-        ])->save();
+        return $this->forceFill(['phone_verified_at' => $this->freshTimestamp()])->save();
     }
 
     public function getPhoneForPasswordReset()

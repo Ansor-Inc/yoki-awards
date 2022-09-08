@@ -7,4 +7,5 @@ enum UserDegree: string
     case GENIUS = 'GENIUS';
     case SCIENTIST = 'SCIENTIST';
     case CLEVER = 'CLEVER';
+    case ANY = '*';
 }
