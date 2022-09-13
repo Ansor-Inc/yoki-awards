@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Book\Http\Requests;
+namespace Modules\Post\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class PublisherBooksRequest extends FormRequest
+class GetGroupPostsRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -14,7 +14,7 @@ class PublisherBooksRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'per_page' => []
         ];
     }
 

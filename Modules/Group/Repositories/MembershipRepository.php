@@ -30,6 +30,7 @@ class MembershipRepository implements MembershipRepositoryInterface
             ->select('users.id', 'users.fullname', 'users.avatar')
             ->withPivot('approved')
             ->wherePivot('approved', true)
+            ->join('group_admins', 'group_admins.membership_id', '=', 'memberships.id')
             ->get();
     }
 

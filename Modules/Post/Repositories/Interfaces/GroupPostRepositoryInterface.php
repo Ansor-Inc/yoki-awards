@@ -4,6 +4,7 @@ namespace Modules\Post\Repositories\Interfaces;
 
 use App\Models\Group;
 use App\Models\Post;
+use App\Models\User;
 
 interface GroupPostRepositoryInterface
 {
@@ -13,7 +14,7 @@ interface GroupPostRepositoryInterface
 
     public function updatePost(Post $post, array $payload);
 
-    public function togglePostLike(Post $post);
+    public function deletePost(Post $post);
 
-
+    public function togglePostLike(Post $post, User $user);
 }

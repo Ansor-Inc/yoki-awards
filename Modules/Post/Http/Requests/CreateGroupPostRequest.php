@@ -1,12 +1,12 @@
 <?php
 
-namespace Modules\Book\Http\Requests;
+namespace Modules\Post\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Enum;
-use Modules\Book\Enums\BookType;
+use Modules\User\Enums\UserDegree;
 
-class BookIndexRequest extends FormRequest
+class CreateGroupPostRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -16,12 +16,11 @@ class BookIndexRequest extends FormRequest
     public function rules()
     {
         return [
-            'per_page' => ['sometimes', 'integer'],
-            'limit' => ['sometimes', 'integer'],
-            'trending' => ['nullable'],
-            'type' => ['sometimes', new Enum(BookType::class), 'string'],
-            'free' => ['sometimes', 'boolean'],
-            'search' => ['sometimes', 'string']
+            'title' => ['required', 'string', 'max:200'],
+            'body' => ['required', 'string', 'max:1000'],
+            'degree_scope' => ['required', 'array'],
+            'degree_scope.*' => new Enum(UserDegree::class),
+            'image' => []
         ];
     }
 

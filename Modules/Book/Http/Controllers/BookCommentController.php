@@ -6,8 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Book;
 use App\Models\Comment;
 use Illuminate\Http\Request;
-use Modules\Book\Http\Requests\BookCommentRequest;
-use Modules\Book\Http\Requests\BookCommentUpdateRequest;
+use Modules\Book\Http\Requests\StoreBookCommentRequest;
+use Modules\Book\Http\Requests\UpdateBookCommentRequest;
 use Modules\Book\Transformers\CommentResource;
 
 class BookCommentController extends Controller
@@ -27,7 +27,7 @@ class BookCommentController extends Controller
         return CommentResource::collection($comments);
     }
 
-    public function store(Book $book, BookCommentRequest $request)
+    public function store(Book $book, StoreBookCommentRequest $request)
     {
         $comment = $book->comments()->create($request->validated());
 
@@ -37,7 +37,7 @@ class BookCommentController extends Controller
         ]);
     }
 
-    public function update(Comment $comment, BookCommentUpdateRequest $request)
+    public function update(Comment $comment, UpdateBookCommentRequest $request)
     {
         $this->authorize('update', $comment);
 

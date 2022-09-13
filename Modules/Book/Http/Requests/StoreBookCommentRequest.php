@@ -4,7 +4,7 @@ namespace Modules\Book\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class BookCommentRequest extends FormRequest
+class StoreBookCommentRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.

@@ -6,8 +6,8 @@ use App\Models\Book;
 use App\Models\Bookmark;
 use App\Models\Rating;
 use Illuminate\Routing\Controller;
-use Modules\Book\Http\Requests\BookIndexRequest;
-use Modules\Book\Http\Requests\BookRatingRequest;
+use Modules\Book\Http\Requests\GetBooksRequest;
+use Modules\Book\Http\Requests\UpdateBookRatingRequest;
 use Modules\Book\Repositories\BookSectionsRepository;
 use Modules\Book\Repositories\Interfaces\BookRepositoryInterface;
 use Modules\Book\Transformers\BookResource;
@@ -21,7 +21,7 @@ class BookController extends Controller
         $this->repository = $repository;
     }
 
-    public function index(BookIndexRequest $request)
+    public function index(GetBooksRequest $request)
     {
         $books = $this->repository->getBooks($request->validated());
 
@@ -54,7 +54,7 @@ class BookController extends Controller
         ]);
     }
 
-    public function rate(Book $book, BookRatingRequest $request)
+    public function rate(Book $book, UpdateBookRatingRequest $request)
     {
         $user = request()->user();
 

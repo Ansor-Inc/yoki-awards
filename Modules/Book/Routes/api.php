@@ -19,8 +19,8 @@ use Modules\Book\Http\Controllers\PublisherController;
 */
 
 Route::get('/publishers', [PublisherController::class, 'index']);
-Route::get('/publishers/{id}', [PublisherController::class, 'show']);
-Route::get('/publishers/{id}/books', [PublisherController::class, 'publisherBooks']);
+Route::get('/publishers/{publisher}', [PublisherController::class, 'show']);
+Route::get('/publishers/{publisher}/books', [PublisherController::class, 'getPublisherBooks']);
 
 Route::get('/genres', [GenreController::class, 'index']);
 Route::get('/genres/{genre}/books', [GenreController::class, 'genreBooks']);
@@ -41,7 +41,7 @@ Route::prefix('books')->group(function () {
 
 });
 
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::put('/comments/{comment}', [BookCommentController::class, 'update']);
     Route::delete('/comments/{comment}', [BookCommentController::class, 'destroy']);
 });

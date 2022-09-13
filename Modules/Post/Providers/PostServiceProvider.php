@@ -3,7 +3,10 @@
 namespace Modules\Post\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Database\Eloquent\Factory;
+use Modules\Post\Repositories\GroupPostRepository;
+use Modules\Post\Repositories\Interfaces\GroupPostRepositoryInterface;
+use Modules\Post\Repositories\Interfaces\PostCommentRepositoryInterface;
+use Modules\Post\Repositories\PostCommentRepository;
 
 class PostServiceProvider extends ServiceProvider
 {
@@ -38,6 +41,8 @@ class PostServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->register(RouteServiceProvider::class);
+        $this->app->bind(GroupPostRepositoryInterface::class, GroupPostRepository::class);
+        $this->app->bind(PostCommentRepositoryInterface::class, PostCommentRepository::class);
     }
 
     /**

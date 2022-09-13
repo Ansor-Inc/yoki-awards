@@ -18,7 +18,7 @@ class GroupResource extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title,
-            'degree' => $this->degree,
+            'degree_scope' => $this->degree_scope,
             'member_limit' => $this->member_limit,
             'members_count' => $this->whenCounted('members'),
             'is_full' => $this->when(isset($this->member_limit) && isset($this->members_count), $this->members_count >= $this->member_limit),
