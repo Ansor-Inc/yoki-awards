@@ -19,10 +19,6 @@ class EnsurePhoneIsVerified
      */
     public function handle(Request $request, Closure $next)
     {
-        if ($request->user() && !$request->user()->hasVerifiedPhone()) {
-            return abort(403, 'Your phone number is not verified.');
-        }
-
         return $next($request);
     }
 }

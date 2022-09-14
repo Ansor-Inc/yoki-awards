@@ -16,7 +16,7 @@ class BookRepository implements BookRepositoryInterface
             ->with('author:id,firstname,lastname');
 
         if (auth()->check()) {
-            $query->with(['bookUserStatuses' => fn($query) => $query->where('user_id', auth()->id())]);
+            $query->with('currentUserStatus');
         }
 
         return isset($filters['per_page']) ? $query->paginate($filters['per_page']) : $query->limit(100)->get();

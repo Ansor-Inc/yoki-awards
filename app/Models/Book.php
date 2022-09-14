@@ -14,8 +14,6 @@ class Book extends Model implements HasMedia
     use HasMediaCollectionsTrait;
     use HasFilesTrait;
 
-    protected $fillable = [];
-
     protected static function booted()
     {
         parent::booted();
@@ -57,6 +55,11 @@ class Book extends Model implements HasMedia
     public function bookUserStatuses()
     {
         return $this->hasMany(BookUserStatus::class);
+    }
+
+    public function currentUserStatus()
+    {
+        return $this->hasOne(BookUserStatus::class)->where('user_id', auth()->id());
     }
 
     public function tags()
