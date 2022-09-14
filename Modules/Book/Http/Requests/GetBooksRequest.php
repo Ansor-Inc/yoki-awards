@@ -3,8 +3,10 @@
 namespace Modules\Book\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Enum;
+use Modules\Book\Enums\BookType;
 
-class BookRatingRequest extends FormRequest
+class GetBooksRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -14,7 +16,12 @@ class BookRatingRequest extends FormRequest
     public function rules()
     {
         return [
-            'value' => ['required','numeric','min:0','max:5']
+            'per_page' => ['sometimes', 'integer'],
+            'limit' => ['sometimes', 'integer'],
+            'trending' => ['nullable'],
+            'type' => ['sometimes', new Enum(BookType::class), 'string'],
+            'free' => ['sometimes', 'boolean'],
+            'search' => ['sometimes', 'string']
         ];
     }
 

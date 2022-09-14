@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\Authenticatable;
+use App\Models\Traits\HasGroupAdmins;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
@@ -10,12 +10,12 @@ use Modules\Book\Enums\BookStatus;
 
 class Group extends Model
 {
-    use HasFactory;
+    use HasFactory, HasGroupAdmins;
 
     protected $guarded = ['id', 'status'];
 
     protected $casts = [
-        'degree' => 'array'
+        'degree_scope' => 'array'
     ];
 
     protected static function booted()
@@ -37,21 +37,9 @@ class Group extends Model
         return $this->memberships()->approved()->where('user_id', $user->id)->exists();
     }
 
-    public function hasAdmin(User $user)
-    {
-        return $this->admins()->wherePivot('user_id', $user->id)->exists();
-    }
-
     public function memberships()
     {
         return $this->hasMany(Membership::class);
-    }
-
-    public function admins()
-    {
-        return $this->members()
-            ->select('users.id as user_id', 'users.fullname', 'users.avatar', 'group_admins.*')
-            ->join('group_admins', 'memberships.id', '=', 'group_admins.membership_id');
     }
 
     public function blackListMembers()
@@ -76,6 +64,11 @@ class Group extends Model
         return $this->belongsTo(User::class, 'owner_id');
     }
 
+    public function posts()
+    {
+        return $this->hasMany(Post::class);
+    }
+
     public function category()
     {
         return $this->belongsTo(GroupCategory::class, 'group_category_id');
@@ -92,6 +85,5 @@ class Group extends Model
     {
         $query->where('status', BookStatus::APPROVED);
     }
-
 
 }

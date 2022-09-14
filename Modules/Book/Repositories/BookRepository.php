@@ -12,22 +12,23 @@ class BookRepository implements BookRepositoryInterface
         $query = Book::query()
             ->filter($filters)
             ->onlyListingFields()
+            ->withAvg('bookUserStatuses as rating', 'rating')
             ->with('author:id,firstname,lastname');
 
-        if (isset($filters['per_page'])) {
-            return $query->paginate($filters['per_page']);
+        if (auth()->check()) {
+            $query->with(['bookUserStatuses' => fn($query) => $query->where('user_id', auth()->id())]);
         }
 
-        return $query->get();
+        return isset($filters['per_page']) ? $query->paginate($filters['per_page']) : $query->limit(100)->get();
     }
 
     public function getBookById(int $id)
     {
         return Book::query()
-            ->onlyNecessaryFields()
+            ->select(['id', 'title', 'description', 'language', 'page_count', 'publication_date', 'price', 'compare_price', 'is_free', 'book_type', 'publisher_id', 'genre_id', 'author_id'])
+            ->withAvg('bookUserStatuses as rating', 'rating')
             ->with(['author:id,firstname,lastname,about,copyright', 'publisher:id,title', 'genre:id,title', 'tags:name'])
-            ->findOrFail($id)
-            ->setAppends(['book_variants']);
+            ->findOrFail($id);
     }
 
     public function getSimilarBooks(int $id)

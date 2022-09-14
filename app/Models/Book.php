@@ -19,7 +19,6 @@ class Book extends Model implements HasMedia
     protected static function booted()
     {
         parent::booted();
-
         static::addGlobalScope('available', function ($query) {
             $query->where('status', BookStatus::APPROVED->value);
         });
@@ -33,11 +32,6 @@ class Book extends Model implements HasMedia
     public function scopeOnlyListingFields($query)
     {
         $query->select(['id', 'title', 'author_id', 'is_free', 'book_type', 'price']);
-    }
-
-    public function scopeOnlyNecessaryFields($query)
-    {
-        $query->select(['id', 'title', 'description', 'language', 'page_count', 'publication_date', 'price', 'compare_price', 'is_free', 'book_type', 'publisher_id', 'genre_id', 'author_id']);
     }
 
     public function author()
@@ -70,11 +64,6 @@ class Book extends Model implements HasMedia
         return $this->morphToMany(Tag::class, 'taggable');
     }
 
-    public function getRatingAttribute()
-    {
-        return BookUserStatus::query()->avg('rating');
-    }
-
     public function getImageAttribute()
     {
         return $this->getImageFromCollection('image');
@@ -101,16 +90,8 @@ class Book extends Model implements HasMedia
 
     public function statusOf(User $user = null)
     {
-        if ($user) {
-            return BookUserStatus::query()
-                ->where(['book_id' => $this->id, 'user_id' => $user->id])
-                ->select('rating', 'bookmarked')
-                ->first();
-        }
-
-        return null;
-
+        return BookUserStatus::query()
+            ->select('rating', 'bookmarked')
+            ->firstWhere(['book_id' => $this->id, 'user_id' => $user->id]);
     }
-
-
 }

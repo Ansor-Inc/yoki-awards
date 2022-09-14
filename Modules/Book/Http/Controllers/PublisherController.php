@@ -2,9 +2,9 @@
 
 namespace Modules\Book\Http\Controllers;
 
+use App\Models\Publisher;
 use Illuminate\Routing\Controller;
-use Modules\Book\Http\Requests\PublisherBooksRequest;
-use Modules\Book\Repositories\Interfaces\BookRepositoryInterface;
+use Modules\Book\Http\Requests\GetPublisherBooksRequest;
 use Modules\Book\Repositories\Interfaces\PublisherRepositoryInterface;
 use Modules\Book\Transformers\BookResource;
 use Modules\Book\Transformers\PublisherResource;
@@ -12,11 +12,9 @@ use Modules\Book\Transformers\PublisherResource;
 class PublisherController extends Controller
 {
     protected PublisherRepositoryInterface $repository;
-    protected BookRepositoryInterface $bookRepository;
 
-    public function __construct(PublisherRepositoryInterface $repository, BookRepositoryInterface $bookRepository)
+    public function __construct(PublisherRepositoryInterface $repository)
     {
-        $this->bookRepository = $bookRepository;
         $this->repository = $repository;
     }
 
@@ -27,23 +25,14 @@ class PublisherController extends Controller
         return PublisherResource::collection($publishers);
     }
 
-    public function show(int $id)
+    public function show(Publisher $publisher)
     {
-        $publisher = $this->repository->getPublisherById($id);
-
         return PublisherResource::make($publisher);
     }
 
-    public function publisherBooks(int $id, PublisherBooksRequest $request)
+    public function getPublisherBooks(Publisher $publisher, GetPublisherBooksRequest $request)
     {
-        $publisher = $this->repository->getPublisherById($id);
-
-        $filters = array_merge(
-            $request->validated(),
-            ['publisher' => $publisher->id],
-        );
-
-        $books = $this->bookRepository->getBooks($filters);
+        $books = $this->repository->getPublisherBooks($publisher, $request->input('per_page'));
 
         return BookResource::collection($books);
     }

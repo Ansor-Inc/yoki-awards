@@ -76,6 +76,4 @@ class MembershipController extends Controller
 
         return response(['message' => 'The user has been removed from group!']);
     }
-
-
 }

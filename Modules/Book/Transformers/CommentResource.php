@@ -20,7 +20,9 @@ class CommentResource extends JsonResource
             'body' => $this->body,
             'replies' => self::collection($this->whenLoaded('replies')),
             'user' => UserResource::make($this->whenLoaded('user')),
-            'created_at' => $this->created_at?->toDateString()
+            'created_date' => $this->created_at?->toDateString(),
+            'created_at' => $this->created_at?->toDateTimeString(),
+            'created_at_human_readable' => $this->created_at?->diffForHumans()
         ];
     }
 }

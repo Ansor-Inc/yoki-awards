@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Book\Http\Requests;
+namespace Modules\Post\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class BookCommentUpdateRequest extends FormRequest
+class GetPostCommentsRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -14,7 +14,7 @@ class BookCommentUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'body' => 'required|string',
+            //
         ];
     }
 
@@ -25,6 +25,6 @@ class BookCommentUpdateRequest extends FormRequest
      */
     public function authorize()
     {
-        return auth('sanctum')->check();
+        return true;
     }
 }

@@ -62,5 +62,4 @@ trait AuthorizesMembershipActions
             ? Response::allow()
             : Response::deny('You are not the owner of this group!');
     }
-    
 }
