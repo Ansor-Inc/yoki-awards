@@ -19,7 +19,7 @@ class GenreController extends Controller
 
     public function genreBooks(Genre $genre, Request $request)
     {
-        $query = $genre->books()->onlyListingFields();
+        $query = $genre->books()->onlyListingFields()->with('author:firstname,lastname');
 
         if ($request->has('per_page')) {
             $books = $query->paginate($request->input('per_page'));
