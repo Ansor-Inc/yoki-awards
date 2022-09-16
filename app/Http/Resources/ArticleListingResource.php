@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Str;
 
-class ArticleResource extends JsonResource
+class ArticleListingResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,13 +15,12 @@ class ArticleResource extends JsonResource
      */
     public function toArray($request)
     {
-        return array(
+        return [
             'id' => $this->id,
             'title' => $this->title,
-            'body' => $this->body,
+            'excerpt' => Str::limit(strip_tags($this->body), 190),
             'views' => (int)$this->views,
-            'tags' => $this->tags->pluck('name'),
             'created_at' => $this->created_at?->toDateTimeString()
-        );
+        ];
     }
 }

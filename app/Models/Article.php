@@ -10,8 +10,6 @@ class Article extends Model
 {
     use HasFactory;
 
-    protected $with = ['tags'];
-
     protected static function booted()
     {
         static::addGlobalScope('published', function ($query) {
@@ -23,7 +21,7 @@ class Article extends Model
     {
         return $this->morphToMany(Tag::class, 'taggable');
     }
-
+    
     public function scopeFilter($query, array $filters)
     {
         (new BlogFilter($query))->apply($filters);

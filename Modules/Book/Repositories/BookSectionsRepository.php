@@ -5,17 +5,13 @@ namespace Modules\Book\Repositories;
 use App\Models\Book;
 use Modules\Book\Enums\BookType;
 use Modules\Book\Repositories\Interfaces\BookSectionsRepositoryInterface;
-use Modules\Book\Transformers\BookResource;
+use Modules\Book\Transformers\BookListingResource;
 
 class BookSectionsRepository implements BookSectionsRepositoryInterface
 {
-    protected $with = ['author:id,firstname,lastname'];
-
     public function getTrendingBooks()
     {
-        return Book::query()
-            ->with($this->with)
-            ->onlyListingFields()
+        return $this->getListingQuery()
             ->where('book_type', BookType::E_BOOK)
             ->whereRelation('tags', 'name', 'trending')
             ->limit(4)
@@ -24,9 +20,7 @@ class BookSectionsRepository implements BookSectionsRepositoryInterface
 
     public function getTrendingAudioBooks()
     {
-        return Book::query()
-            ->with($this->with)
-            ->onlyListingFields()
+        return $this->getListingQuery()
             ->where('book_type', BookType::AUDIO_BOOK)
             ->whereRelation('tags', 'name', 'trending')
             ->limit(4)
@@ -35,21 +29,20 @@ class BookSectionsRepository implements BookSectionsRepositoryInterface
 
     public function getSpecialBooks()
     {
-        return Book::query()
-            ->with($this->with)
-            ->onlyListingFields()
-            ->whereRelation('tags', 'name', 'special')
+        return $this->getListingQuery()
+            ->addSelect('publisher_id')
+            ->with('publisher:id,title')
+            ->inRandomOrder()
             ->limit(2)
             ->get();
     }
 
-
     public function getAcademicsBooks()
     {
-        return Book::query()
-            ->with($this->with)
-            ->onlyListingFields()
-            ->limit(4)
+        return $this->getListingQuery()
+            ->addSelect('price')
+            ->inRandomOrder()
+            ->limit(3)
             ->get();
     }
 
@@ -58,20 +51,28 @@ class BookSectionsRepository implements BookSectionsRepositoryInterface
         return [
             [
                 'title' => 'Trenddagi kitoblar',
-                'books' => BookResource::collection($this->getTrendingBooks())
+                'books' => BookListingResource::collection($this->getTrendingBooks())
             ],
             [
                 'title' => 'Siz uchun maxsus',
-                'books' => BookResource::collection($this->getSpecialBooks())
+                'books' => BookListingResource::collection($this->getSpecialBooks())
             ],
             [
                 'title' => 'Trenddagi audio kitoblar',
-                'books' => BookResource::collection($this->getTrendingAudioBooks())
+                'books' => BookListingResource::collection($this->getTrendingAudioBooks())
             ],
             [
                 'title' => 'Akademiklar tanlovi',
-                'books' => BookResource::collection($this->getAcademicsBooks())
+                'books' => BookListingResource::collection($this->getAcademicsBooks())
             ]
         ];
+    }
+
+    protected function getListingQuery()
+    {
+        return Book::query()
+            ->onlyListingFields()
+            ->withAvg('bookUserStatuses as rating', 'rating')
+            ->with('author:id,firstname,lastname');
     }
 }

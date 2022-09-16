@@ -2,13 +2,13 @@
 
 namespace App\Repositories\Interfaces;
 
+use App\Models\Article;
+
 interface BlogRepositoryInterface
 {
     public function getArticles(array $filters);
 
-    public function getArticleById(int $id);
-
-    public function getSimilarArticles(int $id);
+    public function getSimilarArticles(Article $article);
 
     public function getAllTags();
 }

@@ -29,7 +29,7 @@ class Book extends Model implements HasMedia
 
     public function scopeOnlyListingFields($query)
     {
-        $query->select(['id', 'title', 'author_id', 'is_free', 'book_type', 'price']);
+        $query->select(['id', 'title', 'author_id', 'is_free', 'book_type']);
     }
 
     public function author()
@@ -80,21 +80,5 @@ class Book extends Model implements HasMedia
     public function getBookFileAttribute()
     {
         return $this->getFileFromCollection('book_file');
-    }
-
-    public function getBookVariantsAttribute()
-    {
-        return Book::query()
-            ->select('id', 'book_type')
-            ->whereNot('id', $this->id)
-            ->where('title', 'LIKE', "%{$this->title}%")
-            ->get();
-    }
-
-    public function statusOf(User $user = null)
-    {
-        return BookUserStatus::query()
-            ->select('rating', 'bookmarked')
-            ->firstWhere(['book_id' => $this->id, 'user_id' => $user->id]);
     }
 }

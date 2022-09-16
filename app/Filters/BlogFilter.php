@@ -13,4 +13,10 @@ class BlogFilter extends AbstractFilter
     {
         $this->query->whereHas('tags', fn($query) => $query->where('name', $tag));
     }
+
+    public function limit($limit)
+    {
+        $this->query->limit($limit);
+    }
+
 }

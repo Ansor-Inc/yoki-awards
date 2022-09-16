@@ -4,7 +4,7 @@ namespace Modules\Book\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class GetPublisherBooksRequest extends FormRequest
+class GetSavedBooksRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -14,7 +14,7 @@ class GetPublisherBooksRequest extends FormRequest
     public function rules()
     {
         return [
-            'per_page' => ['sometimes', 'integer', 'min:1']
+            'per_page' => ['sometimes', 'integer', 'min:0']
         ];
     }
 

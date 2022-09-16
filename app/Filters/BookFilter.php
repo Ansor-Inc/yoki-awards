@@ -6,12 +6,7 @@ class BookFilter extends AbstractFilter
 {
     public function trending()
     {
-        //Todo: trending algorithm
-    }
-
-    public function limit($limit)
-    {
-        $this->query->limit($limit);
+        $this->query->whereRelation('tags', 'name', 'trending');
     }
 
     public function type($bookType)
@@ -23,20 +18,4 @@ class BookFilter extends AbstractFilter
     {
         $this->query->where('is_free', $isFree);
     }
-
-    public function publisher($publisherId)
-    {
-        $this->query->where('publisher_id', $publisherId);
-    }
-
-    public function genre($genreId)
-    {
-        $this->query->where('genreId', $genreId);
-    }
-
-    public function search($search)
-    {
-        $this->query->where('title', 'like', "%{$search}%");
-    }
-
 }

@@ -16,12 +16,10 @@ class GetBooksRequest extends FormRequest
     public function rules()
     {
         return [
-            'per_page' => ['sometimes', 'integer'],
-            'limit' => ['sometimes', 'integer'],
+            'per_page' => ['sometimes', 'integer', 'min:0'],
             'trending' => ['nullable'],
             'type' => ['sometimes', new Enum(BookType::class), 'string'],
-            'free' => ['sometimes', 'boolean'],
-            'search' => ['sometimes', 'string']
+            'free' => ['sometimes', 'boolean']
         ];
     }
 

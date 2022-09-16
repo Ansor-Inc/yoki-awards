@@ -9,33 +9,18 @@ use Illuminate\Support\Facades\DB;
 
 class BlogRepository implements BlogRepositoryInterface
 {
-
     public function getArticles(array $filters)
     {
-        $query = Article::query()->filter($filters);
+        $query = Article::query()->withoutEagerLoads()->filter($filters);
 
-        if (isset($filters['limit'])) {
-            $data = $query->paginate($filters['limit']);
-        } else {
-            $data = $query->get();
-        }
-
-        return $data;
+        return isset($filters['per_page']) ? $query->paginate($filters['per_page']) : $query->get();
     }
 
-    public function getArticleById(int $id)
+    public function getSimilarArticles($article)
     {
-        return Article::query()->find($id);
-    }
-
-    public function getSimilarArticles(int $id)
-    {
-        $article = $this->getArticleById($id);
-        $tags = $article->tags->pluck('name')->toArray();
-
         return Article::query()
             ->whereNot('id', $article->id)
-            ->whereHas('tags', fn($query) => $query->whereIn('name', $tags))
+            ->whereHas('tags', fn($query) => $query->whereIn('name', $article->tags->pluck('name')))
             ->limit(4)
             ->get();
     }

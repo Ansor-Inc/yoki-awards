@@ -5,8 +5,9 @@ namespace Modules\Book\Http\Controllers;
 use App\Models\Publisher;
 use Illuminate\Routing\Controller;
 use Modules\Book\Http\Requests\GetPublisherBooksRequest;
+use Modules\Book\Http\Requests\GetPublishersRequest;
 use Modules\Book\Repositories\Interfaces\PublisherRepositoryInterface;
-use Modules\Book\Transformers\BookResource;
+use Modules\Book\Transformers\BookListingResource;
 use Modules\Book\Transformers\PublisherResource;
 
 class PublisherController extends Controller
@@ -18,9 +19,9 @@ class PublisherController extends Controller
         $this->repository = $repository;
     }
 
-    public function index()
+    public function index(GetPublishersRequest $request)
     {
-        $publishers = $this->repository->getAllPublishers();
+        $publishers = $this->repository->getAllPublishers($request->input('per_page'));
 
         return PublisherResource::collection($publishers);
     }
@@ -34,6 +35,6 @@ class PublisherController extends Controller
     {
         $books = $this->repository->getPublisherBooks($publisher, $request->input('per_page'));
 
-        return BookResource::collection($books);
+        return BookListingResource::collection($books);
     }
 }

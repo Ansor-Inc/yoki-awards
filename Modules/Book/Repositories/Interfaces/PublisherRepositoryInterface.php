@@ -6,9 +6,7 @@ use App\Models\Publisher;
 
 interface PublisherRepositoryInterface
 {
-    public function getPublisherById(int $id);
-
-    public function getAllPublishers();
+    public function getAllPublishers($perPage = 0);
 
     public function getPublisherBooks(Publisher $publisher, $perPage = 0);
 }

@@ -3,31 +3,32 @@
 namespace Modules\Book\Http\Controllers;
 
 use App\Models\Genre;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Modules\Book\Transformers\BookResource;
+use Modules\Book\Http\Requests\GetGenreBooksRequest;
+use Modules\Book\Repositories\Interfaces\GenreRepositoryInterface;
+use Modules\Book\Transformers\BookListingResource;
 use Modules\Book\Transformers\GenreResource;
 
 class GenreController extends Controller
 {
+    protected GenreRepositoryInterface $genreRepository;
+
+    public function __construct(GenreRepositoryInterface $genreRepository)
+    {
+        $this->genreRepository = $genreRepository;
+    }
+
     public function index()
     {
-        $genres = Genre::query()->select('id', 'title')->get();
+        $genres = $this->genreRepository->getGenres();
 
         return GenreResource::collection($genres);
     }
 
-    public function genreBooks(Genre $genre, Request $request)
+    public function genreBooks(Genre $genre, GetGenreBooksRequest $request)
     {
-        $query = $genre->books()->onlyListingFields()->with('author:id,firstname,lastname');
+        $books = $this->genreRepository->getGenreBooks($genre, $request->input('per_page'));
 
-        if ($request->has('per_page')) {
-            $books = $query->paginate($request->input('per_page'));
-        } else {
-            $books = $query->limit(100)->get();
-        }
-
-        return BookResource::collection($books);
+        return BookListingResource::collection($books);
     }
-
 }

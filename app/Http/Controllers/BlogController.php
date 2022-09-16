@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\IndexBlog;
+use App\Http\Resources\ArticleListingResource;
 use App\Http\Resources\ArticleResource;
 use App\Models\Article;
 use App\Repositories\Interfaces\BlogRepositoryInterface;
@@ -20,24 +21,18 @@ class BlogController extends Controller
     {
         $data = $this->repository->getArticles($request->validated());
 
-        return ArticleResource::collection($data);
+        return ArticleListingResource::collection($data);
     }
 
-    public function show(int $id)
+    public function show(Article $article)
     {
-        $article = $this->repository->getArticleById($id);
-
-        if ($article === null) {
-            return [
-                'message' => "Not found!"
-            ];
-        }
-
-        $similarArticles = $this->repository->getSimilarArticles($id);
+        $article->load('tags:name');
+       
+        $similarArticles = $this->repository->getSimilarArticles($article);
 
         return [
             'article' => ArticleResource::make($article),
-            'similar_articles' => ArticleResource::collection($similarArticles)
+            'similar_articles' => ArticleListingResource::collection($similarArticles)
         ];
     }
 

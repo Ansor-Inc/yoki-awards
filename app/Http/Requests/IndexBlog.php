@@ -24,7 +24,8 @@ class IndexBlog extends FormRequest
     public function rules()
     {
         return [
-            'limit' => ['sometimes', 'integer'],
+            'per_page' => ['sometimes', 'integer', 'min:1'],
+            'limit' => ['sometimes', 'integer', 'min:1'],
             'popular' => ['sometimes', 'nullable'],
             'tag' => ['sometimes', 'string']
         ];

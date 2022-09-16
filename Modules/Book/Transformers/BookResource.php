@@ -36,9 +36,9 @@ class BookResource extends JsonResource
             'rating' => round($this->rating, 1),
             'page_count' => $this->page_count,
             'readers_count' => $this->readers_count,
-            'fragment' => $this->whenNotNull($this->description, $this->fragment),
+            'fragment' => $this->fragment,
             'book_file' => $this->when($this->is_free, $this->book_file),
-            'user_status' => BookUserStatusResource::make($this->currentUserStatus)
+            'user_status' => BookUserStatusResource::make($this->whenLoaded('currentUserStatus'))
         ];
     }
 }

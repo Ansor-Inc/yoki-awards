@@ -7,24 +7,17 @@ use Modules\Book\Repositories\Interfaces\PublisherRepositoryInterface;
 
 class PublisherRepository implements PublisherRepositoryInterface
 {
-    public function getPublisherById(int $id)
+    public function getAllPublishers($perPage = 0)
     {
-        return Publisher::query()->findOrFail($id);
-    }
+        $query = Publisher::query()->select('id', 'title');
 
-    public function getAllPublishers()
-    {
-        return Publisher::all();
+        return $perPage == 0 ? $query->get() : $query->paginate($perPage);
     }
 
     public function getPublisherBooks(Publisher $publisher, $perPage = 0)
     {
         $query = $publisher->books()->with('author:id,firstname,lastname')->onlyListingFields();
 
-        if ($perPage != 0) {
-            return $query->paginate($perPage);
-        }
-
-        return $query->get();
+        return $perPage == 0 ? $query->limit(100)->get() : $query->paginate($perPage);
     }
 }
