@@ -38,7 +38,7 @@ class BookResource extends JsonResource
             'readers_count' => $this->readers_count,
             'fragment' => $this->fragment,
             'book_file' => $this->when($this->is_free, $this->book_file),
-            'user_status' => BookUserStatusResource::make($this->whenLoaded('currentUserStatus'))
+            'user_status' => auth()->check() ? BookUserStatusResource::make($this->whenLoaded('currentUserStatus')) : null
         ];
     }
 }
