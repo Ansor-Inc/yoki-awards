@@ -27,18 +27,21 @@ Route::get('/genres/{genre}/books', [GenreController::class, 'genreBooks']);
 
 Route::prefix('books')->group(function () {
     Route::get('/', [BookController::class, 'index']);
-    Route::get('/sections', [BookController::class, 'sections']);
+    Route::get('/search', [BookController::class, 'search']);
+    Route::get('/sections', [BookController::class, 'getBooksBySections']);
 
     Route::middleware(['auth:sanctum', 'verified'])->group(function () {
-        Route::get('/saved', [BookController::class, 'savedBooks']);
+        Route::get('/saved', [BookController::class, 'getSavedBooks']);
         Route::put('/{book}/bookmark', [BookController::class, 'bookmark']);
         Route::put('/{book}/rate', [BookController::class, 'rate']);
         Route::post('/{book}/comments', [BookCommentController::class, 'store']);
     });
 
-    Route::get('/{book}', [BookController::class, 'show']);
-    Route::get('/{book}/comments', [BookCommentController::class, 'index']);
 
+    Route::get('/{book}', [BookController::class, 'show']);
+    Route::get('/{book}/variants', [BookController::class, 'getBookWithVariants']);
+    Route::get('/{book}/similar', [BookController::class, 'getSimilarBooks']);
+    Route::get('/{book}/comments', [BookCommentController::class, 'index']);
 });
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
