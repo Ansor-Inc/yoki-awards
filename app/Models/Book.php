@@ -59,7 +59,10 @@ class Book extends Model implements HasMedia
 
     public function currentUserStatus()
     {
-        return $this->hasOne(BookUserStatus::class)->where('user_id', auth()->id());
+        return $this->hasOne(BookUserStatus::class)->where('user_id', auth()->id())->withDefault([
+            'bookmarked' => false,
+            'rating' => null
+        ]);
     }
 
     public function tags()

@@ -21,7 +21,6 @@ class PublisherRepository implements PublisherRepositoryInterface
             ->with('author:id,firstname,lastname')
             ->withAvg('bookUserStatuses as rating', 'rating');
 
-
         return $perPage == 0 ? $query->limit(100)->get() : $query->paginate($perPage);
     }
 }
