@@ -17,9 +17,10 @@ class PublisherRepository implements PublisherRepositoryInterface
     public function getPublisherBooks(Publisher $publisher, $perPage = 0)
     {
         $query = $publisher->books()
+            ->onlyListingFields()
             ->with('author:id,firstname,lastname')
-            ->withAvg('bookUserStatuses as rating', 'rating')
-            ->onlyListingFields();
+            ->withAvg('bookUserStatuses as rating', 'rating');
+
 
         return $perPage == 0 ? $query->limit(100)->get() : $query->paginate($perPage);
     }
