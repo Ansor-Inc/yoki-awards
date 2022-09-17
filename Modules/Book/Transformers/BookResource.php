@@ -34,6 +34,7 @@ class BookResource extends JsonResource
             'tags' => $this->whenLoaded('tags', fn() => $this->tags->pluck('name')),
 
             'rating' => round($this->rating, 1),
+            'vote_count' => $this->vote_count,
             'page_count' => $this->page_count,
             'readers_count' => $this->readers_count,
             'fragment' => $this->fragment,

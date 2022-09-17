@@ -14,15 +14,10 @@ class BookCommentController extends Controller
 {
     public function index(Book $book, Request $request)
     {
-        $query = $book->comments()
-            ->latest()
-            ->whereNull('reply_id');
-
-        if ($request->has('per_page')) {
-            $comments = $query->paginate($request->input('per_page'));
-        } else {
-            $comments = $query->get();
-        }
+        $query = $book->comments()->latest()->whereNull('reply_id');
+        $comments = $request->has('per_page')
+            ? $query->paginate($request->input('per_page'))
+            : $query->get();
 
         return CommentResource::collection($comments);
     }
@@ -40,7 +35,6 @@ class BookCommentController extends Controller
     public function update(Comment $comment, UpdateBookCommentRequest $request)
     {
         $this->authorize('update', $comment);
-
         $comment->update($request->validated());
 
         return response()->json([

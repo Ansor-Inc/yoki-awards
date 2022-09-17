@@ -32,9 +32,9 @@ Route::prefix('books')->group(function () {
 
     Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::get('/saved', [BookController::class, 'getSavedBooks']);
-        Route::put('/{book}/bookmark', [BookController::class, 'bookmark']);
-        Route::put('/{book}/rate', [BookController::class, 'rate']);
-        Route::post('/{book}/comments', [BookCommentController::class, 'store']);
+        Route::put('/{book}/bookmark', [BookController::class, 'bookmark'])->middleware('throttle:3,1');
+        Route::put('/{book}/rate', [BookController::class, 'rate'])->middleware('throttle:3,1');
+        Route::post('/{book}/comments', [BookCommentController::class, 'store'])->middleware('throttle:3,1');
     });
 
 
@@ -45,7 +45,7 @@ Route::prefix('books')->group(function () {
 });
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
-    Route::put('/comments/{comment}', [BookCommentController::class, 'update']);
+    Route::put('/comments/{comment}', [BookCommentController::class, 'update'])->middleware('throttle:3,1');
     Route::delete('/comments/{comment}', [BookCommentController::class, 'destroy']);
 });
 

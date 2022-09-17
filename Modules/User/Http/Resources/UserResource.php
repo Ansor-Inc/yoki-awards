@@ -23,7 +23,7 @@ class UserResource extends JsonResource
             'birthdate' => $this->birthdate,
             'email' => $this->email,
             'region' => $this->region,
-            'registered_at' => $this->created_at->format('d.m.Y')
+            'registered_at' => $this->created_at?->format('d.m.Y')
         ];
     }
 }
