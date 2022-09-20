@@ -13,6 +13,11 @@ class Membership extends Model
         $query->where('approved', true);
     }
 
+    public function scopeUnApproved($query)
+    {
+        $query->where('approved', false);
+    }
+
     public function isRejected()
     {
         return !is_null($this->rejected_at);

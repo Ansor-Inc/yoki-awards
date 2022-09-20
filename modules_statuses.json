@@ -2,5 +2,6 @@
     "User": true,
     "Book": true,
     "Group": true,
-    "Post": true
+    "Post": true,
+    "Academic": true
 }

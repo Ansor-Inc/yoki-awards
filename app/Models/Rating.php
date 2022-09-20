@@ -17,10 +17,7 @@ class Rating extends Model
     public static function rate(User|Authenticatable $user, Book $book, int $rating)
     {
         $status = self::query()->firstOrCreate(['user_id' => $user->id, 'book_id' => $book->id]);
-
-        $status->update([
-            'rating' => $rating
-        ]);
+        $status->update(['rating' => $rating]);
 
         return $status;
     }

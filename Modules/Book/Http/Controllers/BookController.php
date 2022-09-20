@@ -2,11 +2,11 @@
 
 namespace Modules\Book\Http\Controllers;
 
+use App\Http\Controllers\Controller;
 use App\Models\Book;
 use App\Models\Bookmark;
 use App\Models\Rating;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
 use Modules\Book\Http\Requests\GetBooksRequest;
 use Modules\Book\Http\Requests\GetSavedBooksRequest;
 use Modules\Book\Http\Requests\GetSimilarBooksRequest;
@@ -64,26 +64,35 @@ class BookController extends Controller
         return BookResource::make($this->repository->getBookById($id));
     }
 
-    public function getBookWithVariants($id)
+    public function getBookWithVariants(int $bookId)
     {
-        $books = $this->repository->getBookWithVariants((int)$id);
+        $this->repository->checkBookExistence($bookId);
+        $books = $this->repository->getBookWithVariants($bookId);
 
         return BookResource::collection($books);
     }
 
-    public function bookmark(Book $book)
+    public function bookmark(int $bookId)
     {
-        $user = auth()->user();
-        $status = Bookmark::toggle($user, $book);
+        $this->repository->checkBookExistence($bookId);
+        $status = $this->repository->toggleBookmark($bookId, auth()->id());
 
         return response()->json(['bookmarked' => $status->bookmarked]);
     }
 
-    public function rate(Book $book, UpdateBookRatingRequest $request)
+    public function rate(int $bookId, UpdateBookRatingRequest $request)
     {
-        $user = auth()->user();
-        $status = Rating::rate($user, $book, $request->input('value'));
+        $this->repository->checkBookExistence($bookId);
+        $status = $this->repository->rateTheBook($bookId, auth()->id(), $request->input('value'));
 
         return response()->json(['rating' => $status->rating]);
+    }
+
+    public function markBookAsCompleted(int $bookId)
+    {
+        $this->repository->checkBookExistence($bookId);
+        $marked = $this->repository->markAsCompleted($bookId, auth()->id());
+        
+        return isset($marked) ? response(['message' => 'Marked as completed!']) : $this->failed();
     }
 }

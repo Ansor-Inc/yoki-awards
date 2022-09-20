@@ -58,8 +58,6 @@ trait AuthorizesMembershipActions
 
     protected function isOwner(User $user, Group $group)
     {
-        return ((int)$user->id === (int)$group->owner_id)
-            ? Response::allow()
-            : Response::deny('You are not the owner of this group!');
+        return ((int)$user->id === (int)$group->owner_id);
     }
 }

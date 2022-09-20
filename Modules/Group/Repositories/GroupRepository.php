@@ -4,7 +4,9 @@ namespace Modules\Group\Repositories;
 
 use App\Models\Group;
 use App\Models\GroupCategory;
+use App\Models\Membership;
 use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Support\Facades\DB;
 use Modules\Group\Repositories\Interfaces\GroupRepositoryInterface;
 
 class GroupRepository implements GroupRepositoryInterface
@@ -13,14 +15,14 @@ class GroupRepository implements GroupRepositoryInterface
 
     public function __construct()
     {
-        $this->owner = auth('sanctum')->user();
+        $this->owner = auth()->user();
     }
 
     public function getGroupsExceptMine(array $filters = [])
     {
         $query = Group::query()
             ->select('id', 'title', 'group_category_id', 'member_limit')
-            ->with(['category:id,title', 'members' => fn($query) => $query->limit(3)])
+            ->with(['category:id,title', 'members' => fn($query) => $query->select('users.id', 'users.avatar')->limit(3), 'currentUserMembershipStatus'])
             ->withCount('members')
             ->filter($filters)
             ->whereNot('owner_id', $this->owner->id);

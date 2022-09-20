@@ -18,6 +18,7 @@ class MemberResource extends JsonResource
             'id' => $this->id,
             'avatar' => $this->avatar,
             'fullname' => $this->fullname,
+            'degree' => $this->degree,
             'approved' => $this->whenPivotLoaded('memberships', fn() => (bool)$this->pivot->approved)
         ];
     }

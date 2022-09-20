@@ -34,6 +34,7 @@ Route::prefix('books')->group(function () {
         Route::get('/saved', [BookController::class, 'getSavedBooks']);
         Route::put('/{book}/bookmark', [BookController::class, 'bookmark'])->middleware('throttle:3,1');
         Route::put('/{book}/rate', [BookController::class, 'rate'])->middleware('throttle:3,1');
+        Route::post('/{book}/complete', [BookController::class, 'markBookAsCompleted'])->middleware('throttle:2,1');
         Route::post('/{book}/comments', [BookCommentController::class, 'store'])->middleware('throttle:3,1');
     });
 

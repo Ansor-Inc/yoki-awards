@@ -3,10 +3,12 @@
 namespace App\Models;
 
 use App\Models\Traits\HasGroupAdmins;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Modules\Book\Enums\BookStatus;
+use Modules\Group\Enums\GroupUserStatus;
 
 class Group extends Model
 {
@@ -20,7 +22,6 @@ class Group extends Model
 
     protected static function booted()
     {
-        parent::booted();
         static::addGlobalScope('approved', fn($query) => $query->where('status', BookStatus::APPROVED));
         static::created(function ($group) {
             $group->update(['invite_link' => Str::random()]);
@@ -32,7 +33,12 @@ class Group extends Model
         return $this->belongsToMany(User::class, 'memberships')->wherePivot('approved', true);
     }
 
-    public function hasMember(User $user)
+    public function currentUserMembershipStatus()
+    {
+        return $this->hasOne(Membership::class)->where('user_id', auth()->id());
+    }
+
+    public function hasMember(User|Authenticatable $user)
     {
         return $this->memberships()->approved()->where('user_id', $user->id)->exists();
     }
@@ -81,9 +87,14 @@ class Group extends Model
         });
     }
 
-    public function scopeApproved($query)
+    public function getCurrentUserJoinStatusAttribute()
     {
-        $query->where('status', BookStatus::APPROVED);
-    }
+        $status = $this->currentUserMembershipStatus;
 
+        if (is_null($status)) return GroupUserStatus::NOT_JOINED->value;
+        if (!is_null($status->rejected_at)) return GroupUserStatus::REJECTED->value;
+        if (!$status->approved) return GroupUserStatus::REQUESTED_TO_JOIN->value;
+
+        return GroupUserStatus::JOINED->value;
+    }
 }

@@ -62,7 +62,7 @@ class User extends Authenticatable implements CanResetPasswordContract
 
     public function isWaitingForJoinApproval(Group $group)
     {
-        return $this->memberships()->where('approved', false)->exists();
+        return $this->memberships()->where('memberships.group_id', $group->id)->where('approved', false)->exists();
     }
 
     public function hasVerifiedPhone()
@@ -78,6 +78,11 @@ class User extends Authenticatable implements CanResetPasswordContract
     public function getPhoneForPasswordReset()
     {
         return $this->phone;
+    }
+
+    public function readBooks()
+    {
+        return $this->belongsToMany(Book::class, 'book_reads');
     }
 }
 

@@ -10,6 +10,7 @@ use Modules\Group\Http\Requests\CreateGroupRequest;
 use Modules\Group\Http\Requests\UpdateGroupRequest;
 use Modules\Group\Repositories\Interfaces\GroupRepositoryInterface;
 use Modules\Group\Transformers\GroupCategoryResource;
+use Modules\Group\Transformers\GroupListingResource;
 use Modules\Group\Transformers\GroupResource;
 
 class GroupController extends Controller
@@ -25,14 +26,14 @@ class GroupController extends Controller
     {
         $groups = $this->groupRepository->getGroupsExceptMine($request->validated());
 
-        return GroupResource::collection($groups);
+        return GroupListingResource::collection($groups);
     }
 
     public function getMyGroups(GetGroupsRequest $request)
     {
         $groups = $this->groupRepository->getMyGroups($request->validated());
 
-        return GroupResource::collection($groups);
+        return GroupListingResource::collection($groups);
     }
 
     public function getByInviteLink($inviteLink)

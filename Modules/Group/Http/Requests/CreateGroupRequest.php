@@ -43,6 +43,7 @@ class CreateGroupRequest extends FormRequest
         if ($this->user()->groups()->count() >= 100) {
             return false;
         }
+
         return true;
     }
 }

@@ -16,7 +16,6 @@ class Book extends Model implements HasMedia
 
     protected static function booted()
     {
-        parent::booted();
         static::addGlobalScope('available', function ($query) {
             $query->where('status', BookStatus::APPROVED->value);
         });

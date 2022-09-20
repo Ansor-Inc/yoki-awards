@@ -3,6 +3,10 @@
 namespace Modules\Book\Repositories;
 
 use App\Models\Book;
+use App\Models\Bookmark;
+use App\Models\BookRead;
+use App\Models\Rating;
+use Intervention\Image\Exception\NotFoundException;
 use Modules\Book\Repositories\Interfaces\BookRepositoryInterface;
 
 class BookRepository implements BookRepositoryInterface
@@ -69,5 +73,34 @@ class BookRepository implements BookRepositoryInterface
             ->onlyListingFields()
             ->withAvg('bookUserStatuses as rating', 'rating')
             ->with('author:id,firstname,lastname');
+    }
+
+    public function markAsCompleted(int $bookId, int $userId)
+    {
+        return BookRead::query()->firstOrCreate([
+            'book_id' => $bookId,
+            'user_id' => $userId
+        ]);
+    }
+
+    public function checkBookExistence(int $id)
+    {
+        if (!Book::query()->where('id', $id)->exists()) {
+            throw new NotFoundException('Book with this id does not exists!');
+        }
+    }
+
+    public function rateTheBook(int $bookId, int $userId, int $value)
+    {
+        $rating = Rating::query()->firstOrCreate(['user_id' => $userId, 'book_id' => $bookId]);
+        $rating->update(['rating' => $value]);
+        return $rating;
+    }
+
+    public function toggleBookmark(int $bookId, int $userId)
+    {
+        $bookmark = Bookmark::query()->firstOrCreate(['user_id' => $userId, 'book_id' => $bookId]);
+        $bookmark->update(['bookmarked' => !$bookmark->bookmarked]);
+        return $bookmark;
     }
 }

@@ -15,8 +15,8 @@ class GetGroupsRequest extends FormRequest
     public function rules()
     {
         return [
-            'per_page' => ['sometimes', 'numeric'],
-            'category_id' => ['sometimes', 'numeric', Rule::exists('group_categories', 'id')]
+            'per_page' => ['sometimes', 'integer', 'min:1'],
+            'category_id' => ['sometimes', 'integer', Rule::exists('group_categories', 'id')]
         ];
     }
 

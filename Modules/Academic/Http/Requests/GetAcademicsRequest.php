@@ -1,10 +1,12 @@
 <?php
 
-namespace Modules\Book\Http\Requests;
+namespace Modules\Academic\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Enum;
+use Modules\User\Enums\UserDegree;
 
-class UpdateBookRatingRequest extends FormRequest
+class GetAcademicsRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -14,7 +16,8 @@ class UpdateBookRatingRequest extends FormRequest
     public function rules()
     {
         return [
-            'value' => ['required', 'numeric', 'min:0', 'max:5']
+            'degree' => ['required', new Enum(UserDegree::class)],
+            'per_page' => ['sometimes', 'integer', 'min:1']
         ];
     }
 

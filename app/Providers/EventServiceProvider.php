@@ -21,6 +21,9 @@ class EventServiceProvider extends ServiceProvider
         \SocialiteProviders\Manager\SocialiteWasCalled::class => [
             \SocialiteProviders\Facebook\FacebookExtendSocialite::class . '@handle',
         ],
+        BookMarkedAsCompleted::class => [
+            \App\Listeners\UpdateUserDegree::class
+        ]
     ];
 
     /**

@@ -20,13 +20,12 @@ class GroupResource extends JsonResource
             'title' => $this->title,
             'degree_scope' => $this->degree_scope,
             'member_limit' => $this->member_limit,
-            'members_count' => $this->whenCounted('members'),
-            'is_full' => $this->when(isset($this->member_limit) && isset($this->members_count), $this->members_count >= $this->member_limit),
+
             'is_private' => is_null($this->is_private) ? null : (bool)$this->is_private,
             'status' => $this->status,
 //            'is_owner' => $this->whenNotNull($this->owner_id, $this->owner_id === request()->user()->id),
-            'group_category' => $this->whenLoaded('category'),
-            'members' => UserResource::collection($this->whenLoaded('members')),
+            //'group_category' => $this->whenLoaded('category'),
+            //'members' => UserResource::collection($this->whenLoaded('members')),
             'invite_link' => isset($this->invite_link) ? url($this->invite_link) : null
         ];
     }
