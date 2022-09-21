@@ -14,10 +14,14 @@ class BookCommentController extends Controller
 {
     public function index(Book $book, Request $request)
     {
-        $query = $book->comments()->latest()->whereNull('reply_id');
+        $query = $book->comments()
+            ->with('descendants')
+            ->latest();
+
         $comments = $request->has('per_page')
             ? $query->paginate($request->input('per_page'))
             : $query->get();
+
 
         return CommentResource::collection($comments);
     }

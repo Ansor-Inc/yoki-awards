@@ -49,7 +49,10 @@ class GroupRepository implements GroupRepositoryInterface
 
     public function getGroupById(int $id)
     {
-        return Group::query()->findOrFail($id);
+        return Group::query()
+            ->withCount('posts')
+            ->with('currentUserPermissionStatus')
+            ->findOrFail($id);
     }
 
     public function createGroup(array $payload)

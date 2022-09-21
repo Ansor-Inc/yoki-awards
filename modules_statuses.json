@@ -3,5 +3,6 @@
     "Book": true,
     "Group": true,
     "Post": true,
-    "Academic": true
+    "Academic": true,
+    "Purchase": true
 }

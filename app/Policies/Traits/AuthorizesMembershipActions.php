@@ -9,7 +9,12 @@ use Illuminate\Auth\Access\Response;
 
 trait AuthorizesMembershipActions
 {
-    public function getMembers(User $user, Group $group)
+    public function getApprovedMembers(User $user, Group $group)
+    {
+        return $this->isOwner($user, $group) || $group->hasMember($user);
+    }
+
+    public function getPendingMembers(User $user, Group $group)
     {
         return $this->isOwner($user, $group);
     }
@@ -19,6 +24,8 @@ trait AuthorizesMembershipActions
         if (!$this->isOwner($user, $group)) return Response::deny('You are not the owner of this group!');
 
         if ($group->is_full) return Response::deny('This group is full!');
+
+        if (!in_array($potentialMember->degree, $group->degree_scope)) return Response::deny('Do not have enough degree!');
 
         return $this->validateMembership($group, $potentialMember);
     }

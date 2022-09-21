@@ -6,6 +6,7 @@ use App\Models\Group;
 use App\Models\Membership;
 use App\Models\User;
 use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Support\Facades\DB;
 use Modules\Group\Repositories\Interfaces\MembershipRepositoryInterface;
 
 class MembershipRepository implements MembershipRepositoryInterface
@@ -27,17 +28,18 @@ class MembershipRepository implements MembershipRepositoryInterface
     public function getApprovedMembersOfGroup(Group $group)
     {
         return $group->members()
-            ->select('users.id', 'users.fullname', 'users.avatar')
+            ->select('users.id', 'users.fullname', 'users.avatar', 'users.degree')
+            ->selectRaw('IF(ISNULL(group_admins.id), FALSE, TRUE)  as is_admin')
             ->withPivot('approved')
             ->wherePivot('approved', true)
-            ->join('group_admins', 'group_admins.membership_id', '=', 'memberships.id')
+            ->leftJoin('group_admins', 'group_admins.membership_id', '=', 'memberships.id')
             ->get();
     }
 
     public function getPotentialMembersOfGroup(Group $group)
     {
         return $group->members()
-            ->select('users.id', 'users.fullname', 'users.avatar')
+            ->select('users.id', 'users.fullname', 'users.avatar', 'users.degree')
             ->withPivot('approved')
             ->wherePivot('approved', false)
             ->get();

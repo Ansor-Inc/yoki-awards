@@ -19,7 +19,7 @@ class MembershipController extends Controller
 
     public function groupApprovedMembers(Group $group)
     {
-        $this->authorize('getMembers', $group);
+        $this->authorize('getApprovedMembers', $group);
 
         $members = $this->membershipRepository->getApprovedMembersOfGroup($group);
 
@@ -28,7 +28,7 @@ class MembershipController extends Controller
 
     public function groupPendingMembers(Group $group)
     {
-        $this->authorize('getMembers', $group);
+        $this->authorize('getPendingMembers', $group);
 
         $members = $this->membershipRepository->getPotentialMembersOfGroup($group);
 

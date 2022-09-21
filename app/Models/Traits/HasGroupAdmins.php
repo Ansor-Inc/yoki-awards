@@ -2,7 +2,9 @@
 
 namespace App\Models\Traits;
 
+use App\Models\Membership;
 use App\Models\User;
+use Illuminate\Support\Arr;
 
 trait HasGroupAdmins
 {
@@ -17,5 +19,5 @@ trait HasGroupAdmins
     {
         return $this->admins()->wherePivot('user_id', $user->id)->exists();
     }
-    
+
 }

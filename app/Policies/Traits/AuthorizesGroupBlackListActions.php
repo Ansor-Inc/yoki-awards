@@ -11,7 +11,7 @@ trait AuthorizesGroupBlackListActions
 {
     public function getBlackList(User $user, Group $group)
     {
-        return $this->isOwner($user, $group);
+        return $this->isOwner($user, $group) || $group->currentUserPermissions['can_add_to_blacklist'];
     }
 
     public function addToBlackList(User $user, Group $group, User $member)
@@ -33,10 +33,9 @@ trait AuthorizesGroupBlackListActions
 
     protected function authorizeBlackListActions(User $user, Group $group, User $member)
     {
-        if (!$this->isOwner($user, $group)) return Response::deny('You are not the owner of this group!');
         if (!$group->hasMember($member)) return Response::deny('The given user is not member of the group!');
         if ($user->id === $member->id) return false;
 
-        return true;
+        return ($this->isOwner($user, $group) || $group->currentUserPermissions['can_add_to_blacklist']);
     }
 }

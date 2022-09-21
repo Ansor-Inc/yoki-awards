@@ -26,7 +26,7 @@ class GroupPolicy
 
     public function update(User $user, Group $group)
     {
-        return $this->isOwner($user, $group);
+        return $this->isOwner($user, $group) || $group->currentUserPermissions['can_update_group'];
     }
 
     public function delete(User $user, Group $group)
@@ -37,9 +37,8 @@ class GroupPolicy
     public function joinGroup(User $user, Group $group)
     {
         if ($this->isOwner($user, $group)) return $this->deny('You are the owner of this group!');
-
         if ($group->is_full) return $this->deny('This group is full!');
-
+        if (!in_array($user->degree, $group->degree_scope ?? [])) return $this->deny('Your degree is not sufficient to join this group!');
         if ($user->isWaitingForJoinApproval($group)) return $this->deny('You have already requested to join this group!');
 
         return true;

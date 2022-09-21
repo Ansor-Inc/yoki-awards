@@ -4,14 +4,21 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Staudenmeir\LaravelAdjacencyList\Eloquent\HasRecursiveRelationships;
 
 class Comment extends Model
 {
     use HasFactory;
+    use HasRecursiveRelationships;
 
     protected $guarded = ['id'];
 
-    protected $with = ['user:id,fullname,avatar','replies'];
+    protected $with = ['user:id,fullname,avatar'];
+
+    public function getParentKeyName()
+    {
+        return 'reply_id';
+    }
 
     public function replies()
     {

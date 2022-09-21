@@ -8,6 +8,7 @@ use Brackets\Media\HasMedia\HasMediaCollectionsTrait;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Book\Enums\BookStatus;
 use Spatie\MediaLibrary\HasMedia;
+use Staudenmeir\LaravelAdjacencyList\Eloquent\HasRecursiveRelationships;
 
 class Book extends Model implements HasMedia
 {
@@ -48,7 +49,7 @@ class Book extends Model implements HasMedia
 
     public function comments()
     {
-        return $this->morphMany(Comment::class, 'commentable');
+        return $this->morphMany(Comment::class, 'commentable')->whereNull('reply_id');
     }
 
     public function bookUserStatuses()

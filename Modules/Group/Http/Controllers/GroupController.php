@@ -51,8 +51,9 @@ class GroupController extends Controller
         ]) : $this->failed();
     }
 
-    public function showGroup(Group $group)
+    public function showGroup(int $groupId)
     {
+        $group = $this->groupRepository->getGroupById($groupId);
         $this->authorize('show', $group);
 
         return GroupResource::make($group);

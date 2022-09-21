@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Traits\HasGroupAdmins;
+use App\Models\Traits\HasGroupPermissions;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -12,7 +13,7 @@ use Modules\Group\Enums\GroupUserStatus;
 
 class Group extends Model
 {
-    use HasFactory, HasGroupAdmins;
+    use HasFactory, HasGroupAdmins, HasGroupPermissions;
 
     protected $guarded = ['id', 'status'];
 
