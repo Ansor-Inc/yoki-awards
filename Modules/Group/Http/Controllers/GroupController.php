@@ -4,8 +4,7 @@ namespace Modules\Group\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Group;
-use App\Models\GroupCategory;
-use Modules\Group\Http\Requests\getGroupsRequest;
+use Modules\Group\Http\Requests\GetGroupsRequest;
 use Modules\Group\Http\Requests\CreateGroupRequest;
 use Modules\Group\Http\Requests\UpdateGroupRequest;
 use Modules\Group\Repositories\Interfaces\GroupRepositoryInterface;
