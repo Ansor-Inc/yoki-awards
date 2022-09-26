@@ -19,6 +19,10 @@ class EnsurePhoneIsVerified
      */
     public function handle(Request $request, Closure $next)
     {
-        return $next($request);
+        if ($request->user()->hasVerifiedPhone() || !is_null($request->user()->social_auth_id)) {
+            return $next($request);
+        }
+
+        return abort('You need to verify your phone number!');
     }
 }

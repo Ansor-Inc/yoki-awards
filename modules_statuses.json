@@ -4,5 +4,6 @@
     "Group": true,
     "Post": true,
     "Academic": true,
-    "Purchase": true
+    "Purchase": true,
+    "Billing": true
 }

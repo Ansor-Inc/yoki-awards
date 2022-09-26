@@ -10,13 +10,13 @@ class PostCommentRepository implements PostCommentRepositoryInterface
 {
     public function getPostComments(Post $post, array $filters)
     {
-        return $post->comments;
+        return $post->comments()->latest();
     }
 
     public function createPostComment(Post $post, array $payload)
     {
         return $post->comments()->create(array_merge($payload, [
-            'user_id' => auth('sanctum')->user()->id
+            'user_id' => auth()->id()
         ]));
     }
 

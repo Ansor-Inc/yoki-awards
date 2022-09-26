@@ -1,11 +1,11 @@
 {
-    "name": "Purchase",
-    "alias": "purchase",
+    "name": "Billing",
+    "alias": "billing",
     "description": "",
     "keywords": [],
     "priority": 0,
     "providers": [
-        "Modules\\Purchase\\Providers\\PurchaseServiceProvider"
+        "Modules\\Billing\\Providers\\BillingServiceProvider"
     ],
     "aliases": {},
     "files": [],

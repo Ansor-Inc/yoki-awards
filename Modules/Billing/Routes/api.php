@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+use Modules\Billing\Enums\PaymentSystem;
+use Modules\Billing\Payment\PaymentService;
 
 /*
 |--------------------------------------------------------------------------
@@ -12,3 +15,7 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+Route::get('/billing/{paymentSystem}/handle', function (PaymentSystem $paymentSystem) {
+    return (new PaymentService())->driver($paymentSystem)->handle();
+});
