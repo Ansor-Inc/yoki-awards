@@ -23,6 +23,6 @@ class EnsurePhoneIsVerified
             return $next($request);
         }
 
-        return abort('You need to verify your phone number!');
+        return response(['message' => 'Your phone is not verified!'], 403);
     }
 }

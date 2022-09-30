@@ -47,7 +47,7 @@ class GroupPostController extends Controller
 
     public function delete(Post $post)
     {
-        //$this->authorize('deletePost', [$group, $post]);
+        $this->authorize('deletePost', $post);
         $deleted = $this->groupPostRepository->deletePost($post);
 
         return $deleted ? response(['message' => 'Deleted successfully!']) : $this->failed();

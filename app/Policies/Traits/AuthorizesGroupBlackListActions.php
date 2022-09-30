@@ -31,7 +31,7 @@ trait AuthorizesGroupBlackListActions
         return $this->authorizeBlackListActions($user, $group, $blackListMember->member);
     }
 
-    protected function authorizoeBlackListActions(User $user, Group $group, User $member)
+    protected function authorizeBlackListActions(User $user, Group $group, User $member)
     {
         if (!$group->hasMember($member)) return Response::deny('The given user is not member of the group!');
         if ($user->id === $member->id) return false;

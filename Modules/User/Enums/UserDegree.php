@@ -7,7 +7,7 @@ enum UserDegree: string
     case GENIUS = 'GENIUS';
     case SCIENTIST = 'SCIENTIST';
     case CLEVER = 'CLEVER';
-    case ANY = '*';
+    case USER = 'USER';
 
     public function degreeMapping()
     {
@@ -20,7 +20,7 @@ enum UserDegree: string
 
     public function getDegreeFromBookCount(int $count)
     {
-        
+
     }
 
 

@@ -69,4 +69,9 @@ class GroupRepository implements GroupRepositoryInterface
     {
         return $group->delete();
     }
+
+    public function getGroupByInviteLink(string $inviteLink)
+    {
+        return Group::query()->where('invite_link', $inviteLink)->first();
+    }
 }

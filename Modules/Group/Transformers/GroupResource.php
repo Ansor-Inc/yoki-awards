@@ -24,9 +24,10 @@ class GroupResource extends JsonResource
             'member_limit' => $this->member_limit,
             'is_private' => is_null($this->is_private) ? null : (bool)$this->is_private,
             'status' => $this->status,
-            'is_owner' => isset($this->owner_id) ? (int)$this->owner_id === (int)auth()->id() : null,
             'group_category' => $this->whenLoaded('category'),
             'invite_link' => isset($this->invite_link) ? url($this->invite_link) : null,
+            'is_owner' => isset($this->owner_id) ? (int)$this->owner_id === (int)auth()->id() : null,
+            'join_status' => $this->current_user_join_status,
             'current_user_permissions' => $this->current_user_permissions
         ];
     }

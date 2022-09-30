@@ -29,6 +29,7 @@ class PostCommentController extends Controller
 
     public function create(Post $post, CreatePostCommentRequest $request)
     {
+        $this->authorize('createPostComment', [Comment::class, $post]);
         $comment = $this->commentRepository->createPostComment($post, $request->validated());
 
         return $comment ? response(['message' => 'Comment created!', 'data' => CommentResource::make($comment)]) : $this->failed();
@@ -36,7 +37,7 @@ class PostCommentController extends Controller
 
     public function update(Comment $comment, UpdatePostCommentRequest $request)
     {
-        $this->authorize('updatePostComment', $comment);
+        $this->authorize('update', $comment);
         $affectedRows = $this->commentRepository->updatePostComment($comment, $request->validated());
 
         return $affectedRows > 0
@@ -46,7 +47,7 @@ class PostCommentController extends Controller
 
     public function delete(Comment $comment)
     {
-        $this->authorize('deletePostComment', $comment);
+        $this->authorize('delete', $comment);
         $deleted = $this->commentRepository->deletePostComment($comment);
 
         return $deleted

@@ -18,7 +18,7 @@ use Modules\Group\Http\Controllers\MembershipController;
 |
 */
 
-Route::middleware(['auth:sanctum'   ])->prefix('groups')->group(function () {
+Route::middleware(['auth:sanctum'])->prefix('groups')->group(function () {
     Route::get('/', [GroupController::class, 'getGroups']);
     Route::get('/mine', [GroupController::class, 'getMyGroups']);
     Route::get('/categories', [GroupController::class, 'groupCategories']);
@@ -26,6 +26,8 @@ Route::middleware(['auth:sanctum'   ])->prefix('groups')->group(function () {
     Route::get('/{group}', [GroupController::class, 'showGroup']);
     Route::put('/{group}', [GroupController::class, 'updateGroup']);
     Route::delete('/{group}', [GroupController::class, 'deleteGroup']);
+
+    Route::get('/link/{inviteLink}', [GroupController::class, 'getByInviteLink']);
 
     Route::get('/{group}/members/approved', [MembershipController::class, 'groupApprovedMembers']);
     Route::get('/{group}/members/pending', [MembershipController::class, 'groupPendingMembers']);

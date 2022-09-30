@@ -13,7 +13,9 @@ class GroupPostRepository implements GroupPostRepositoryInterface
 
     public function getGroupPosts(Group $group, array $filters)
     {
-        $query = $group->posts()->filter($filters);
+        $query = $group->posts()
+            ->filter($filters)
+            ->applyCurrentUserDegreeScopeFilter();
 
         return isset($filters['per_page']) ? $query->paginate($filters['per_page']) : $query->get();
     }
@@ -42,7 +44,7 @@ class GroupPostRepository implements GroupPostRepositoryInterface
         } else {
             $postLike = PostLike::query()->create(['user_id' => $user->id, 'post_id' => $post->id, 'liked' => true]);
         }
-        
+
         return $postLike->liked;
     }
 }

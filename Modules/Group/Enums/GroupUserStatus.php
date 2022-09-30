@@ -4,6 +4,7 @@ namespace Modules\Group\Enums;
 
 enum GroupUserStatus: string
 {
+    case OWNER = 'OWNER';
     case JOINED = 'JOINED';
     case REQUESTED_TO_JOIN = 'REQUESTED_TO_JOIN';
     case NOT_JOINED = 'NOT_JOINED';

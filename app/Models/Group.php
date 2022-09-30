@@ -92,6 +92,7 @@ class Group extends Model
     {
         $status = $this->currentUserMembershipStatus;
 
+        if ($this->owner_id == auth()->id()) return GroupUserStatus::OWNER->value;
         if (is_null($status)) return GroupUserStatus::NOT_JOINED->value;
         if (!is_null($status->rejected_at)) return GroupUserStatus::REJECTED->value;
         if (!$status->approved) return GroupUserStatus::REQUESTED_TO_JOIN->value;

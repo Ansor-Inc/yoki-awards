@@ -14,6 +14,8 @@ interface GroupRepositoryInterface
 
     public function getGroupById(int $id);
 
+    public function getGroupByInviteLink(string $inviteLink);
+
     public function createGroup(array $payload);
 
     public function updateGroup(Group $group, array $payload);

@@ -29,4 +29,14 @@ class Post extends Model
     {
         return $this->morphMany(Comment::class, 'commentable');
     }
+
+    public function scopeFilter($query)
+    {
+
+    }
+
+    public function scopeApplyCurrentUserDegreeScopeFilter($query)
+    {
+        $query->whereJsonContains('degree_scope', auth()->user()->degree);
+    }
 }

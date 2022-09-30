@@ -34,7 +34,7 @@ Route::middleware(['guest:sanctum'])->group(function () {
     Route::post('/reset-password', [PasswordResetController::class, 'reset']);
 });
 
-Route::middleware(['auth:sanctum', 'verified'])->group(function () {
+Route::middleware(['auth:sanctum','verified'])->group(function () {
     Route::get('/me', [UserController::class, 'getMe']);
     Route::put('/me', [UserController::class, 'updateMe']);
     Route::post('/update/phone', [UserController::class, 'updatePhone']);

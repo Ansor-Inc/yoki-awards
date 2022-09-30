@@ -5,29 +5,27 @@ namespace App\Policies\Traits;
 use App\Models\Group;
 use App\Models\Post;
 use App\Models\User;
+use Illuminate\Auth\Access\Response;
 
 trait AuthorizesGroupPostActions
 {
-    public function seePosts()
+    public function seePosts(User $user, Group $group)
     {
-        return true;
+        return $group->currentUserPermissions['can_see_post'];
     }
 
     public function createPost(User $user, Group $group)
     {
-        return true;
-        //if owner
-        //if admin and have permission
-        //is not in blacklist
+        return $group->currentUserPermissions['can_create_post'];
     }
 
     public function updatePost(User $user, Group $group, Post $post)
     {
-        return true;
+        return (int)$post->user_id === (int)$user->id;
     }
 
-    public function deletePost(User $user, Group $group, Post $post)
+    public function deletePost(User $user, Post $post)
     {
-        return true;
+        return (int)$post->user_id === (int)$user->id;
     }
 }
