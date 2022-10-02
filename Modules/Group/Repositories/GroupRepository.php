@@ -21,7 +21,6 @@ class GroupRepository implements GroupRepositoryInterface
     public function getGroupsExceptMine(array $filters = [])
     {
         $query = Group::query()
-            ->select('id', 'title', 'group_category_id', 'member_limit')
             ->with(['category:id,title', 'members' => fn($query) => $query->select('users.id', 'users.avatar')->limit(3), 'currentUserMembershipStatus'])
             ->withCount('members')
             ->filter($filters)
@@ -34,7 +33,6 @@ class GroupRepository implements GroupRepositoryInterface
     {
         $query = $this->owner->groups()
             ->withoutGlobalScopes()
-            ->select('id', 'title', 'group_category_id', 'status', 'member_limit')
             ->with(['category:id,title', 'members' => fn($query) => $query->select('avatar')->limit(3)])
             ->withCount('members')
             ->filter($filters);

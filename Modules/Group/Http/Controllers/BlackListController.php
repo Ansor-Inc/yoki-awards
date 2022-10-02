@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\BlackList;
 use App\Models\Group;
 use App\Models\User;
+use App\Policies\Traits\AuthorizesGroupBlackListActions;
 use Modules\Group\Http\Requests\UpdateBlackListPermissionsRequest;
 use Modules\Group\Repositories\Interfaces\BlackListRepositoryInterface;
 use Modules\Group\Transformers\BlackListMemberResource;
@@ -21,7 +22,9 @@ class BlackListController extends Controller
 
     public function index(Group $group)
     {
+        /* @see AuthorizesGroupBlackListActions::getBlackList() */
         $this->authorize('getBlackList', $group);
+
         $blackListMembers = $this->blackListRepository->getBlackList($group);
 
         return BlackListMemberResource::collection($blackListMembers);
@@ -29,6 +32,7 @@ class BlackListController extends Controller
 
     public function addToBlackList(Group $group, User $user)
     {
+        /* @see AuthorizesGroupBlackListActions::addToBlackList() */
         $this->authorize('addToBlackList', [$group, $user]);
 
         $blackListMember = $this->blackListRepository->addToBlackList($group, $user);

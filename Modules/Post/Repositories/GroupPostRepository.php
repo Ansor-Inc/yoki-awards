@@ -6,31 +6,32 @@ use App\Models\Group;
 use App\Models\Post;
 use App\Models\PostLike;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Model;
 use Modules\Post\Repositories\Interfaces\GroupPostRepositoryInterface;
 
 class GroupPostRepository implements GroupPostRepositoryInterface
 {
-
     public function getGroupPosts(Group $group, array $filters)
     {
         $query = $group->posts()
-            ->filter($filters)
+            ->with(['author:id,fullname', 'group:id,owner_id'])
+            ->withCount(['likes', 'comments'])
             ->applyCurrentUserDegreeScopeFilter();
 
         return isset($filters['per_page']) ? $query->paginate($filters['per_page']) : $query->get();
     }
 
-    public function createPost(Group $group, array $payload)
+    public function createPost(Group $group, array $payload): Model
     {
         return $group->posts()->create($payload);
     }
 
-    public function updatePost(Post $post, array $payload)
+    public function updatePost(Post $post, array $payload): bool
     {
         return $post->update($payload);
     }
 
-    public function deletePost(Post $post)
+    public function deletePost(Post $post): ?bool
     {
         return $post->delete();
     }

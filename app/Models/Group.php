@@ -7,13 +7,17 @@ use App\Models\Traits\HasGroupPermissions;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Str;
 use Modules\Book\Enums\BookStatus;
 use Modules\Group\Enums\GroupUserStatus;
 
 class Group extends Model
 {
-    use HasFactory, HasGroupAdmins, HasGroupPermissions;
+    use HasGroupAdmins, HasGroupPermissions;
 
     protected $guarded = ['id', 'status'];
 
@@ -29,12 +33,18 @@ class Group extends Model
         });
     }
 
-    public function members()
+
+    public function members(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'memberships')->wherePivot('approved', true);
     }
 
-    public function currentUserMembershipStatus()
+    public function memberships(): HasMany
+    {
+        return $this->hasMany(Membership::class);
+    }
+
+    public function currentUserMembershipStatus(): HasOne
     {
         return $this->hasOne(Membership::class)->where('user_id', auth()->id());
     }
@@ -44,39 +54,35 @@ class Group extends Model
         return $this->memberships()->approved()->where('user_id', $user->id)->exists();
     }
 
-    public function memberships()
-    {
-        return $this->hasMany(Membership::class);
-    }
 
-    public function blackListMembers()
+    public function blackListMembers(): BelongsToMany
     {
         return $this->members()
             ->select('users.id as user_id', 'users.fullname', 'users.avatar', 'black_list.*')
             ->join('black_list', 'memberships.id', '=', 'black_list.membership_id');
     }
 
-    public function isInBlackList(User $member)
+    public function isInBlackList(User $member): bool
     {
         return $this->blackListMembers()->where('user_id', $member->id)->exists();
     }
 
-    public function getIsFullAttribute()
+    public function getIsFullAttribute(): bool
     {
         return (int)$this->memberships()->approved()->count() >= (int)$this->member_limit;
     }
 
-    public function owner()
+    public function owner(): BelongsTo
     {
         return $this->belongsTo(User::class, 'owner_id');
     }
 
-    public function posts()
+    public function posts(): HasMany
     {
         return $this->hasMany(Post::class);
     }
 
-    public function category()
+    public function category(): BelongsTo
     {
         return $this->belongsTo(GroupCategory::class, 'group_category_id');
     }
@@ -88,7 +94,7 @@ class Group extends Model
         });
     }
 
-    public function getCurrentUserJoinStatusAttribute()
+    public function getCurrentUserJoinStatusAttribute(): string
     {
         $status = $this->currentUserMembershipStatus;
 

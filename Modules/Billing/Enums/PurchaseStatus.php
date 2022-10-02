@@ -8,3 +8,5 @@ enum PurchaseStatus: string
     case COMPLETED = 'COMPLETED';
     case CANCELED = 'CANCELED';
 }
+
+

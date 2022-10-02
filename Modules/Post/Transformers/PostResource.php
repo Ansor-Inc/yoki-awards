@@ -20,9 +20,11 @@ class PostResource extends JsonResource
             'body' => $this->body,
             'image' => $this->image,
             'author' => $this->author?->fullname,
-            'created_at' => $this->created_at?->diffForHumans(),
-            'comments_count' => $this->comments_count,
-            'likes_count' => $this->likes_count
+            'created_at' => $this->created_at?->format('d.m.Y'),
+            'created_at_human_readable' => $this->created_at?->diffForHumans(),
+            'comments_count' => $this->whenCounted('comments_count'),
+            'likes_count' => $this->whenCounted('likes_count'),
+            'can_edit_delete' => (int)$this->user_id === (int)auth()->id() || (int)$this->group->owner_id === (int)auth()->id()
         ];
     }
 }
