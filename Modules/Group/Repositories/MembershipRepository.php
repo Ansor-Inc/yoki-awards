@@ -38,10 +38,9 @@ class MembershipRepository implements MembershipRepositoryInterface
 
     public function getPotentialMembersOfGroup(Group $group)
     {
-        return $group->members()
+        return $group->potentialMembers()
             ->select('users.id', 'users.fullname', 'users.avatar', 'users.degree')
             ->withPivot('approved')
-            ->wherePivot('approved', false)
             ->get();
     }
 

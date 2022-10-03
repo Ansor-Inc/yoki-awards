@@ -39,6 +39,11 @@ class Group extends Model
         return $this->belongsToMany(User::class, 'memberships')->wherePivot('approved', true);
     }
 
+    public function potentialMembers()
+    {
+        return $this->belongsToMany(User::class, 'memberships')->wherePivot('approved', false);
+    }
+
     public function memberships(): HasMany
     {
         return $this->hasMany(Membership::class);
@@ -53,7 +58,6 @@ class Group extends Model
     {
         return $this->memberships()->approved()->where('user_id', $user->id)->exists();
     }
-
 
     public function blackListMembers(): BelongsToMany
     {
