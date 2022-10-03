@@ -25,11 +25,11 @@ trait AuthorizesGroupAdminActions
 
     public function dischargeAdmin(User $user, Group $group)
     {
-        return $this->isOwner($user, $group);
+        return $this->isOwner($user, $group) ? true : Response::deny('You are not the owner of this group!');
     }
 
     public function updateAdminPermissions(User $user, Group $group)
     {
-        return $this->isOwner($user, $group);
+        return $this->isOwner($user, $group) ? true : Response::deny('You are not the owner of this group!');
     }
 }
