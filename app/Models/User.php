@@ -3,6 +3,9 @@
 namespace App\Models;
 
 use App\Contracts\CanResetPasswordContract;
+use App\Filters\BookFilter;
+use App\Filters\UserFilter;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -84,5 +87,11 @@ class User extends Authenticatable implements CanResetPasswordContract
     {
         return $this->belongsToMany(Book::class, 'book_reads');
     }
+
+    public function scopeFilter(Builder $builder, array $filters)
+    {
+        (new UserFilter($builder))->apply($filters);
+    }
+
 }
 

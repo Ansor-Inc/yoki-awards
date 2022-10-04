@@ -25,15 +25,17 @@ class MembershipRepository implements MembershipRepositoryInterface
         $group->memberships()->where('user_id', $user->id)->delete();
     }
 
-    public function getApprovedMembersOfGroup(Group $group)
+    public function getApprovedMembersOfGroup(Group $group, array $filters)
     {
-        return $group->members()
+        $query = $group->members()
+            ->filter($filters)
             ->select('users.id', 'users.fullname', 'users.avatar', 'users.degree')
             ->selectRaw('IF(ISNULL(group_admins.id), FALSE, TRUE)  as is_admin')
             ->withPivot('approved')
             ->wherePivot('approved', true)
-            ->leftJoin('group_admins', 'group_admins.membership_id', '=', 'memberships.id')
-            ->get();
+            ->leftJoin('group_admins', 'group_admins.membership_id', '=', 'memberships.id');
+
+        return isset($filters['per_page']) ? $query->paginate($filters['per_page']) : $query->get();
     }
 
     public function getPotentialMembersOfGroup(Group $group)

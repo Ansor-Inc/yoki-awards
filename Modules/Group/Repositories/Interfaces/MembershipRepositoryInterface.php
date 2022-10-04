@@ -12,7 +12,7 @@ interface MembershipRepositoryInterface
 
     public function removeMembership(Group $group, User|Authenticatable $user);
 
-    public function getApprovedMembersOfGroup(Group $group);
+    public function getApprovedMembersOfGroup(Group $group, array $filters);
 
     public function getPotentialMembersOfGroup(Group $group);
 

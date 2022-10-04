@@ -5,6 +5,7 @@ namespace Modules\Group\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Group;
 use App\Models\User;
+use Modules\Group\Http\Requests\GetGroupApprovedMembersRequest;
 use Modules\Group\Repositories\Interfaces\MembershipRepositoryInterface;
 use Modules\Group\Transformers\MemberResource;
 
@@ -17,11 +18,11 @@ class MembershipController extends Controller
         $this->membershipRepository = $membershipRepository;
     }
 
-    public function groupApprovedMembers(Group $group)
+    public function groupApprovedMembers(Group $group, GetGroupApprovedMembersRequest $request)
     {
         $this->authorize('getApprovedMembers', $group);
 
-        $members = $this->membershipRepository->getApprovedMembersOfGroup($group);
+        $members = $this->membershipRepository->getApprovedMembersOfGroup($group, $request->validated());
 
         return MemberResource::collection($members);
     }

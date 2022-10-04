@@ -33,7 +33,6 @@ class Group extends Model
         });
     }
 
-
     public function members(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'memberships')->wherePivot('approved', true);
