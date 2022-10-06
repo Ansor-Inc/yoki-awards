@@ -1,10 +1,10 @@
 <?php
 
 return [
-    
+
     'payme' => [
         'key' => 'order_id',
-        'login' => 'username',
-        'password' => 'password'
+        'login' => env('PAYME_MERCHANT_ID', ''),
+        'password' => env('PAYME_SECRET', '')
     ]
 ];
