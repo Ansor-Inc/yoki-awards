@@ -5,6 +5,10 @@ namespace Modules\Post\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Comment;
 use App\Models\Post;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\Routing\ResponseFactory;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Http\Response;
 use Modules\Book\Transformers\CommentResource;
 use Modules\Post\Http\Requests\CreatePostCommentRequest;
 use Modules\Post\Http\Requests\GetPostCommentsRequest;
@@ -20,14 +24,14 @@ class PostCommentController extends Controller
         $this->commentRepository = $commentRepository;
     }
 
-    public function index(Post $post, GetPostCommentsRequest $request)
+    public function index(Post $post, GetPostCommentsRequest $request): AnonymousResourceCollection
     {
         $comments = $this->commentRepository->getPostComments($post, $request->validated());
 
         return CommentResource::collection($comments);
     }
 
-    public function create(Post $post, CreatePostCommentRequest $request)
+    public function create(Post $post, CreatePostCommentRequest $request): Response|Application|ResponseFactory
     {
         $this->authorize('createPostComment', [Comment::class, $post]);
         $comment = $this->commentRepository->createPostComment($post, $request->validated());
@@ -35,7 +39,7 @@ class PostCommentController extends Controller
         return $comment ? response(['message' => 'Comment created!', 'data' => CommentResource::make($comment)]) : $this->failed();
     }
 
-    public function update(Comment $comment, UpdatePostCommentRequest $request)
+    public function update(Comment $comment, UpdatePostCommentRequest $request): Response|Application|ResponseFactory
     {
         $this->authorize('update', $comment);
         $affectedRows = $this->commentRepository->updatePostComment($comment, $request->validated());
@@ -45,7 +49,7 @@ class PostCommentController extends Controller
             : $this->failed();
     }
 
-    public function delete(Comment $comment)
+    public function delete(Comment $comment): Response|Application|ResponseFactory
     {
         $this->authorize('delete', $comment);
         $deleted = $this->commentRepository->deletePostComment($comment);

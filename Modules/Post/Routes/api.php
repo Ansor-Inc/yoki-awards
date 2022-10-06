@@ -25,7 +25,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
         Route::get('/{post}/comments', [PostCommentController::class, 'index']);
         Route::post('/{post}/comments', [PostCommentController::class, 'create']);
-        Route::put('/post-comments/{comment}', [PostCommentController::class, 'update']);
-        Route::delete('/post-comments/{comment}', [PostCommentController::class, 'delete']);
+        Route::put('/comments/{comment}', [PostCommentController::class, 'update']);
+        Route::delete('/comments/{comment}', [PostCommentController::class, 'delete']);
     });
 });

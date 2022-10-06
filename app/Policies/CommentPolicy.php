@@ -12,19 +12,23 @@ class CommentPolicy
 {
     use HandlesAuthorization;
 
-    public function createPostComment(User $user, ?Comment $comment, Post $post)
+    public function createPostComment(User $user, Post $post)
     {
         return $post->group->currentUserPermissions['can_comment'];
     }
 
     public function update(User $user, Comment $comment)
     {
-        return (int)$user->id === (int)$comment->user_id;
+        return $this->isOwner($user, $comment);
     }
 
     public function delete(User $user, Comment $comment)
     {
-        return (int)$user->id === (int)$comment->user_id;
+        return $this->isOwner($user, $comment);
     }
 
+    protected function isOwner(User $user, Comment $comment)
+    {
+        return (int)$user->id === (int)$comment->user_id;
+    }
 }

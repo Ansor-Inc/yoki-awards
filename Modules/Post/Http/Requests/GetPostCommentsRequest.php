@@ -14,7 +14,7 @@ class GetPostCommentsRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'per_page' => ['sometimes', 'integer', 'min:1']
         ];
     }
 

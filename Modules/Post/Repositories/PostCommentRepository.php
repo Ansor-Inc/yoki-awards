@@ -10,7 +10,11 @@ class PostCommentRepository implements PostCommentRepositoryInterface
 {
     public function getPostComments(Post $post, array $filters)
     {
-        return $post->comments()->latest();
+        $query = $post->comments()
+            ->with('descendants')
+            ->latest();
+
+        return isset($filters['per_page']) ? $query->paginate($filters['per_page']) : $query->get();
     }
 
     public function createPostComment(Post $post, array $payload)

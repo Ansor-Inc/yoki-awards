@@ -32,12 +32,12 @@ class Post extends Model
 
     public function comments(): MorphMany
     {
-        return $this->morphMany(Comment::class, 'commentable');
+        return $this->morphMany(Comment::class, 'commentable')->whereNull('reply_id');
     }
 
     public function getCanCurrentUserEditDeleteAttribute()
     {
-        return ;
+        return;
     }
 
     public function scopeApplyCurrentUserDegreeScopeFilter(Builder $query)
