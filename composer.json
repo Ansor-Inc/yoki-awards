@@ -13,6 +13,7 @@
         "laravel/socialite": "^5.5",
         "laravel/telescope": "^4.9",
         "laravel/tinker": "^2.7",
+        "league/flysystem-aws-s3-v3": "^3.5",
         "nwidart/laravel-modules": "^9.0",
         "socialiteproviders/facebook": "^4.1",
         "socialiteproviders/google": "^4.1",
