@@ -4,7 +4,7 @@ namespace Modules\Billing\Payment\Payme;
 
 use App\Models\Purchase;
 use App\Models\Transaction;
-use Goodoneuz\PayUz\Http\Classes\DataFormat;
+use Modules\Billing\Payment\DataFormat;
 use Modules\Billing\Enums\PaymentSystem;
 use Modules\Billing\Payment\Payme\MerchantApiMethods\CancelTransaction;
 use Modules\Billing\Payment\Payme\MerchantApiMethods\CheckPerformTransaction;

@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use Goodoneuz\PayUz\Http\Classes\DataFormat;
+use Modules\Billing\Payment\DataFormat;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 

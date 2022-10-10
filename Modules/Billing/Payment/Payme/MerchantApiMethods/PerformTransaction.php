@@ -3,7 +3,7 @@
 namespace Modules\Billing\Payment\Payme\MerchantApiMethods;
 
 use App\Models\Transaction;
-use Goodoneuz\PayUz\Http\Classes\DataFormat;
+use Modules\Billing\Payment\DataFormat;
 use Modules\Billing\Payment\Payme\Response;
 
 trait PerformTransaction

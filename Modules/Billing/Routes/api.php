@@ -16,6 +16,6 @@ use Modules\Billing\Payment\PaymentService;
 |
 */
 
-Route::get('/billing/{paymentSystem}/handle', function (PaymentSystem $paymentSystem) {
+Route::any('/billing/{paymentSystem}/handle', function (PaymentSystem $paymentSystem) {
     return (new PaymentService())->driver($paymentSystem)->handle();
 });
