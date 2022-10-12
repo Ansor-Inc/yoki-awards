@@ -34,11 +34,15 @@ Route::middleware(['guest:sanctum'])->group(function () {
     Route::post('/reset-password', [PasswordResetController::class, 'reset']);
 });
 
-Route::middleware(['auth:sanctum','verified'])->group(function () {
+Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/me', [UserController::class, 'getMe']);
-    Route::put('/me', [UserController::class, 'updateMe']);
-    Route::post('/update/phone', [UserController::class, 'updatePhone']);
-    Route::post('/update/avatar', [UserController::class, 'updateAvatar']);
+    
+    Route::middleware('verified')->group(function () {
+        Route::put('/me', [UserController::class, 'updateMe']);
+        Route::post('/update/phone', [UserController::class, 'updatePhone']);
+        Route::post('/update/avatar', [UserController::class, 'updateAvatar']);
+    });
+
 });
 
 
