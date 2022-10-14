@@ -2,11 +2,11 @@
 
 namespace Modules\Group\Repositories;
 
-use App\Models\Group;
-use App\Models\GroupAdmin;
-use App\Models\Membership;
-use App\Models\User;
+use Modules\Group\Entities\Group;
+use Modules\Group\Entities\GroupAdmin;
+use Modules\Group\Entities\Membership;
 use Modules\Group\Repositories\Interfaces\GroupAdminRepositoryInterface;
+use Modules\User\Entities\User;
 
 class GroupAdminRepository implements GroupAdminRepositoryInterface
 {

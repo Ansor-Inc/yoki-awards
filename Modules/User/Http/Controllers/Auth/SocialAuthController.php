@@ -3,10 +3,10 @@
 namespace Modules\User\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules\Enum;
 use Laravel\Socialite\Facades\Socialite;
+use Modules\User\Entities\User;
 use Modules\User\Enums\SocialDriver;
 
 class SocialAuthController extends Controller

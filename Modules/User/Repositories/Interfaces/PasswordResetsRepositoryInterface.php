@@ -2,7 +2,7 @@
 
 namespace Modules\User\Repositories\Interfaces;
 
-use App\Contracts\CanResetPasswordContract;
+use Modules\User\Contracts\CanResetPasswordContract;
 
 interface PasswordResetsRepositoryInterface
 {

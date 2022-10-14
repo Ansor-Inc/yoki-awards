@@ -38,7 +38,6 @@ Route::prefix('books')->group(function () {
         Route::post('/{book}/comments', [BookCommentController::class, 'store'])->middleware('throttle:3,1');
     });
 
-
     Route::get('/{book}', [BookController::class, 'show']);
     Route::get('/{book}/variants', [BookController::class, 'getBookWithVariants']);
     Route::get('/{book}/similar', [BookController::class, 'getSimilarBooks']);

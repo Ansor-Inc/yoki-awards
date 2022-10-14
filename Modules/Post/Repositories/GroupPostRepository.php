@@ -2,12 +2,12 @@
 
 namespace Modules\Post\Repositories;
 
-use App\Models\Group;
-use App\Models\Post;
-use App\Models\PostLike;
-use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
+use Modules\Group\Entities\Group;
+use Modules\Group\Entities\Post;
+use Modules\Group\Entities\PostLike;
 use Modules\Post\Repositories\Interfaces\GroupPostRepositoryInterface;
+use Modules\User\Entities\User;
 
 class GroupPostRepository implements GroupPostRepositoryInterface
 {

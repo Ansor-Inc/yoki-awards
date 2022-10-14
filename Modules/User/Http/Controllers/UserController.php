@@ -11,7 +11,7 @@ use Modules\User\Http\Requests\UpdateUserAvatarRequest;
 use Modules\User\Http\Requests\UpdateUserPhoneRequest;
 use Modules\User\Http\Requests\UpdateUserRequest;
 use Modules\User\Http\Resources\UserResource;
-use Modules\User\Service\Facades\SmsTokenServiceFacade;
+use Modules\User\Services\Facades\SmsTokenServiceFacade;
 use Modules\User\UseCases\UpdatesUser;
 
 class UserController extends Controller

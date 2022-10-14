@@ -2,9 +2,9 @@
 
 namespace Modules\Post\Repositories\Interfaces;
 
-use App\Models\Group;
-use App\Models\Post;
-use App\Models\User;
+use Modules\Group\Entities\Group;
+use Modules\Group\Entities\Post;
+use Modules\User\Entities\User;
 
 interface GroupPostRepositoryInterface
 {

@@ -18,6 +18,7 @@ return [
         'passwords' => 'users',
     ],
 
+    'api_secret' => env('API_SECRET'),
     /*
     |--------------------------------------------------------------------------
     | Authentication Guards
@@ -67,7 +68,7 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => \App\Models\User::class,
+            'model' => \Modules\User\Entities\User::class,
         ],
 
         // 'users' => [
@@ -112,8 +113,6 @@ return [
     */
 
     'password_timeout' => 10800,
-
-    'sms_code_lifetime' => env('SMS_CODE_LIFETIME', 120),
 
     'social_auth_redirect_url' => env('SOCIAL_AUTH_REDIRECT_URL', '/auth/social')
 ];

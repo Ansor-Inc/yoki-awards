@@ -4,12 +4,12 @@ namespace Modules\Post\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Comment;
-use App\Models\Post;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
 use Modules\Book\Transformers\CommentResource;
+use Modules\Group\Entities\Post;
 use Modules\Post\Http\Requests\CreatePostCommentRequest;
 use Modules\Post\Http\Requests\GetPostCommentsRequest;
 use Modules\Post\Http\Requests\UpdatePostCommentRequest;

@@ -2,9 +2,9 @@
 
 namespace Modules\Group\Repositories\Interfaces;
 
-use App\Models\Group;
-use App\Models\GroupAdmin;
-use App\Models\User;
+use Modules\Group\Entities\Group;
+use Modules\Group\Entities\GroupAdmin;
+use Modules\User\Entities\User;
 
 interface GroupAdminRepositoryInterface
 {

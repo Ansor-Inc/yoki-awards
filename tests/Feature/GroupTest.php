@@ -2,10 +2,8 @@
 
 namespace Tests\Feature;
 
-use App\Models\Group;
-use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
+use Modules\Group\Entities\Group;
+use Modules\User\Entities\User;
 use Tests\TestCase;
 
 class GroupTest extends TestCase

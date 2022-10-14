@@ -2,11 +2,11 @@
 
 namespace Modules\Book\Repositories;
 
-use App\Models\Book;
-use App\Models\Bookmark;
-use App\Models\BookRead;
-use App\Models\Rating;
 use Intervention\Image\Exception\NotFoundException;
+use Modules\Book\Entities\Book;
+use Modules\Book\Entities\Bookmark;
+use Modules\Book\Entities\BookRead;
+use Modules\Book\Entities\Rating;
 use Modules\Book\Repositories\Interfaces\BookRepositoryInterface;
 
 class BookRepository implements BookRepositoryInterface

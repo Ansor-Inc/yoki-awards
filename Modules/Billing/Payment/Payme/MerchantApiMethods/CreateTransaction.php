@@ -2,9 +2,9 @@
 
 namespace Modules\Billing\Payment\Payme\MerchantApiMethods;
 
-use App\Models\Transaction;
-use Modules\Billing\Payment\DataFormat;
+use Modules\Billing\Entities\Transaction;
 use Modules\Billing\Enums\PaymentSystem;
+use Modules\Billing\Payment\DataFormat;
 use Modules\Billing\Payment\Payme\Response;
 
 trait CreateTransaction

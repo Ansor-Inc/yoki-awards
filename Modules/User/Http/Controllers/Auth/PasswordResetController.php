@@ -10,7 +10,7 @@ use Modules\User\Http\Requests\ResetPasswordRequest;
 use Modules\User\Http\Requests\ResetPasswordSendCodeRequest;
 use Modules\User\Repositories\Interfaces\PasswordResetsRepositoryInterface;
 use Modules\User\Repositories\Interfaces\UserRepositoryInterface;
-use Modules\User\Service\Facades\SmsTokenServiceFacade;
+use Modules\User\Services\Facades\SmsTokenServiceFacade;
 
 class PasswordResetController extends Controller
 {

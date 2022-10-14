@@ -2,7 +2,7 @@
 
 namespace Modules\Group\Repositories\Interfaces;
 
-use App\Models\Group;
+use Modules\Group\Entities\Group;
 
 interface GroupRepositoryInterface
 {

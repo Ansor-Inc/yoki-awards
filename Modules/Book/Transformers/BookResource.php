@@ -2,8 +2,8 @@
 
 namespace Modules\Book\Transformers;
 
-use App\Models\BookUserStatus;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Auth;
 
 class BookResource extends JsonResource
 {
@@ -39,7 +39,7 @@ class BookResource extends JsonResource
             'readers_count' => $this->readers_count,
             'fragment' => $this->fragment,
             'book_file' => $this->when($this->is_free, $this->book_file),
-            'user_status' => auth()->check() ? BookUserStatusResource::make($this->whenLoaded('currentUserStatus')) : null
+            'user_status' => Auth::check() ? BookUserStatusResource::make($this->whenLoaded('currentUserStatus')) : null
         ];
     }
 }

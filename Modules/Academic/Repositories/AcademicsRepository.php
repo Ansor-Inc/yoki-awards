@@ -2,9 +2,8 @@
 
 namespace Modules\Academic\Repositories;
 
-use App\Models\User;
-use Illuminate\Support\Facades\DB;
 use Modules\Academic\Repositories\Interfaces\AcademicsRepositoryInterface;
+use Modules\User\Entities\User;
 use Modules\User\Enums\UserDegree;
 
 class AcademicsRepository implements AcademicsRepositoryInterface

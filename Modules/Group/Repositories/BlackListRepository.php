@@ -2,11 +2,11 @@
 
 namespace Modules\Group\Repositories;
 
-use App\Models\BlackList;
-use App\Models\Group;
-use App\Models\Membership;
-use App\Models\User;
+use Modules\Group\Entities\BlackList;
+use Modules\Group\Entities\Group;
+use Modules\Group\Entities\Membership;
 use Modules\Group\Repositories\Interfaces\BlackListRepositoryInterface;
+use Modules\User\Entities\User;
 
 class BlackListRepository implements BlackListRepositoryInterface
 {

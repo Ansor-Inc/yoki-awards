@@ -2,7 +2,7 @@
 
 namespace Modules\Book\Repositories\Interfaces;
 
-use App\Models\Book;
+use Modules\Book\Entities\Book;
 
 interface BookRepositoryInterface
 {

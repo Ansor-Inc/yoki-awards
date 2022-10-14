@@ -2,10 +2,10 @@
 
 namespace Modules\Billing\Payment\Payme;
 
-use App\Models\Purchase;
-use App\Models\Transaction;
-use Modules\Billing\Payment\DataFormat;
+use Modules\Billing\Entities\Purchase;
+use Modules\Billing\Entities\Transaction;
 use Modules\Billing\Enums\PaymentSystem;
+use Modules\Billing\Payment\DataFormat;
 use Modules\Billing\Payment\Payme\MerchantApiMethods\CancelTransaction;
 use Modules\Billing\Payment\Payme\MerchantApiMethods\CheckPerformTransaction;
 use Modules\Billing\Payment\Payme\MerchantApiMethods\CheckTransaction;

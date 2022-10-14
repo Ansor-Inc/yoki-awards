@@ -2,9 +2,9 @@
 
 namespace App\Policies\Traits;
 
-use App\Models\Group;
-use App\Models\User;
 use Illuminate\Auth\Access\Response;
+use Modules\Group\Entities\Group;
+use Modules\User\Entities\User;
 
 trait AuthorizesGroupAdminActions
 {

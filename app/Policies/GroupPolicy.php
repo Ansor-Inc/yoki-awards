@@ -2,14 +2,13 @@
 
 namespace App\Policies;
 
-use App\Models\Group;
-use App\Models\User;
 use App\Policies\Traits\AuthorizesGroupAdminActions;
 use App\Policies\Traits\AuthorizesGroupBlackListActions;
 use App\Policies\Traits\AuthorizesGroupPostActions;
 use App\Policies\Traits\AuthorizesMembershipActions;
 use Illuminate\Auth\Access\HandlesAuthorization;
-use Illuminate\Auth\Access\Response;
+use Modules\Group\Entities\Group;
+use Modules\User\Entities\User;
 
 class GroupPolicy
 {

@@ -2,9 +2,9 @@
 
 namespace Modules\Group\Repositories\Interfaces;
 
-use App\Models\Group;
-use App\Models\User;
 use Illuminate\Contracts\Auth\Authenticatable;
+use Modules\Group\Entities\Group;
+use Modules\User\Entities\User;
 
 interface MembershipRepositoryInterface
 {

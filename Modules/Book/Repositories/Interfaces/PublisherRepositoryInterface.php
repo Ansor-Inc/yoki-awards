@@ -2,7 +2,7 @@
 
 namespace Modules\Book\Repositories\Interfaces;
 
-use App\Models\Publisher;
+use Modules\Book\Entities\Publisher;
 
 interface PublisherRepositoryInterface
 {

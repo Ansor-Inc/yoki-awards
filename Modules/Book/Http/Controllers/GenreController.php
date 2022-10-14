@@ -2,8 +2,8 @@
 
 namespace Modules\Book\Http\Controllers;
 
-use App\Models\Genre;
 use Illuminate\Routing\Controller;
+use Modules\Book\Entities\Genre;
 use Modules\Book\Http\Requests\GetGenreBooksRequest;
 use Modules\Book\Repositories\Interfaces\GenreRepositoryInterface;
 use Modules\Book\Transformers\BookListingResource;

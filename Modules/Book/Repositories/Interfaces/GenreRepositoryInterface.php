@@ -2,7 +2,7 @@
 
 namespace Modules\Book\Repositories\Interfaces;
 
-use App\Models\Genre;
+use Modules\Book\Entities\Genre;
 
 interface GenreRepositoryInterface
 {

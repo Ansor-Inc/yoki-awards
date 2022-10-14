@@ -5,7 +5,7 @@ namespace Modules\User\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Modules\User\Http\Requests\SendCodeRequest;
 use Modules\User\Http\Requests\VerifySmsCodeRequest;
-use Modules\User\Service\Facades\SmsTokenServiceFacade;
+use Modules\User\Services\Facades\SmsTokenServiceFacade;
 
 class PhoneVerifyController extends Controller
 {

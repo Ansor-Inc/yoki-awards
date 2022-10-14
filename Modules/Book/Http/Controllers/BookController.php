@@ -3,10 +3,8 @@
 namespace Modules\Book\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Models\Book;
-use App\Models\Bookmark;
-use App\Models\Rating;
 use Illuminate\Http\Request;
+use Modules\Book\Entities\Book;
 use Modules\Book\Http\Requests\GetBooksRequest;
 use Modules\Book\Http\Requests\GetSavedBooksRequest;
 use Modules\Book\Http\Requests\GetSimilarBooksRequest;
@@ -92,7 +90,7 @@ class BookController extends Controller
     {
         $this->repository->checkBookExistence($bookId);
         $marked = $this->repository->markAsCompleted($bookId, auth()->id());
-        
+
         return isset($marked) ? response(['message' => 'Marked as completed!']) : $this->failed();
     }
 }

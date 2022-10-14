@@ -3,9 +3,9 @@
 namespace Modules\Book\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Models\Book;
 use App\Models\Comment;
 use Illuminate\Http\Request;
+use Modules\Book\Entities\Book;
 use Modules\Book\Http\Requests\StoreBookCommentRequest;
 use Modules\Book\Http\Requests\UpdateBookCommentRequest;
 use Modules\Book\Transformers\CommentResource;

@@ -2,7 +2,7 @@
 
 namespace Modules\Book\Repositories;
 
-use App\Models\Book;
+use Modules\Book\Entities\Book;
 use Modules\Book\Enums\BookType;
 use Modules\Book\Repositories\Interfaces\BookSectionsRepositoryInterface;
 use Modules\Book\Transformers\BookListingResource;

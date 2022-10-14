@@ -3,10 +3,9 @@
 namespace Modules\Group\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Models\Group;
-use Illuminate\Support\Arr;
-use Modules\Group\Http\Requests\GetGroupsRequest;
+use Modules\Group\Entities\Group;
 use Modules\Group\Http\Requests\CreateGroupRequest;
+use Modules\Group\Http\Requests\GetGroupsRequest;
 use Modules\Group\Http\Requests\UpdateGroupRequest;
 use Modules\Group\Repositories\Interfaces\GroupRepositoryInterface;
 use Modules\Group\Transformers\GroupCategoryResource;

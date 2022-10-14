@@ -3,13 +3,13 @@
 namespace Modules\Group\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Models\BlackList;
-use App\Models\Group;
-use App\Models\User;
 use App\Policies\Traits\AuthorizesGroupBlackListActions;
+use Modules\Group\Entities\BlackList;
+use Modules\Group\Entities\Group;
 use Modules\Group\Http\Requests\UpdateBlackListPermissionsRequest;
 use Modules\Group\Repositories\Interfaces\BlackListRepositoryInterface;
 use Modules\Group\Transformers\BlackListMemberResource;
+use Modules\User\Entities\User;
 
 class BlackListController extends Controller
 {

@@ -40,13 +40,6 @@ return [
         'client_id' => env('FACEBOOK_CLIENT_ID'),
         'client_secret' => env('FACEBOOK_CLIENT_SECRET'),
         'redirect' => env('FACEBOOK_REDIRECT_URI')
-    ],
-
-    'playmobile' => [
-        'host' => env('PLAYMOBILE_HOST', ''),
-        'originator' => env('PLAYMOBILE_ORIGINATOR', 3700),
-        'username' => env('PLAYMOBILE_USERNAME', ''),
-        'password' => env('PLAYMOBILE_PASSWORD', '')
     ]
 
 ];

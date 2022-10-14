@@ -2,9 +2,9 @@
 
 namespace Modules\Group\Repositories\Interfaces;
 
-use App\Models\BlackList;
-use App\Models\Group;
-use App\Models\User;
+use Modules\Group\Entities\BlackList;
+use Modules\Group\Entities\Group;
+use Modules\User\Entities\User;
 
 interface BlackListRepositoryInterface
 {

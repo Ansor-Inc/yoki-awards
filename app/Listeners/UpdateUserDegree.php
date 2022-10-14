@@ -2,7 +2,7 @@
 
 namespace App\Listeners;
 
-use App\Providers\BookMarkedAsCompleted;
+use Modules\User\Providers\BookMarkedAsCompleted;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 

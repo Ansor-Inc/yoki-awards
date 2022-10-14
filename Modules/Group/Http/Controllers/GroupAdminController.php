@@ -3,12 +3,12 @@
 namespace Modules\Group\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Models\Group;
-use App\Models\GroupAdmin;
-use App\Models\User;
+use Modules\Group\Entities\Group;
+use Modules\Group\Entities\GroupAdmin;
 use Modules\Group\Http\Requests\UpdateAdminPermissionsRequest;
 use Modules\Group\Repositories\Interfaces\GroupAdminRepositoryInterface;
 use Modules\Group\Transformers\GroupAdminResource;
+use Modules\User\Entities\User;
 
 class GroupAdminController extends Controller
 {

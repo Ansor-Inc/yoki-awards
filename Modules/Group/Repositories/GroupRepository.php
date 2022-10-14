@@ -2,11 +2,9 @@
 
 namespace Modules\Group\Repositories;
 
-use App\Models\Group;
-use App\Models\GroupCategory;
-use App\Models\Membership;
 use Illuminate\Contracts\Auth\Authenticatable;
-use Illuminate\Support\Facades\DB;
+use Modules\Group\Entities\Group;
+use Modules\Group\Entities\GroupCategory;
 use Modules\Group\Repositories\Interfaces\GroupRepositoryInterface;
 
 class GroupRepository implements GroupRepositoryInterface

@@ -2,9 +2,9 @@
 
 namespace App\Http\Middleware;
 
-use App\Models\SmsToken;
 use Closure;
 use Illuminate\Http\Request;
+use Modules\User\Entities\SmsToken;
 
 class VerifySmsToken
 {

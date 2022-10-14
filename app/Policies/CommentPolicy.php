@@ -3,10 +3,9 @@
 namespace App\Policies;
 
 use App\Models\Comment;
-use App\Models\Group;
-use App\Models\Post;
-use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Modules\Group\Entities\Post;
+use Modules\User\Entities\User;
 
 class CommentPolicy
 {

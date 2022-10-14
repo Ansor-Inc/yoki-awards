@@ -2,7 +2,7 @@
 
 namespace Modules\Book\Repositories;
 
-use App\Models\Genre;
+use Modules\Book\Entities\Genre;
 use Modules\Book\Repositories\Interfaces\GenreRepositoryInterface;
 
 class GenreRepository implements GenreRepositoryInterface

@@ -13,6 +13,4 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return 'Yoki-api - v1';
-});
+Route::get('/', fn() => 'Yoki-api - v1');

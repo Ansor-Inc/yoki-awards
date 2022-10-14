@@ -3,11 +3,11 @@
 namespace Modules\Group\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Models\Group;
-use App\Models\User;
+use Modules\Group\Entities\Group;
 use Modules\Group\Http\Requests\GetGroupApprovedMembersRequest;
 use Modules\Group\Repositories\Interfaces\MembershipRepositoryInterface;
 use Modules\Group\Transformers\MemberResource;
+use Modules\User\Entities\User;
 
 class MembershipController extends Controller
 {

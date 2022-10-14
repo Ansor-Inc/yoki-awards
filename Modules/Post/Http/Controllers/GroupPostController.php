@@ -3,10 +3,10 @@
 namespace Modules\Post\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Models\Group;
-use App\Models\Post;
 use App\Policies\PostPolicy;
 use Illuminate\Http\Request;
+use Modules\Group\Entities\Group;
+use Modules\Group\Entities\Post;
 use Modules\Post\Http\Requests\CreateGroupPostRequest;
 use Modules\Post\Http\Requests\GetGroupPostsRequest;
 use Modules\Post\Http\Requests\UpdateGroupPostRequest;
