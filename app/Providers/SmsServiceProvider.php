@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\User\Providers;
+namespace App\Providers;
 
 use App\Components\Sms\SmsManager;
 use Illuminate\Support\ServiceProvider;
