@@ -18,8 +18,6 @@ class VerifyApiClient
      */
     public function handle(Request $request, Closure $next)
     {
-        return $next($request);
-        
         if (app()->runningUnitTests()) {
             return $next($request);
         }
