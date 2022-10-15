@@ -4,9 +4,7 @@ namespace Modules\User\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 use Modules\User\Http\Requests\UpdateUserAvatarRequest;
 use Modules\User\Http\Requests\UpdateUserPhoneRequest;
 use Modules\User\Http\Requests\UpdateUserRequest;
@@ -43,13 +41,15 @@ class UserController extends Controller
 
     public function updateAvatar(UpdateUserAvatarRequest $request)
     {
-        $path = $request->file('image')->store('avatars', ['disk' => 'public']);
-        $request->user()->update(['avatar' => '/storage/' . $path]);
+        $relativePath = Storage::putFile("avatars/{$request->user()->id}", $request->file('image'), 'public');
+
+        $absolutePath = Storage::url($relativePath);
+
+        $request->user()->update(['avatar' => $absolutePath]);
 
         return response([
             'message' => 'Avatar changed successfully!',
-            'avatar' => url($request->user()->refresh()->avatar)
+            'avatar' => $absolutePath
         ]);
-
     }
 }
