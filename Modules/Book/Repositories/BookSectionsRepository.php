@@ -53,7 +53,6 @@ class BookSectionsRepository implements BookSectionsRepositoryInterface
         return $this->getListingQuery()
             ->addSelect('price')
             ->whereIn('id', $topBookIds)
-            ->with()
             ->get();
     }
 
