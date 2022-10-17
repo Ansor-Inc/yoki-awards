@@ -6,6 +6,7 @@ use Illuminate\Routing\Controller;
 use Modules\Academic\Http\Requests\GetAcademicsRequest;
 use Modules\Academic\Repositories\Interfaces\AcademicsRepositoryInterface;
 use Modules\Academic\Transformers\AcademicResource;
+use Modules\Academic\Transformers\DegreeResource;
 
 class AcademicController extends Controller
 {
@@ -27,6 +28,6 @@ class AcademicController extends Controller
     {
         $degrees = $this->repository->getDegrees();
 
-        return response(['data' => $degrees]);
+        return DegreeResource::collection($degrees);
     }
 }

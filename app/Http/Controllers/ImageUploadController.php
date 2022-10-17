@@ -15,7 +15,6 @@ class ImageUploadController extends Controller
 
         if ($request->hasFile('image')) {
             $relativePath = Storage::putFile("post-images", $request->file('image'), 'public');
-
             $absolutePath = Storage::url($relativePath);
 
             return response()->json(['path' => $absolutePath]);

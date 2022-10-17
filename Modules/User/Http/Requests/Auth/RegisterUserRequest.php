@@ -26,8 +26,17 @@ class RegisterUserRequest extends FormRequest
     {
         return [
             'fullname' => ['required', 'string'],
-            'phone' => ['required', Rule::unique('users')->whereNotNull('phone_verified_at')],
+            'phone' => ['required', 'digits:12', Rule::unique('users')->whereNotNull('phone_verified_at')],
             'password' => ['required', 'string', 'min:8', 'confirmed']
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'phone.alpha_num' => 'The phone must only contain numbers',
+        ];
+    }
+
+
 }

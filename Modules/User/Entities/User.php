@@ -12,6 +12,7 @@ use Modules\Book\Entities\BookUserStatus;
 use Modules\Group\Entities\Group;
 use Modules\Group\Entities\Membership;
 use Modules\User\Contracts\CanResetPasswordContract;
+use Modules\User\Enums\UserDegree;
 use Modules\User\Filters\UserFilter;
 
 class User extends Authenticatable implements CanResetPasswordContract
@@ -46,6 +47,11 @@ class User extends Authenticatable implements CanResetPasswordContract
         'phone_verified_at' => 'datetime',
     ];
 
+    public function scopeOfDegree(Builder $query, UserDegree $degree)
+    {
+        $query->where('degree', $degree->value);
+    }
+    
     public function bookUserStatuses()
     {
         return $this->hasMany(BookUserStatus::class);

@@ -5,6 +5,7 @@ namespace Modules\Book\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Modules\Book\Entities\Book;
+use Modules\Book\Events\UserReadBooksCountChanged;
 use Modules\Book\Http\Requests\GetBooksRequest;
 use Modules\Book\Http\Requests\GetSavedBooksRequest;
 use Modules\Book\Http\Requests\GetSimilarBooksRequest;
@@ -91,6 +92,11 @@ class BookController extends Controller
         $this->repository->checkBookExistence($bookId);
         $marked = $this->repository->markAsCompleted($bookId, auth()->id());
 
-        return isset($marked) ? response(['message' => 'Marked as completed!']) : $this->failed();
+        if (isset($marked)) {
+            UserReadBooksCountChanged::dispatch(auth()->user());
+            return response(['message' => 'Marked as completed!']);
+        }
+
+        return $this->failed();
     }
 }

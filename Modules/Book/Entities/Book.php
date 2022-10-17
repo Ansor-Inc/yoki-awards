@@ -9,6 +9,7 @@ use Brackets\Media\HasMedia\HasMediaCollectionsTrait;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Book\Enums\BookStatus;
 use Modules\Book\Filters\BookFilter;
+use Modules\User\Entities\User;
 use Spatie\MediaLibrary\HasMedia;
 use function auth;
 
@@ -52,6 +53,11 @@ class Book extends Model implements HasMedia
     public function comments()
     {
         return $this->morphMany(Comment::class, 'commentable')->whereNull('reply_id');
+    }
+
+    public function readers()
+    {
+        return $this->hasManyThrough(User::class, BookRead::class);
     }
 
     public function bookUserStatuses()

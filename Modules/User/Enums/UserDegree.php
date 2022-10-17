@@ -2,6 +2,8 @@
 
 namespace Modules\User\Enums;
 
+use Modules\User\Entities\User;
+
 enum UserDegree: string
 {
     case GENIUS = 'GENIUS';
@@ -9,19 +11,44 @@ enum UserDegree: string
     case CLEVER = 'CLEVER';
     case USER = 'USER';
 
-    public function degreeMapping()
+    public function label()
     {
-        return [
-            self::CLEVER->value => [1, 24],
-            self::SCIENTIST->value => [25, 49],
-            self::GENIUS->value => [50, '*']
-        ];
+        return match ($this) {
+            self::GENIUS => 'Geniylar',
+            self::SCIENTIST => "Olimlar",
+            self::CLEVER => "Aqllilar",
+            self::USER => 'Foydalanuvchilar'
+        };
     }
 
-    public function getDegreeFromBookCount(int $count)
+    public function interval()
     {
-
+        return match ($this) {
+            self::GENIUS => [50, PHP_INT_MAX],
+            self::SCIENTIST => [25, 49],
+            self::CLEVER => [1, 24],
+            self::USER => [PHP_INT_MIN, 0]
+        };
     }
 
+    public function intervalToDisplay()
+    {
+        return match ($this) {
+            self::GENIUS => "50+",
+            self::SCIENTIST => "25-49",
+            self::CLEVER => "1-24"
+        };
+    }
+    
+    public static function getDegreeFromBookCount(int $count)
+    {
+        foreach (self::cases() as $degree) {
+            if ($degree->interval()[0] <= $count && $count <= $degree->interval()[1]) {
+                return $degree;
+            }
+        }
+
+        return self::USER->value;
+    }
 
 }

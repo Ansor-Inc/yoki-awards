@@ -2,7 +2,9 @@
 
 namespace Modules\Book\Repositories;
 
+use Illuminate\Support\Facades\DB;
 use Modules\Book\Entities\Book;
+use Modules\Book\Entities\BookRead;
 use Modules\Book\Enums\BookType;
 use Modules\Book\Repositories\Interfaces\BookSectionsRepositoryInterface;
 use Modules\Book\Transformers\BookListingResource;
@@ -39,10 +41,19 @@ class BookSectionsRepository implements BookSectionsRepositoryInterface
 
     public function getAcademicsBooks()
     {
+        $topBookIds = DB::table('book_reads')
+            ->select('book_id')
+            ->selectRaw('COUNT(book_id) as bookCount')
+            ->groupBy('book_id')
+            ->orderBy('bookCount', 'desc')
+            ->limit(3)
+            ->pluck('book_id')
+            ->toArray();
+
         return $this->getListingQuery()
             ->addSelect('price')
-            ->inRandomOrder()
-            ->limit(3)
+            ->whereIn('id', $topBookIds)
+            ->with()
             ->get();
     }
 
