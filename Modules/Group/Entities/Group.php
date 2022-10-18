@@ -12,6 +12,7 @@ use Illuminate\Support\Str;
 use Modules\Book\Enums\BookStatus;
 use Modules\Group\Entities\Traits\HasGroupAdmins;
 use Modules\Group\Entities\Traits\HasGroupPermissions;
+use Modules\Group\Enums\GroupStatus;
 use Modules\Group\Enums\GroupUserStatus;
 use Modules\User\Entities\User;
 use function auth;
@@ -28,7 +29,7 @@ class Group extends Model
 
     protected static function booted()
     {
-        static::addGlobalScope('approved', fn($query) => $query->where('status', BookStatus::APPROVED));
+        static::addGlobalScope('approved', fn($query) => $query->where('status', GroupStatus::APPROVED->value));
         static::created(function ($group) {
             $group->update(['invite_link' => Str::random()]);
         });
