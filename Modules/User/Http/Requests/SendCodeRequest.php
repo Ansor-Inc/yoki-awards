@@ -3,9 +3,11 @@
 namespace Modules\User\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Modules\User\Http\Requests\Traits\ValidatesPhoneNumber;
 
 class SendCodeRequest extends FormRequest
 {
+    use ValidatesPhoneNumber;
     /**
      * Get the validation rules that apply to the request.
      *
@@ -14,7 +16,7 @@ class SendCodeRequest extends FormRequest
     public function rules()
     {
         return [
-            'phone' => 'required'
+            'phone' => 'required|digits:12'
         ];
     }
 

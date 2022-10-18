@@ -4,9 +4,12 @@ namespace Modules\User\Http\Requests\Auth;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Modules\User\Http\Requests\Traits\ValidatesPhoneNumber;
 
 class RegisterUserRequest extends FormRequest
 {
+    use ValidatesPhoneNumber;
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -30,13 +33,4 @@ class RegisterUserRequest extends FormRequest
             'password' => ['required', 'string', 'min:8', 'confirmed']
         ];
     }
-
-    public function messages()
-    {
-        return [
-            'phone.alpha_num' => 'The phone must only contain numbers',
-        ];
-    }
-
-
 }

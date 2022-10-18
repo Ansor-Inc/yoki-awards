@@ -3,9 +3,12 @@
 namespace Modules\User\Http\Requests\Auth;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Modules\User\Http\Requests\Traits\ValidatesPhoneNumber;
 
 class LoginRequest extends FormRequest
 {
+    use ValidatesPhoneNumber;
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -24,7 +27,7 @@ class LoginRequest extends FormRequest
     public function rules()
     {
         return [
-            'phone' => 'required|string',
+            'phone' => 'required|digits:12',
             'password' => 'required|string|min:8'
         ];
     }

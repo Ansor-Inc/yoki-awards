@@ -3,9 +3,12 @@
 namespace Modules\User\Http\Requests\Auth;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Modules\User\Http\Requests\Traits\ValidatesPhoneNumber;
 
 class VerifyPasswordResetRequest extends FormRequest
 {
+    use ValidatesPhoneNumber;
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -24,7 +27,7 @@ class VerifyPasswordResetRequest extends FormRequest
     public function rules()
     {
         return [
-            'phone' => ['required', 'string', 'exists:users,phone'],
+            'phone' => ['required', 'digits:12', 'exists:users,phone'],
             'code' => ['required', 'digits:4']
         ];
     }

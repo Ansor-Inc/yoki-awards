@@ -4,9 +4,12 @@ namespace Modules\User\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Modules\User\Http\Requests\Traits\ValidatesPhoneNumber;
 
 class UpdateUserPhoneRequest extends FormRequest
 {
+    use ValidatesPhoneNumber;
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -15,7 +18,7 @@ class UpdateUserPhoneRequest extends FormRequest
     public function rules()
     {
         return [
-            'phone' => ['required', Rule::unique('users')->whereNotNull('phone_verified_at')],
+            'phone' => ['required', 'digits:12', Rule::unique('users')->whereNotNull('phone_verified_at')],
             'code' => ['required', 'digits:4']
         ];
     }

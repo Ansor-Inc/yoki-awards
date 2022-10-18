@@ -4,9 +4,12 @@ namespace Modules\User\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Modules\User\Http\Requests\Traits\ValidatesPhoneNumber;
 
 class ResetPasswordSendCodeRequest extends FormRequest
 {
+    use ValidatesPhoneNumber;
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -15,7 +18,7 @@ class ResetPasswordSendCodeRequest extends FormRequest
     public function rules()
     {
         return [
-            'phone' => ['required', 'exists:users,phone']
+            'phone' => ['required', 'digits:12', 'exists:users,phone']
         ];
     }
 
