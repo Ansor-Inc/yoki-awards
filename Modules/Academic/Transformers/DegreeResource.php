@@ -17,6 +17,7 @@ class DegreeResource extends JsonResource
     {
         return [
             'title' => $this->label(),
+            'icon' => $this->icon(),
             'interval' => $this->intervalToDisplay(),
             'degree' => $this->value,
             'academics' => User::query()->where('degree', $this->value)->limit(3)->get(['id', 'avatar']),

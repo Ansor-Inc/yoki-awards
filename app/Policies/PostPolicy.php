@@ -4,7 +4,7 @@ namespace App\Policies;
 
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Auth\Access\Response;
-use Modules\Group\Entities\Post;
+use Modules\Post\Entities\Post;
 use Modules\User\Entities\User;
 
 class PostPolicy

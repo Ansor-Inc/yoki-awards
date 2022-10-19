@@ -4,7 +4,7 @@ namespace App\Policies;
 
 use App\Models\Comment;
 use Illuminate\Auth\Access\HandlesAuthorization;
-use Modules\Group\Entities\Post;
+use Modules\Post\Entities\Post;
 use Modules\User\Entities\User;
 
 class CommentPolicy

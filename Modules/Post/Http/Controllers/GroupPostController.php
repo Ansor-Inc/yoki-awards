@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Policies\PostPolicy;
 use Illuminate\Http\Request;
 use Modules\Group\Entities\Group;
-use Modules\Group\Entities\Post;
+use Modules\Post\Entities\Post;
 use Modules\Post\Http\Requests\CreateGroupPostRequest;
 use Modules\Post\Http\Requests\GetGroupPostsRequest;
 use Modules\Post\Http\Requests\UpdateGroupPostRequest;

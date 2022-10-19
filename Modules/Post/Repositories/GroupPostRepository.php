@@ -4,8 +4,8 @@ namespace Modules\Post\Repositories;
 
 use Illuminate\Database\Eloquent\Model;
 use Modules\Group\Entities\Group;
-use Modules\Group\Entities\Post;
-use Modules\Group\Entities\PostLike;
+use Modules\Post\Entities\Post;
+use Modules\Post\Entities\PostLike;
 use Modules\Post\Repositories\Interfaces\GroupPostRepositoryInterface;
 use Modules\User\Entities\User;
 

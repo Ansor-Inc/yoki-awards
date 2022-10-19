@@ -9,11 +9,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Str;
-use Modules\Book\Enums\BookStatus;
 use Modules\Group\Entities\Traits\HasGroupAdmins;
 use Modules\Group\Entities\Traits\HasGroupPermissions;
 use Modules\Group\Enums\GroupStatus;
 use Modules\Group\Enums\GroupUserStatus;
+use Modules\Post\Entities\Post;
 use Modules\User\Entities\User;
 use function auth;
 

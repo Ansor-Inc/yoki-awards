@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Group\Entities;
+namespace Modules\Post\Entities;
 
 use App\Models\Comment;
 use Illuminate\Database\Eloquent\Builder;
@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Modules\Group\Entities\Group;
 use Modules\User\Entities\User;
 use function auth;
 

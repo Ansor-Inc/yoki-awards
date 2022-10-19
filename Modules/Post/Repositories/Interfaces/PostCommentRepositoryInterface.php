@@ -3,7 +3,7 @@
 namespace Modules\Post\Repositories\Interfaces;
 
 use App\Models\Comment;
-use Modules\Group\Entities\Post;
+use Modules\Post\Entities\Post;
 
 interface PostCommentRepositoryInterface
 {

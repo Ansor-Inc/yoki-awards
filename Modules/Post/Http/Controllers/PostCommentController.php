@@ -9,7 +9,7 @@ use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
 use Modules\Book\Transformers\CommentResource;
-use Modules\Group\Entities\Post;
+use Modules\Post\Entities\Post;
 use Modules\Post\Http\Requests\CreatePostCommentRequest;
 use Modules\Post\Http\Requests\GetPostCommentsRequest;
 use Modules\Post\Http\Requests\UpdatePostCommentRequest;

@@ -3,7 +3,7 @@
 namespace Modules\Post\Repositories\Interfaces;
 
 use Modules\Group\Entities\Group;
-use Modules\Group\Entities\Post;
+use Modules\Post\Entities\Post;
 use Modules\User\Entities\User;
 
 interface GroupPostRepositoryInterface

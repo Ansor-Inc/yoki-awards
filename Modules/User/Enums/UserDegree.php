@@ -39,7 +39,16 @@ enum UserDegree: string
             self::CLEVER => "1-24"
         };
     }
-    
+
+    public function icon()
+    {
+        return match ($this) {
+            self::GENIUS => asset('media/genius_icon.svg'),
+            self::SCIENTIST => asset('media/scientist_icon.svg'),
+            self::CLEVER => asset('media/clever_icon.svg')
+        };
+    }
+
     public static function getDegreeFromBookCount(int $count)
     {
         foreach (self::cases() as $degree) {
