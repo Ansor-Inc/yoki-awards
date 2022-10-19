@@ -22,6 +22,7 @@ class GroupRepository implements GroupRepositoryInterface
             ->with(['category:id,title', 'members' => fn($query) => $query->select('users.id', 'users.avatar')->limit(3), 'currentUserMembershipStatus'])
             ->withCount('members')
             ->filter($filters)
+            ->whereNotNull('owner_id')
             ->whereNot('owner_id', $this->owner->id);
 
         return isset($filters['per_page']) ? $query->paginate($filters['per_page']) : $query->limit(100)->get();

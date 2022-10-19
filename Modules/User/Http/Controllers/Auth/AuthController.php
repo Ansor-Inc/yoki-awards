@@ -44,9 +44,7 @@ class AuthController extends Controller
             return $this->respondWithToken($token);
         };
 
-        return response()->json([
-            'message' => 'These credentials do not match our records!'
-        ]);
+        return response()->json(['message' => 'These credentials do not match our records!'], 404);
     }
 
     public function logout(Request $request)
