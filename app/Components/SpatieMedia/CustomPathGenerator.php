@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Components\Spatie;
+namespace App\Components\SpatieMedia;
 
 use Illuminate\Support\Str;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;

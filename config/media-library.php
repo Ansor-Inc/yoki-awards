@@ -57,7 +57,7 @@ return [
     /*
      * The class that contains the strategy for determining a media file's path.
      */
-    'path_generator' => \App\Components\Spatie\CustomPathGenerator::class,
+    'path_generator' => \App\Components\SpatieMedia\CustomPathGenerator::class,
 
     /*
      * Here you can specify which path generator should be used for the given class.
