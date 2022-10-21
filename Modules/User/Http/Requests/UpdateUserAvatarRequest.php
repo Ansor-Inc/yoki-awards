@@ -15,7 +15,7 @@ class UpdateUserAvatarRequest extends FormRequest
     public function rules()
     {
         return [
-            'image' => ['required', File::image()->max(3 * 1024)]
+            'image' => ['required', File::image()->max(1024)]
         ];
     }
 
