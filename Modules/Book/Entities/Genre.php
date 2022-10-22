@@ -2,7 +2,6 @@
 
 namespace Modules\Book\Entities;
 
-use App\Traits\HasFilesTrait;
 use Brackets\Media\HasMedia\HasMediaCollectionsTrait;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia;
@@ -10,7 +9,6 @@ use Spatie\MediaLibrary\HasMedia;
 class Genre extends Model implements HasMedia
 {
     use HasMediaCollectionsTrait;
-    use HasFilesTrait;
 
     public function books()
     {
@@ -19,11 +17,11 @@ class Genre extends Model implements HasMedia
 
     public function getIconAttribute()
     {
-        return $this->getImageFromCollection('icon');
+        return $this->getFirstMediaUrl('icon');
     }
 
     public function getIconActiveAttribute()
     {
-        return $this->getImageFromCollection('icon_active');
+        return $this->getFirstMediaUrl('icon_active');
     }
 }

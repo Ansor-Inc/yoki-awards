@@ -2,7 +2,6 @@
 
 namespace Modules\Book\Entities;
 
-use App\Traits\HasFilesTrait;
 use Brackets\Media\HasMedia\HasMediaCollectionsTrait;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia;
@@ -10,11 +9,10 @@ use Spatie\MediaLibrary\HasMedia;
 class Publisher extends Model implements HasMedia
 {
     use HasMediaCollectionsTrait;
-    use HasFilesTrait;
 
     public function getLogoAttribute()
     {
-        return $this->getImageFromCollection('logo');
+        return $this->getFirstMediaUrl('logo');
     }
 
     public function books()

@@ -4,25 +4,21 @@ namespace Modules\Book\Entities;
 
 use App\Models\Comment;
 use App\Models\Tag;
-use App\Traits\HasFilesTrait;
 use Brackets\Media\HasMedia\HasMediaCollectionsTrait;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Book\Enums\BookStatus;
 use Modules\Book\Filters\BookFilter;
 use Modules\User\Entities\User;
 use Spatie\MediaLibrary\HasMedia;
-use function auth;
 
 class Book extends Model implements HasMedia
 {
     use HasMediaCollectionsTrait;
-    use HasFilesTrait;
 
     protected static function booted()
     {
-        static::addGlobalScope('available', function ($query) {
-            $query->where('status', BookStatus::APPROVED->value);
-        });
+        //always retrieve only approved books
+        static::addGlobalScope('available', fn($query) => $query->where('status', BookStatus::APPROVED->value));
     }
 
     public function scopeFilter($query, array $filters)
@@ -80,16 +76,11 @@ class Book extends Model implements HasMedia
 
     public function getImageAttribute()
     {
-        return $this->getImageFromCollection('image');
+        return $this->getFirstMediaUrl('image', 'image_optimized');
     }
 
     public function getFragmentAttribute()
     {
-        return $this->getFileFromCollection('fragment');
-    }
-
-    public function getBookFileAttribute()
-    {
-        return $this->getFileFromCollection('book_file');
+        return $this->getFirstMediaUrl('fragment');
     }
 }
