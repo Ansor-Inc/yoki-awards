@@ -38,7 +38,7 @@ class CustomPathGenerator implements PathGenerator
     protected function getBasePath(Media $media): string
     {
         $prefix = config('media-library.prefix', '');
-        $path = Str::plural($media->model_type) . '/' . $media->model_id;
+        $path = Str::plural($media->model_type) . '/' . $media->getKey();
 
         if ($prefix !== '') {
             return $prefix . '/' . $path;
