@@ -25,9 +25,8 @@ class BookRepository implements BookRepositoryInterface
 
     public function getBookWithVariants(int $id)
     {
-        $book = Book::query()->select('id', 'title')->findOrFail($id);
-
-        return $this->getBookQuery()->where('title', 'like', "%{$book->title}%")->get();
+        $book = Book::query()->select('id', 'title')->findOrFail($id);;
+        return $book->bloodline;
     }
 
     public function getSimilarBooks(Book $book, $limit = 0)
