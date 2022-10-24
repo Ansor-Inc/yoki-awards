@@ -90,7 +90,7 @@ class Book extends Model implements HasMedia
 
     public function getImageAttribute()
     {
-        return $this->getFirstMediaUrl('image', 'image_optimized');
+        return $this->getFirstMediaUrl('image');
     }
 
     public function getBookFileUrl()
