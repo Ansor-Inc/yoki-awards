@@ -30,7 +30,8 @@ class BookRepository implements BookRepositoryInterface
             ->select(['id', 'title', 'description', 'language', 'page_count', 'publication_date', 'price', 'compare_price', 'is_free', 'book_type', 'publisher_id', 'genre_id', 'author_id', 'voice_director'])
             ->withAvg('bookUserStatuses as rating', 'rating')
             ->withCount(['bookUserStatuses as vote_count' => fn($query) => $query->whereNotNull('rating')])
-            ->with(['author:id,firstname,lastname,about,copyright', 'publisher:id,title', 'genre:id,title', 'tags:name', 'currentUserStatus']);
+            ->with(['author:id,firstname,lastname,about,copyright', 'publisher:id,title', 'genre:id,title', 'tags:name', 'currentUserStatus'])
+            ->get();
     }
 
     public function getSimilarBooks(Book $book, $limit = 0)
