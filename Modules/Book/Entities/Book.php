@@ -112,10 +112,9 @@ class Book extends Model implements HasMedia
         return $this->belongsTo(self::class, 'parent_id');
     }
 
-
     public function getAudioFileUrls()
     {
-        return collect($this->getMedia('audio_files')->map(fn($media) => $media->getUrl()))->toArray();
+        return collect($this->getMedia('audio_files'))->map(fn($media) => $media->getUrl())->toArray();
     }
 
     public function isBoughtByCurrentUser()
