@@ -51,7 +51,7 @@ class User extends Authenticatable implements CanResetPasswordContract
     {
         $query->where('degree', $degree->value);
     }
-    
+
     public function bookUserStatuses()
     {
         return $this->hasMany(BookUserStatus::class);

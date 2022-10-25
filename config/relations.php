@@ -22,6 +22,7 @@ return [
         'membership' => \Modules\Group\Entities\Membership::class,
         'post' => \Modules\Post\Entities\Post::class,
         'post_like' => \Modules\Post\Entities\PostLike::class,
-        'sms_token' => \Modules\User\Entities\SmsToken::class
+        'sms_token' => \Modules\User\Entities\SmsToken::class,
+        'comment' => \App\Models\Comment::class
     ]
 ];
