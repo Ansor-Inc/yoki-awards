@@ -15,8 +15,8 @@ class StoreBookCommentRequest extends FormRequest
     {
         return [
             'body' => 'required|string',
-            'user_id' => ['required', 'exists:App\Models\User,id'],
-            'reply_id' => ['sometimes', 'exists:App\Models\Comment,id']
+            'user_id' => ['required', 'exists:users,id'],
+            'reply_id' => ['sometimes', 'exists:comments,id']
         ];
     }
 
