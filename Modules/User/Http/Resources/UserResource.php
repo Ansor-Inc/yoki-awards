@@ -18,6 +18,7 @@ class UserResource extends JsonResource
             'id' => $this->id,
             'fullname' => $this->fullname,
             'avatar' => is_null($this->avatar) ? null : url($this->avatar),
+            'has_verified_phone' => !is_null($this->phone_verified_at),
             'phone' => $this->phone,
             'degree' => $this->degree,
             'gender' => $this->gender,
