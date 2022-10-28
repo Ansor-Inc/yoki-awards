@@ -6,43 +6,27 @@ use App\Models\Comment;
 use App\Models\Tag;
 use Brackets\Media\HasMedia\HasMediaCollectionsTrait;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use Modules\Book\Entities\Traits\InteractsWithBookFiles;
 use Modules\Book\Enums\BookStatus;
 use Modules\Book\Filters\BookFilter;
+use Modules\Book\Helpers\BookRatingPercentage;
 use Modules\User\Entities\User;
 use Spatie\MediaLibrary\HasMedia;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Staudenmeir\LaravelAdjacencyList\Eloquent\HasRecursiveRelationships;
 
 class Book extends Model implements HasMedia
 {
     use HasMediaCollectionsTrait;
+    use InteractsWithBookFiles;
     use HasRecursiveRelationships;
 
     protected static function booted()
     {
-        //always retrieve only approved books
-        static::addGlobalScope('available', fn($query) => $query->where('status', BookStatus::APPROVED->value));
+        static::addGlobalScope('available', fn($query) => $query->where('status', BookStatus::APPROVED->value));//always retrieve only approved books
     }
 
-    public function scopeFilter($query, array $filters)
-    {
-        (new BookFilter($query))->apply($filters);
-    }
-
-    public function registerMediaConversions(Media $media = null): void
-    {
-        $this->addMediaConversion('image_optimized')
-            ->height(224)
-            ->width(165)
-            ->optimize();
-    }
-
-    public function scopeOnlyListingFields($query)
-    {
-        $query->select(['id', 'title', 'author_id', 'is_free', 'book_type']);
-    }
-
+    // Relationships:
     public function author()
     {
         return $this->belongsTo(Author::class);
@@ -73,12 +57,9 @@ class Book extends Model implements HasMedia
         return $this->hasMany(BookUserStatus::class);
     }
 
-    public function currentUserStatus()
+    public function ratings()
     {
-        return $this->hasOne(BookUserStatus::class)->where('user_id', auth()->id())->withDefault([
-            'bookmarked' => false,
-            'rating' => null
-        ]);
+        return $this->hasMany(Rating::class)->whereNotNull('rating');
     }
 
     public function tags()
@@ -86,42 +67,53 @@ class Book extends Model implements HasMedia
         return $this->morphToMany(Tag::class, 'taggable');
     }
 
-    public function getImageAttribute()
-    {
-        return $this->getFirstMediaUrl('image');
-    }
-
-    public function getBookFileUrl()
-    {
-        if ($this->is_free) {
-            return $this->getFirstMediaUrl('book_file');
-        }
-
-        if ($this->isBoughtByCurrentUser()) {
-            $url = $this->getFirstMediaPath('book_file');
-            return $url !== '' ? Storage::temporaryUrl($this->getFirstMediaPath('book_file'), now()->addMinutes(5)) : null;
-        }
-
-        return null;
-    }
-
     public function parent()
     {
         return $this->belongsTo(self::class, 'parent_id');
     }
 
-    public function getAudioFileUrls()
+    //Scopes:
+    public function scopeFilter($query, array $filters)
     {
-        return collect($this->getMedia('audio_files'))->map(fn($media) => $media->getUrl())->toArray();
+        (new BookFilter($query))->apply($filters);
     }
 
-    public function isBoughtByCurrentUser()
+    public function scopeOnlyListingFields($query)
     {
-        return true;
+        $query->select(['id', 'title', 'author_id', 'is_free', 'book_type']);
     }
 
-    public function getFragmentAttribute()
+    //Helper methods:
+    public function currentUserStatus()
     {
-        return $this->getFirstMediaUrl('fragment');
+        return $this->hasOne(BookUserStatus::class)
+            ->where('user_id', auth()->id())
+            ->withDefault(['bookmarked' => false, 'rating' => null]);
+    }
+
+    public function percentagePerRating()
+    {
+        return $this->ratings()
+            ->selectRaw("rating, ROUND((COUNT(rating)/?)*100) as percentage", [$this->ratings()->count()])
+            ->groupBy('rating')
+            ->get();
+    }
+
+    //Attributes:
+    public function getPercentagePerRatingAttribute()
+    {
+        return BookRatingPercentage::makeFrom($this->percentagePerRating());
+    }
+
+    public function getDescriptionExcerptAttribute()
+    {
+        return Str::limit(strip_tags($this->description), 120);
+    }
+
+    //Spatie media-library media collections (https://spatie.be/docs/laravel-medialibrary/v10/introduction)
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('image')
+            ->useFallbackUrl(asset('media/missingbook.png'));
     }
 }
