@@ -4,7 +4,6 @@ namespace Modules\Book\Repositories;
 
 use Illuminate\Support\Facades\DB;
 use Modules\Book\Entities\Book;
-use Modules\Book\Entities\BookRead;
 use Modules\Book\Enums\BookType;
 use Modules\Book\Repositories\Interfaces\BookSectionsRepositoryInterface;
 use Modules\Book\Transformers\BookListingResource;
@@ -32,7 +31,7 @@ class BookSectionsRepository implements BookSectionsRepositoryInterface
     public function getSpecialBooks()
     {
         return $this->getListingQuery()
-            ->addSelect('publisher_id')
+            ->addSelect(['publisher_id', 'description'])
             ->with('publisher:id,title')
             ->inRandomOrder()
             ->limit(2)

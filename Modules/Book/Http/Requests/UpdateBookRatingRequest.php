@@ -14,7 +14,7 @@ class UpdateBookRatingRequest extends FormRequest
     public function rules()
     {
         return [
-            'value' => ['required', 'numeric', 'min:0', 'max:5']
+            'value' => ['required', 'numeric', 'min:1', 'max:5']
         ];
     }
 

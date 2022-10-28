@@ -26,6 +26,6 @@ class VerifySmsToken
             }
         }
 
-        return response(['message' => 'Please provide sms-token!']);
+        return response(['message' => 'Please provide sms-token!'], 422);
     }
 }

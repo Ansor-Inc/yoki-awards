@@ -11,30 +11,24 @@ use Modules\Book\Http\Requests\GetSavedBooksRequest;
 use Modules\Book\Http\Requests\GetSimilarBooksRequest;
 use Modules\Book\Http\Requests\UpdateBookRatingRequest;
 use Modules\Book\Repositories\BookSectionsRepository;
+use Modules\Book\Repositories\Interfaces\BookListingRepositoryInterface;
 use Modules\Book\Repositories\Interfaces\BookRepositoryInterface;
 use Modules\Book\Transformers\BookListingResource;
 use Modules\Book\Transformers\BookResource;
 
 class BookController extends Controller
 {
-    protected BookRepositoryInterface $repository;
-
-    public function __construct(BookRepositoryInterface $repository)
+    public function index(GetBooksRequest $request, BookListingRepositoryInterface $repository)
     {
-        $this->repository = $repository;
-    }
-
-    public function index(GetBooksRequest $request)
-    {
-        $books = $this->repository->getBooks($request->validated());
+        $books = $repository->getBooks($request->validated());
 
         return BookListingResource::collection($books);
     }
 
-    public function search(Request $request)
+    public function search(Request $request, BookListingRepositoryInterface $repository)
     {
         $request->validate(['query' => 'required|string']);
-        $books = $this->repository->search($request->input('query'));
+        $books = $repository->search($request->input('query'));
 
         return BookListingResource::collection($books);
     }
@@ -44,53 +38,49 @@ class BookController extends Controller
         return $repository->getBooksBySections();
     }
 
-    public function getSavedBooks(GetSavedBooksRequest $request)
+    public function getSavedBooks(GetSavedBooksRequest $request, BookListingRepositoryInterface $repository)
     {
-        $books = $this->repository->getSavedBooks($request->input('per_page'));
+        $books = $repository->getSavedBooks($request->input('per_page'));
 
         return BookListingResource::collection($books);
     }
 
-    public function getSimilarBooks(Book $book, GetSimilarBooksRequest $request)
+    public function getSimilarBooks(Book $book, GetSimilarBooksRequest $request, BookListingRepositoryInterface $repository)
     {
-        $books = $this->repository->getSimilarBooks($book, $request->input('limit'));
+        $books = $repository->getSimilarBooks($book, $request->input('limit'));
 
         return BookListingResource::collection($books);
     }
 
-    public function show($id)
+    public function show($id, BookRepositoryInterface $repository)
     {
-        return BookResource::make($this->repository->getBookById($id));
+        return BookResource::make($repository->getBookById($id));
     }
 
-    public function getBookWithVariants(int $bookId)
+    public function getBookWithVariants(int $bookId, BookRepositoryInterface $repository)
     {
-        $this->repository->checkBookExistence($bookId);
-        $books = $this->repository->getBookWithVariants($bookId);
+        $books = $repository->getBookWithVariants($bookId);
 
         return BookResource::collection($books);
     }
 
-    public function bookmark(int $bookId)
+    public function bookmark(int $bookId, BookRepositoryInterface $repository)
     {
-        $this->repository->checkBookExistence($bookId);
-        $status = $this->repository->toggleBookmark($bookId, auth()->id());
+        $status = $repository->toggleBookmark($bookId, auth()->id());
 
         return response()->json(['bookmarked' => $status->bookmarked]);
     }
 
-    public function rate(int $bookId, UpdateBookRatingRequest $request)
+    public function rate(int $bookId, UpdateBookRatingRequest $request, BookRepositoryInterface $repository)
     {
-        $this->repository->checkBookExistence($bookId);
-        $status = $this->repository->rateTheBook($bookId, auth()->id(), $request->input('value'));
+        $status = $repository->rateTheBook($bookId, auth()->id(), $request->input('value'));
 
         return response()->json(['rating' => $status->rating]);
     }
 
-    public function markBookAsCompleted(int $bookId)
+    public function markBookAsCompleted(int $bookId, BookRepositoryInterface $repository)
     {
-        $this->repository->checkBookExistence($bookId);
-        $marked = $this->repository->markAsCompleted($bookId, auth()->id());
+        $marked = $repository->markAsCompleted($bookId, auth()->id());
 
         if (isset($marked)) {
             UserReadBooksCountChanged::dispatch(auth()->user());

@@ -4,8 +4,10 @@ namespace Modules\Book\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Factory;
+use Modules\Book\Repositories\BookListingRepository;
 use Modules\Book\Repositories\BookRepository;
 use Modules\Book\Repositories\GenreRepository;
+use Modules\Book\Repositories\Interfaces\BookListingRepositoryInterface;
 use Modules\Book\Repositories\Interfaces\BookRepositoryInterface;
 use Modules\Book\Repositories\Interfaces\GenreRepositoryInterface;
 use Modules\Book\Repositories\Interfaces\PublisherRepositoryInterface;
@@ -46,6 +48,7 @@ class BookServiceProvider extends ServiceProvider
         $this->app->register(RouteServiceProvider::class);
         $this->app->bind(PublisherRepositoryInterface::class, PublisherRepository::class);
         $this->app->bind(BookRepositoryInterface::class, BookRepository::class);
+        $this->app->bind(BookListingRepositoryInterface::class, BookListingRepository::class);
         $this->app->bind(GenreRepositoryInterface::class, GenreRepository::class);
     }
 

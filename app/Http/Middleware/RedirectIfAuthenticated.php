@@ -23,7 +23,7 @@ class RedirectIfAuthenticated
 
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
-                return response(['message' => 'You are authenticated!']);
+                return response(['message' => 'You are authenticated!'],409);
             }
         }
 

@@ -18,7 +18,7 @@ class BookResource extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title,
-            'image' => $this->image,
+            'image' => $this->getFirstMediaUrl('image'),
             'description' => $this->description,
             'language' => $this->language,
             'publication_date' => $this->publication_date,
@@ -37,10 +37,12 @@ class BookResource extends JsonResource
             'vote_count' => $this->vote_count,
             'page_count' => $this->page_count,
             'readers_count' => $this->readers_count,
-            'fragment' => $this->fragment,
+            'fragment' => $this->getFirstMediaUrl('fragment'),
             'book_file' => $this->getBookFileUrl(),
             'audio_files' => $this->getAudioFileUrls(),
-            'user_status' => Auth::check() ? BookUserStatusResource::make($this->whenLoaded('currentUserStatus')) : null
+            'user_status' => Auth::check() ? BookUserStatusResource::make($this->whenLoaded('currentUserStatus')) : null,
+            'rating_percentage' => $this->percentage_per_rating,
+
         ];
     }
 }

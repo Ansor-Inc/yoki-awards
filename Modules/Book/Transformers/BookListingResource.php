@@ -17,10 +17,11 @@ class BookListingResource extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title,
-            'image' => $this->image,
+            'image' => $this->getFirstMediaUrl('image'),
             'is_free' => (bool)$this->is_free,
             'price' => $this->price,
             'book_type' => $this->book_type,
+            'excerpt' => $this->when(isset($this->description), $this->description_excerpt),
             'author' => AuthorResource::make($this->whenLoaded('author')),
             'publisher' => PublisherResource::make($this->whenLoaded('publisher')),
             'rating' => is_null($this->rating) ? null : round($this->rating, 1),
