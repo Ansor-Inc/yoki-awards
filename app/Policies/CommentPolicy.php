@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\Models\Comment;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Auth\Access\Response;
 use Modules\Post\Entities\Post;
 use Modules\User\Entities\User;
 
@@ -26,8 +27,16 @@ class CommentPolicy
         return $this->isOwner($user, $comment);
     }
 
+    public function complain(User $user, Comment $comment)
+    {
+        return $user->complaints()->where(['complainable_type' => 'comment', 'complainable_id' => $comment->id])->exists() ?
+            Response::deny('You have already complained about this comment!') :
+            Response::allow();
+    }
+
     protected function isOwner(User $user, Comment $comment)
     {
         return (int)$user->id === (int)$comment->user_id;
     }
+
 }

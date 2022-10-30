@@ -10,7 +10,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Modules\Group\Entities\Group;
 use Modules\User\Entities\User;
-use function auth;
 
 class Post extends Model
 {

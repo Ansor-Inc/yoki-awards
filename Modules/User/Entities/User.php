@@ -4,6 +4,7 @@ namespace Modules\User\Entities;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -47,11 +48,18 @@ class User extends Authenticatable implements CanResetPasswordContract
         'phone_verified_at' => 'datetime',
     ];
 
+    //Scopes:
     public function scopeOfDegree(Builder $query, UserDegree $degree)
     {
         $query->where('degree', $degree->value);
     }
 
+    public function scopeFilter(Builder $builder, array $filters)
+    {
+        (new UserFilter($builder))->apply($filters);
+    }
+
+    //Relations:
     public function bookUserStatuses()
     {
         return $this->hasMany(BookUserStatus::class);
@@ -67,14 +75,30 @@ class User extends Authenticatable implements CanResetPasswordContract
         return $this->belongsToMany(Group::class, 'memberships')->wherePivot('approved', true);
     }
 
+    public function readBooks()
+    {
+        return $this->belongsToMany(Book::class, 'book_reads');
+    }
+
     public function memberships()
     {
         return $this->hasMany(Membership::class);
     }
 
+    public function complaints()
+    {
+        return $this->hasMany(Complaint::class, 'complainer_id');
+    }
+
+    //Helper methods:
     public function isWaitingForJoinApproval(Group $group)
     {
         return $this->memberships()->where('memberships.group_id', $group->id)->where('approved', false)->exists();
+    }
+
+    public function complain(Complaint $complaint)
+    {
+        return $this->complaints()->save($complaint);
     }
 
     public function hasVerifiedPhone()
@@ -90,16 +114,6 @@ class User extends Authenticatable implements CanResetPasswordContract
     public function getPhoneForPasswordReset()
     {
         return $this->phone;
-    }
-
-    public function readBooks()
-    {
-        return $this->belongsToMany(Book::class, 'book_reads');
-    }
-
-    public function scopeFilter(Builder $builder, array $filters)
-    {
-        (new UserFilter($builder))->apply($filters);
     }
 }
 

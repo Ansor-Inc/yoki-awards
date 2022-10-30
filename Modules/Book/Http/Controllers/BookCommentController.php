@@ -15,7 +15,7 @@ class BookCommentController extends Controller
     public function index(Book $book, Request $request)
     {
         $query = $book->comments()
-            ->with('descendants')
+            ->with(['descendants', 'user:id,fullname,avatar'])
             ->latest();
 
         $comments = $request->has('per_page')

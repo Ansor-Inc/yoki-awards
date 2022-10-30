@@ -14,4 +14,6 @@ interface PostCommentRepositoryInterface
     public function updatePostComment(Comment $comment, array $payload);
 
     public function deletePostComment(Comment $comment);
+
+    public function complain(Comment $comment, string $body);
 }

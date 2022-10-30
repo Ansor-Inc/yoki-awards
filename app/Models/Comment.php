@@ -14,8 +14,6 @@ class Comment extends Model
 
     protected $guarded = ['id'];
 
-    protected $with = ['user:id,fullname,avatar'];
-
     public function getParentKeyName()
     {
         return 'reply_id';

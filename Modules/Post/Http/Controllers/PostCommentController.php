@@ -10,6 +10,7 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
 use Modules\Book\Transformers\CommentResource;
 use Modules\Post\Entities\Post;
+use Modules\Post\Http\Requests\ComplainToCommentRequest;
 use Modules\Post\Http\Requests\CreatePostCommentRequest;
 use Modules\Post\Http\Requests\GetPostCommentsRequest;
 use Modules\Post\Http\Requests\UpdatePostCommentRequest;
@@ -57,5 +58,13 @@ class PostCommentController extends Controller
         return $deleted
             ? response(['message' => 'Comment deleted!'])
             : $this->failed();
+    }
+
+    public function complain(Comment $comment, ComplainToCommentRequest $request)
+    {
+        $this->authorize('complain', $comment);
+        $complaint = $this->commentRepository->complain($comment, $request->input('body'));
+
+        return $complaint ? response(['message' => 'Complaint sent successfully!']) : $this->failed();
     }
 }

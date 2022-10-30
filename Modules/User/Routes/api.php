@@ -1,11 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Laravel\Socialite\Facades\Socialite;
 use Modules\User\Http\Controllers\Auth\AuthController;
 use Modules\User\Http\Controllers\Auth\PasswordResetController;
 use Modules\User\Http\Controllers\Auth\PhoneVerifyController;
-use Modules\User\Http\Controllers\Auth\SocialAuthController;
 use Modules\User\Http\Controllers\UserController;
 
 /*

@@ -3,9 +3,8 @@
 namespace Modules\Post\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
-class CreatePostCommentRequest extends FormRequest
+class ComplainToCommentRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -15,10 +14,7 @@ class CreatePostCommentRequest extends FormRequest
     public function rules()
     {
         return [
-            'body' => 'required|string',
-            'reply_id' => ['sometimes', Rule::exists('comments','id')
-                ->where('commentable_type', 'post')
-                ->where('commentable_id', $this->post->id)]
+            'body' => ['required', 'string']
         ];
     }
 

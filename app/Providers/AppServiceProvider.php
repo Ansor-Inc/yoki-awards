@@ -46,6 +46,6 @@ class AppServiceProvider extends ServiceProvider
             URL::forceScheme('https');
         }
 
-        Relation::morphMap(Config::get('relations.morph_map', []));
+        Relation::morphMap(Config::get('morph-relation-mapping'));
     }
 }
