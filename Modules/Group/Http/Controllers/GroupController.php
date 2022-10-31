@@ -3,10 +3,13 @@
 namespace Modules\Group\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\AdminUser;
+use Illuminate\Support\Facades\Notification;
 use Modules\Group\Entities\Group;
 use Modules\Group\Http\Requests\CreateGroupRequest;
 use Modules\Group\Http\Requests\GetGroupsRequest;
 use Modules\Group\Http\Requests\UpdateGroupRequest;
+use Modules\Group\Notifications\GroupCreated;
 use Modules\Group\Repositories\Interfaces\GroupRepositoryInterface;
 use Modules\Group\Transformers\GroupCategoryResource;
 use Modules\Group\Transformers\GroupListingResource;
@@ -46,10 +49,15 @@ class GroupController extends Controller
     {
         $group = $this->groupRepository->createGroup($request->getSanitized());
 
-        return $group ? response([
-            'message' => 'Group created successfully, Please wait for admin approval!',
-            'group' => GroupResource::make($group)
-        ]) : $this->failed();
+        if ($group) {
+            Notification::send(AdminUser::all(), new GroupCreated($group));
+            return response([
+                'message' => 'Group created successfully, Please wait for admin approval!',
+                'group' => GroupResource::make($group)
+            ]);
+        }
+
+        return $this->failed();
     }
 
     public function showGroup(int $groupId)
@@ -81,6 +89,7 @@ class GroupController extends Controller
     public function deleteGroup(Group $group)
     {
         $this->authorize('delete', $group);
+
         $deleted = $this->groupRepository->deleteGroup($group->id);
 
         return $deleted ? response(['message' => 'Group deleted successfully!']) : $this->failed();
