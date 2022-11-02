@@ -5,6 +5,7 @@ namespace Modules\Group\Repositories;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Modules\Group\Entities\Group;
 use Modules\Group\Entities\GroupCategory;
+use Modules\Group\Enums\GroupStatus;
 use Modules\Group\Repositories\Interfaces\GroupRepositoryInterface;
 
 class GroupRepository implements GroupRepositoryInterface
@@ -54,6 +55,9 @@ class GroupRepository implements GroupRepositoryInterface
 
     public function createGroup(array $payload)
     {
+        //For testing:
+        $payload['status'] = GroupStatus::APPROVED->value;
+
         return Group::query()->create($payload);
     }
 
