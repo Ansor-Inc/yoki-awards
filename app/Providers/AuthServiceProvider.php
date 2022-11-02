@@ -2,7 +2,13 @@
 
 namespace App\Providers;
 
+use App\Models\Comment;
+use App\Policies\CommentPolicy;
+use App\Policies\GroupPolicy;
+use App\Policies\PostPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Modules\Group\Entities\Group;
+use Modules\Post\Entities\Post;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -12,6 +18,9 @@ class AuthServiceProvider extends ServiceProvider
      * @var array<class-string, class-string>
      */
     protected $policies = [
+        Group::class => GroupPolicy::class,
+        Comment::class => CommentPolicy::class,
+        Post::class => PostPolicy::class
         // 'App\Models\Model' => 'App\Policies\ModelPolicy',
     ];
 

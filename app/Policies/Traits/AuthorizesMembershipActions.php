@@ -25,7 +25,7 @@ trait AuthorizesMembershipActions
 
         if ($group->is_full) return Response::deny('This group is full!');
 
-        if (!in_array($potentialMember->degree, $group->degree_scope)) return Response::deny('Do not have enough degree!');
+        //if (!in_array($potentialMember->degree, $group->degree_scope)) return Response::deny('Do not have enough degree!');
 
         return $this->validateMembership($group, $potentialMember);
     }
