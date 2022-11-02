@@ -21,7 +21,7 @@ class Group extends Model
 {
     use HasGroupAdmins, HasGroupPermissions;
 
-    protected $guarded = ['id', 'status'];
+    protected $guarded = ['id'];
 
     protected $casts = [
         'degree_scope' => 'array'
