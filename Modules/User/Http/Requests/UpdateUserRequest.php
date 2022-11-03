@@ -28,10 +28,10 @@ class UpdateUserRequest extends FormRequest
     {
         return [
             'fullname' => ['required', 'string'],
-            'email' => ['sometimes', 'email', Rule::unique('users', 'email')->ignore(auth()->id())],
-            'region' => ['sometimes', 'string'],
-            'birthdate' => ['sometimes', 'date'],
-            'gender' => ['sometimes', new Enum(Gender::class)],
+            'email' => ['sometimes', 'nullable', 'email', Rule::unique('users', 'email')->ignore(auth()->id())],
+            'region' => ['sometimes', 'nullable', 'string'],
+            'birthdate' => ['sometimes', 'nullable', 'date'],
+            'gender' => ['sometimes', 'nullable', new Enum(Gender::class)],
             'old_password' => ['sometimes', 'string'],
             'new_password' => ['sometimes', 'string', 'confirmed', 'min:8']
         ];
