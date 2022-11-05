@@ -11,6 +11,6 @@ class GroupCategory extends Model
 
     public function groups()
     {
-        return $this->hasMany(Group::class);
+        return $this->hasMany(Group::class)->approved()->whereNotNull('owner_id');
     }
 }

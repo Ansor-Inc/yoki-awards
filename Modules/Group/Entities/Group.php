@@ -13,9 +13,9 @@ use Modules\Group\Entities\Traits\HasGroupAdmins;
 use Modules\Group\Entities\Traits\HasGroupPermissions;
 use Modules\Group\Enums\GroupStatus;
 use Modules\Group\Enums\GroupUserStatus;
+use Modules\Group\Filters\GroupFilter;
 use Modules\Post\Entities\Post;
 use Modules\User\Entities\User;
-use function auth;
 
 class Group extends Model
 {
@@ -23,60 +23,15 @@ class Group extends Model
 
     protected $guarded = ['id'];
 
-    protected $casts = [
-        'degree_scope' => 'array'
-    ];
+    protected $casts = ['degree_scope' => 'array'];
 
+    //Actions to-do when model is booted
     protected static function booted()
     {
-        static::addGlobalScope('approved', fn($query) => $query->where('status', GroupStatus::APPROVED->value));
-        static::created(function ($group) {
-            $group->update(['invite_link' => Str::random()]);
-        });
+        static::addGlobalScope('approved', fn($query) => $query->approved()); //Always retrieve only approved groups
     }
 
-    public function members(): BelongsToMany
-    {
-        return $this->belongsToMany(User::class, 'memberships')->wherePivot('approved', true);
-    }
-
-    public function potentialMembers()
-    {
-        return $this->belongsToMany(User::class, 'memberships')->wherePivot('approved', false);
-    }
-
-    public function memberships(): HasMany
-    {
-        return $this->hasMany(Membership::class);
-    }
-
-    public function currentUserMembershipStatus(): HasOne
-    {
-        return $this->hasOne(Membership::class)->where('user_id', auth()->id());
-    }
-
-    public function hasMember(User|Authenticatable $user)
-    {
-        return $this->memberships()->approved()->where('user_id', $user->id)->exists();
-    }
-
-    public function blackListMembers(): BelongsToMany
-    {
-        return $this->members()
-            ->select('users.id as user_id', 'users.fullname', 'users.avatar', 'black_list.*')
-            ->join('black_list', 'memberships.id', '=', 'black_list.membership_id');
-    }
-
-    public function isInBlackList(User $member): bool
-    {
-        return $this->blackListMembers()->where('user_id', $member->id)->exists();
-    }
-
-    public function getIsFullAttribute(): bool
-    {
-        return (int)$this->memberships()->approved()->count() >= (int)$this->member_limit;
-    }
-
+    //Relations:
     public function owner(): BelongsTo
     {
         return $this->belongsTo(User::class, 'owner_id');
@@ -92,13 +47,65 @@ class Group extends Model
         return $this->belongsTo(GroupCategory::class, 'group_category_id');
     }
 
-    public function scopeFilter($query, array $filters)
+    public function members(): BelongsToMany
     {
-        $query->when($filters['category_id'] ?? false, function ($query) use ($filters) {
-            $query->where('group_category_id', $filters['category_id']);
-        });
+        return $this->belongsToMany(User::class, 'memberships')->wherePivot('approved', true);
     }
 
+    public function potentialMembers(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'memberships')->wherePivot('approved', false);
+    }
+
+    public function memberships(): HasMany
+    {
+        return $this->hasMany(Membership::class);
+    }
+
+    public function currentUserMembershipStatus(): HasOne
+    {
+        return $this->hasOne(Membership::class)->where('user_id', auth()->id());
+    }
+
+    public function blackListMembers(): BelongsToMany
+    {
+        return $this->members()
+            ->select('users.id as user_id', 'users.fullname', 'users.avatar', 'black_list.*')
+            ->join('black_list', 'memberships.id', '=', 'black_list.membership_id');
+    }
+
+    //Helper methods:
+    public function hasMember(User|Authenticatable $user)
+    {
+        return $this->memberships()->approved()->where('user_id', $user->id)->exists();
+    }
+
+    public function isInBlackList(User $member): bool
+    {
+        return $this->blackListMembers()->where('user_id', $member->id)->exists();
+    }
+
+    public function isFull(): bool
+    {
+        if (isset($this->members_count) && isset($this->member_limit)) {
+            return (int)$this->members_count >= (int)$this->member_limit;
+        }
+
+        return (int)$this->memberships()->approved()->count() >= (int)$this->member_limit;
+    }
+
+    //Scopes:
+    public function scopeFilter($query, array $filters)
+    {
+        (new GroupFilter($query))->apply($filters);
+    }
+
+    public function scopeApproved($query)
+    {
+        $query->where('status', GroupStatus::APPROVED->value);
+    }
+
+    //Attributes
     public function getCurrentUserJoinStatusAttribute(): string
     {
         $status = $this->currentUserMembershipStatus;

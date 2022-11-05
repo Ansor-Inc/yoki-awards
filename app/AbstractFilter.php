@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Str;
 
 abstract class AbstractFilter
 {
@@ -16,7 +17,7 @@ abstract class AbstractFilter
     public function apply(array $filters)
     {
         foreach ($filters as $param => $value) {
-            if (method_exists($this, $param)) {
+            if (method_exists($this, Str::camel($param))) {
                 $this->{$param}($value);
             }
         }

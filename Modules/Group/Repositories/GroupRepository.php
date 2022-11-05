@@ -3,6 +3,7 @@
 namespace Modules\Group\Repositories;
 
 use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Support\Str;
 use Modules\Group\Entities\Group;
 use Modules\Group\Entities\GroupCategory;
 use Modules\Group\Enums\GroupStatus;
@@ -20,7 +21,11 @@ class GroupRepository implements GroupRepositoryInterface
     public function getGroupsExceptMine(array $filters = [])
     {
         $query = Group::query()
-            ->with(['category:id,title', 'members' => fn($query) => $query->select('users.id', 'users.avatar')->limit(3), 'currentUserMembershipStatus'])
+            ->with([
+                'category:id,title',
+                'members' => fn($query) => $query->select('users.id', 'users.avatar')->limit(3),
+                'currentUserMembershipStatus'
+            ])
             ->withCount('members')
             ->filter($filters)
             ->whereNotNull('owner_id')
@@ -55,9 +60,9 @@ class GroupRepository implements GroupRepositoryInterface
 
     public function createGroup(array $payload)
     {
-        //For testing:
-        $payload['status'] = GroupStatus::APPROVED->value;
+        $payload['status'] = GroupStatus::APPROVED->value; //For testing:
 
+        $payload['invite_link'] = Str::random();
         return Group::query()->create($payload);
     }
 

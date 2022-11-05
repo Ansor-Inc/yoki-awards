@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'created' => 'New group has been created!'
+    'is_not_owner_or_member' => 'You are not the member or owner of this group!'
 ];

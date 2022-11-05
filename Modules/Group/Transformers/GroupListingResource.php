@@ -23,7 +23,7 @@ class GroupListingResource extends JsonResource
             'group_status' => $this->whenNotNull($this->status),
             'members' => UserResource::collection($this->whenLoaded('members')),
             'members_count' => (int)$this->members_count,
-            'is_full' => (int)$this->members_count >= (int)$this->member_limit,
+            'is_full' => $this->isFull(),
             'join_status' => $this->current_user_join_status
         ];
     }
