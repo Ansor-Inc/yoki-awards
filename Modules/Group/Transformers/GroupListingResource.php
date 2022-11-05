@@ -23,6 +23,7 @@ class GroupListingResource extends JsonResource
             'group_status' => $this->whenNotNull($this->status),
             'members' => UserResource::collection($this->whenLoaded('members')),
             'members_count' => (int)$this->members_count,
+            'is_private' => (bool)$this->is_private,
             'is_full' => $this->isFull(),
             'join_status' => $this->current_user_join_status
         ];

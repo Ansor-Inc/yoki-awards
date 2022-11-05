@@ -38,7 +38,7 @@ class GroupRepository implements GroupRepositoryInterface
     {
         $query = $this->owner->groups()
             ->withoutGlobalScopes()
-            ->with(['category:id,title', 'members' => fn($query) => $query->select('avatar')->limit(3)])
+            ->with(['category:id,title', 'members' => fn($query) => $query->select('users.id', 'users.avatar')->limit(3)])
             ->withCount('members')
             ->filter($filters);
 
