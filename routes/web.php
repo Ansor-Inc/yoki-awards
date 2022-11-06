@@ -13,3 +13,4 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::get('/', fn() => 'Yoki-api - v1');
+Route::get('/privacy-policy', fn() => 'Privacy policy');
