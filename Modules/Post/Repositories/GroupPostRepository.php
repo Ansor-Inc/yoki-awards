@@ -15,8 +15,8 @@ class GroupPostRepository implements GroupPostRepositoryInterface
     {
         $query = $group->posts()
             ->with(['author:id,fullname', 'group:id,owner_id'])
-            ->withCount(['likes', 'comments'])
-            ->applyCurrentUserDegreeScopeFilter();
+            ->withCount(['likes', 'comments']);
+        //->applyCurrentUserDegreeScopeFilter();
 
         return isset($filters['per_page']) ? $query->paginate($filters['per_page']) : $query->get();
     }

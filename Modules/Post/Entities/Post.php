@@ -34,7 +34,7 @@ class Post extends Model
 
     public function comments(): MorphMany
     {
-        return $this->morphMany(Comment::class, 'commentable')->whereNull('reply_id');
+        return $this->morphMany(Comment::class, 'commentable');
     }
 
     public function getCanCurrentUserEditDeleteAttribute()

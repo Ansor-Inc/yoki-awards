@@ -12,6 +12,7 @@ class PostCommentRepository implements PostCommentRepositoryInterface
     public function getPostComments(Post $post, array $filters)
     {
         $query = $post->comments()
+            ->whereNull('reply_id')
             ->with(['descendants', 'user:id,fullname,avatar'])
             ->latest();
 

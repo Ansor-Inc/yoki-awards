@@ -21,6 +21,7 @@ class GroupResource extends JsonResource
             'degree_scope' => $this->degree_scope,
             'created_at' => $this->created_at?->format('d.m.Y'),
             'posts_count' => $this->whenCounted('posts'),
+            'most_reviewed_posts' => $this->mostReviewedPosts,
             'member_limit' => $this->member_limit,
             'is_private' => is_null($this->is_private) ? null : (bool)$this->is_private,
             'status' => $this->status,

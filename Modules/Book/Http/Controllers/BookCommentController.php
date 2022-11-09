@@ -15,6 +15,7 @@ class BookCommentController extends Controller
     public function index(Book $book, Request $request)
     {
         $query = $book->comments()
+            ->whereNull('reply_id')
             ->with(['descendants', 'user:id,fullname,avatar'])
             ->latest();
 

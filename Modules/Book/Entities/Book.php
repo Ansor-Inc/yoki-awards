@@ -44,7 +44,7 @@ class Book extends Model implements HasMedia
 
     public function comments()
     {
-        return $this->morphMany(Comment::class, 'commentable')->whereNull('reply_id');
+        return $this->morphMany(Comment::class, 'commentable');
     }
 
     public function readers()

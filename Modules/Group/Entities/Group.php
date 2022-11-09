@@ -3,6 +3,7 @@
 namespace Modules\Group\Entities;
 
 use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -40,6 +41,16 @@ class Group extends Model
     public function posts(): HasMany
     {
         return $this->hasMany(Post::class);
+    }
+
+    public function mostReviewedPosts(): Builder|HasMany
+    {
+        return $this->posts()
+            ->select('id', 'title')
+            ->has('comments')
+            ->withCount('comments')
+            ->orderBy('comments_count', 'DESC')
+            ->limit(3);
     }
 
     public function category(): BelongsTo
