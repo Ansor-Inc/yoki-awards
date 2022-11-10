@@ -40,7 +40,7 @@ class BookResource extends JsonResource
             'fragment' => $this->getFirstMediaUrl('fragment'),
             'book_file' => $this->getBookFileUrl(),
             'audio_files' => $this->getAudioFileUrls(),
-            'user_status' => Auth::check() ? BookUserStatusResource::make($this->whenLoaded('currentUserStatus')) : null,
+            'user_status' => BookUserStatusResource::make($this->whenLoaded('currentUserStatus')),
             'rating_percentage' => $this->percentage_per_rating,
 
         ];
