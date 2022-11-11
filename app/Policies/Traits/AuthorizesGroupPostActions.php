@@ -11,10 +11,9 @@ trait AuthorizesGroupPostActions
 {
     public function getPosts(User $user, Group $group)
     {
-        return true;//Temporary
-//        return $group->currentUserPermissions['can_see_post']
-//            ? Response::allow()
-//            : GroupPolicyResponse::dontHaveEnoughPrivilege();
+        return $group->currentUserPermissions['can_see_post']
+            ? Response::allow()
+            : GroupPolicyResponse::dontHaveEnoughPrivilege();
     }
 
     public function createPost(User $user, Group $group)

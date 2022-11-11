@@ -32,6 +32,11 @@ class GroupPostController extends Controller
         return PostResource::collection($posts);
     }
 
+    public function show(Post $post)
+    {
+        return PostResource::make($post);
+    }
+
     public function create(Group $group, CreateGroupPostRequest $request)
     {
         /* @see AuthorizesGroupPostActions::createPost() */

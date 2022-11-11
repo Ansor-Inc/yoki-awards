@@ -19,6 +19,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::post('/groups/{group}/posts', [GroupPostController::class, 'create']);
 
     Route::prefix('posts')->group(function () {
+        Route::get('/{post}', [GroupPostController::class, 'show']);
         Route::put('/{post}', [GroupPostController::class, 'update']);
         Route::delete('/{post}', [GroupPostController::class, 'delete']);
         Route::post('/{post}/toggleLike', [GroupPostController::class, 'toggleLike']);
