@@ -24,15 +24,15 @@ class SocialAuthController extends Controller
 
         $socialNetworkUser = Socialite::driver($driver)->stateless()->user();
 
-        $user = User::query()->updateOrCreate(
+        $user = User::query()->firstOrCreate(
             [
-                'email' => $socialNetworkUser->getEmail(),
                 'social_auth_id' => $socialNetworkUser->getId(),
                 'social_auth_type' => $driver
             ],
             [
                 'fullname' => $socialNetworkUser->getName(),
-                'avatar' => $socialNetworkUser->getAvatar()
+                'avatar' => $socialNetworkUser->getAvatar(),
+                'email' => $socialNetworkUser->getEmail(),
             ]
         );
 
