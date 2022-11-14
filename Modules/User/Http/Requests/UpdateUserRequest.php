@@ -27,7 +27,7 @@ class UpdateUserRequest extends FormRequest
     public function rules()
     {
         return [
-            'fullname' => ['required', 'string'],
+            'fullname' => ['sometimes','required', 'string'],
             'email' => ['sometimes', 'nullable', 'email', Rule::unique('users', 'email')->ignore(auth()->id())],
             'region' => ['sometimes', 'nullable', 'string'],
             'birthdate' => ['sometimes', 'nullable', 'date'],
