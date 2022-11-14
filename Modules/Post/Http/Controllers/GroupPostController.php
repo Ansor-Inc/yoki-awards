@@ -34,7 +34,7 @@ class GroupPostController extends Controller
 
     public function show(Post $post)
     {
-        return PostResource::make($post);
+        return PostResource::make($post->loadCount('likes'));
     }
 
     public function create(Group $group, CreateGroupPostRequest $request)
