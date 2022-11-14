@@ -24,7 +24,7 @@ class AuthController extends Controller
         $registeredUser = $this->userRepository->registerUser($request->validated());
 
         if (!isset($registeredUser)) {
-            return response(['message' => 'Something went wrong while registering!'], 500);
+            return response(['message' => "Ro‘yxatdan o‘tishda xatolik yuz berdi!"], 500);
         }
 
         return response([
@@ -44,7 +44,7 @@ class AuthController extends Controller
             return $this->respondWithToken($token);
         };
 
-        return response()->json(['message' => 'These credentials do not match our records!'], 404);
+        return response()->json(['message' => trans('auth.failed')], 404);
     }
 
     public function logout(Request $request)
