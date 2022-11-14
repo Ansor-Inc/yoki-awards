@@ -18,7 +18,7 @@ class UpdateUserPhoneRequest extends FormRequest
     public function rules()
     {
         return [
-            'phone' => ['required', 'digits:12', Rule::unique('users')->except(auth()->id())],
+            'phone' => ['required', 'digits:12', Rule::unique('users')->ignore(auth()->id())],
             'code' => ['required', 'digits:4']
         ];
     }
