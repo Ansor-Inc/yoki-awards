@@ -23,7 +23,7 @@ class UserController extends Controller
     {
         $data = $request->validated();
 
-        return response()->json($useCase($data));
+        return $useCase($data);
     }
 
     public function updatePhone(UpdateUserPhoneRequest $request)

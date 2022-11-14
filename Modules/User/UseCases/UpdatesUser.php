@@ -15,15 +15,15 @@ class UpdatesUser
             if (Hash::check($data['old_password'], $user->password)) {
                 $user->update(['password' => Hash::make($data['new_password'])]);
             } else {
-                return ['message' => 'Old password is incorrect!'];
+                return response(['message' => 'Old password is incorrect!'],442);
             }
         }
 
         $user->update($data);
 
-        return [
+        return response([
             'message' => 'User updated successfully!',
             'user' => UserResource::make($user)
-        ];
+        ]);
     }
 }
