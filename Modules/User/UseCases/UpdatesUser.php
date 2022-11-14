@@ -15,14 +15,14 @@ class UpdatesUser
             if (Hash::check($data['old_password'], $user->password)) {
                 $user->update(['password' => Hash::make($data['new_password'])]);
             } else {
-                return response(['message' => 'Old password is incorrect!'],442);
+                return response(['message' => "Eski parol noto'g'ri!"], 442);
             }
         }
 
         $user->update($data);
 
         return response([
-            'message' => 'User updated successfully!',
+            'message' => "Foydalanuvchi ma'lumotlari muvaffaqiyatli o'zgartirildi",
             'user' => UserResource::make($user)
         ]);
     }
