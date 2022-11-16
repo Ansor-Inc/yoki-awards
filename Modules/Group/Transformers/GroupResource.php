@@ -18,6 +18,7 @@ class GroupResource extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title,
+            'category' => GroupCategoryResource::make($this->whenLoaded('category')),
             'degree_scope' => $this->degree_scope,
             'created_at' => $this->created_at?->format('d.m.Y'),
             'posts_count' => $this->whenCounted('posts'),

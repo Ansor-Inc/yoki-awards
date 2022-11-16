@@ -54,7 +54,7 @@ class GroupRepository implements GroupRepositoryInterface
     {
         return Group::query()
             ->withCount('posts')
-            ->with('currentUserPermissionStatus')
+            ->with(['currentUserPermissionStatus','category'])
             ->findOrFail($id);
     }
 
