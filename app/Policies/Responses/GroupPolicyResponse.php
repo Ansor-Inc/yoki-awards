@@ -6,6 +6,11 @@ use Illuminate\Auth\Access\Response;
 
 class GroupPolicyResponse
 {
+    public static function hasAlreadyJoined(): Response
+    {
+        return Response::deny("Siz bu guruxga allaqachon qo'shilgansiz!");
+    }
+
     public static function notOwnerOfTheGroup(): Response
     {
         return Response::deny(__('group.you_are_not_the_owner_or_member_of_group'));

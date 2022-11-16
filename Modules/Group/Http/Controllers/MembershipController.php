@@ -42,8 +42,8 @@ class MembershipController extends Controller
         $membership = $this->membershipRepository->createMembership($group, request()->user());
 
         return $membership->approved ?
-            response(['joined' => true, 'message' => 'Successfully joined the group!']) :
-            response(['joined' => false, 'message' => 'This group is private, your join request has been sent to administrators!']);
+            response(['joined' => true, 'message' => "Guruxga muvafaqiyatli qo'shildingiz!"]) :
+            response(['joined' => false, 'message' => "Bu guruh xususiy, qo‘shilish so‘rovingiz gurux administratorlariga yuborildi!"]);
     }
 
     public function leaveGroup(Group $group)

@@ -43,6 +43,9 @@ class GroupPolicy
 
     public function joinGroup(User $user, Group $group): Response|bool
     {
+        if ($group->hasMember($user))
+            return GroupPolicyResponse::hasAlreadyJoined();
+
         if ($group->owner->is($user))
             return GroupPolicyResponse::isOwnerOfTheGroup();
 
