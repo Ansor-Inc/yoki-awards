@@ -29,7 +29,7 @@ class GroupPolicy
 
     public function update(User $user, Group $group): Response
     {
-        return ($this->isOwner($user, $group) || $group->currentUserPermissions['can_update_group'])
+        return ($group->owner->is($user) || $group->currentUserPermissions['can_update_group'])
             ? Response::allow()
             : GroupPolicyResponse::dontHaveEnoughPrivilege();
     }
