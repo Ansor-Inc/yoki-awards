@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Modules\Book\Http\Controllers\BookCommentController;
 use Modules\Book\Http\Controllers\BookController;
@@ -25,7 +24,7 @@ Route::get('/publishers/{publisher}/books', [PublisherController::class, 'getPub
 Route::get('/genres', [GenreController::class, 'index']);
 Route::get('/genres/{genre}/books', [GenreController::class, 'genreBooks']);
 
-Route::prefix('books')->group(function () {
+Route::prefix('books')->group(callback: function () {
     Route::get('/', [BookController::class, 'index']);
     Route::get('/search', [BookController::class, 'search']);
     Route::get('/sections', [BookController::class, 'getBooksBySections']);

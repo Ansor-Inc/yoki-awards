@@ -12,21 +12,30 @@ trait InteractsWithBookFiles
             return $this->getFirstMediaUrl('book_file');
         }
 
-        if ($this->isBoughtByCurrentUser()) {
-            $url = $this->getFirstMediaPath('book_file');
-            return $url !== '' ? Storage::temporaryUrl($this->getFirstMediaPath('book_file'), now()->addMinutes(5)) : null;
+        if ($this->isBoughtBy(auth()->user())) {
+            return $this->getTemporaryUrl($this->getFirstMediaPath('book_file'));
         }
 
         return null;
     }
 
-    public function getAudioFileUrls()
+    public function getAudioFileUrls(): array
     {
-        return collect($this->getMedia('audio_files'))->map(fn($media) => $media->getUrl())->toArray();
+        if ($this->is_free) {
+            return collect($this->getMedia('audio_files'))->map(fn($media) => $media->getUrl())->toArray();
+        }
+
+        if ($this->isBoughtBy(auth()->user())) {
+            collect($this->getMedia('audio_files'))->map(fn($media) => $this->getTemporaryUrl($media->getUrl())->toArray());
+        }
+
+        return [];
     }
 
-    public function isBoughtByCurrentUser()
+    public function getTemporaryUrl(string $url): ?string
     {
-        return true;
+        return ($url !== '')
+            ? Storage::temporaryUrl($url, now()->addMinutes(self::BOOK_URL_EXPIRATION))
+            : null;
     }
 }

@@ -5,6 +5,7 @@ namespace Modules\Book\Entities;
 use App\Models\Comment;
 use App\Models\Tag;
 use Brackets\Media\HasMedia\HasMediaCollectionsTrait;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Modules\Book\Entities\Traits\InteractsWithBookFiles;
@@ -20,6 +21,8 @@ class Book extends Model implements HasMedia
     use HasMediaCollectionsTrait;
     use InteractsWithBookFiles;
     use HasRecursiveRelationships;
+
+    const BOOK_URL_EXPIRATION = 10;
 
     protected static function booted()
     {
@@ -99,13 +102,18 @@ class Book extends Model implements HasMedia
             ->get();
     }
 
+    public function isBoughtBy(Authenticatable|User $user)
+    {
+        return $user->purchases()->completed()->ofBook($this)->exists();
+    }
+
     //Attributes:
-    public function getPercentagePerRatingAttribute()
+    public function getPercentagePerRatingAttribute(): array
     {
         return BookRatingPercentage::makeFrom($this->percentagePerRating());
     }
 
-    public function getDescriptionExcerptAttribute()
+    public function getDescriptionExcerptAttribute(): string
     {
         return Str::limit(strip_tags($this->description), 120);
     }

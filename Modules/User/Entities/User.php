@@ -4,7 +4,6 @@ namespace Modules\User\Entities;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -12,6 +11,7 @@ use Modules\Book\Entities\Book;
 use Modules\Book\Entities\BookUserStatus;
 use Modules\Group\Entities\Group;
 use Modules\Group\Entities\Membership;
+use Modules\Purchase\Entities\Purchase;
 use Modules\User\Contracts\CanResetPasswordContract;
 use Modules\User\Enums\UserDegree;
 use Modules\User\Filters\UserFilter;
@@ -114,6 +114,11 @@ class User extends Authenticatable implements CanResetPasswordContract
     public function getPhoneForPasswordReset()
     {
         return $this->phone;
+    }
+
+    public function purchases()
+    {
+        return $this->hasMany(Purchase::class);
     }
 }
 
