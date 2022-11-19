@@ -23,5 +23,6 @@ Route::any('/billing/{paymentSystem}/handle', function (PaymentSystem $paymentSy
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::post('/books/{book}/make-purchase', [BookPurchaseController::class, 'makePurchase']);
     Route::get('/purchases', [BookPurchaseController::class, 'index']);
+    Route::get('/purchases/completed', [BookPurchaseController::class, 'getCompletedPurchases']);
     Route::post('/purchases/{purchase}/checkout', [CheckoutController::class, 'checkout']);
 });

@@ -8,9 +8,11 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Modules\Book\Entities\Book;
+use Modules\Book\Transformers\BookListingResource;
 use Modules\Book\Transformers\PurchaseResource;
 use Modules\Purchase\Entities\Purchase;
 use Modules\Purchase\Enums\PurchaseStatus;
+use Modules\Purchase\Http\Requests\GetCompletedPurchasesRequest;
 use Modules\Purchase\Http\Requests\MakePurchaseRequest;
 
 class BookPurchaseController extends Controller
@@ -22,6 +24,18 @@ class BookPurchaseController extends Controller
         $purchases = $request->has('per_page') ? $query->paginate($request->input('per_page')) : $query->get();
 
         return PurchaseResource::collection($purchases);
+    }
+
+    public function getCompletedPurchases(GetCompletedPurchasesRequest $request)
+    {
+        $query = $request->user()->purchases()->completed()->with(['book', 'book.author']);
+        if ($request->has('type')) {
+            $query->whereRelation('book', 'book_type', $request->input('type'));
+        }
+
+        $purchasedBooks = $request->has('per_page') ? $query->paginate($request->input('per_page')) : $query->get();
+
+        return BookListingResource::collection($purchasedBooks->pluck('book'));
     }
 
     public function makePurchase(Book $book, MakePurchaseRequest $request)
@@ -55,7 +69,12 @@ class BookPurchaseController extends Controller
 
     protected function createPurchase(Authenticatable $user, Book $book, string $phone): Model|Builder
     {
-        return Purchase::query()->create([
+        return Purchase::query()->create($this->purchasePayload($user, $book, $phone));
+    }
+
+    protected function purchasePayload(Authenticatable $user, Book $book, string $phone)
+    {
+        return [
             'user_id' => $user->id,
             'book_id' => $book->id,
             'amount' => $book->is_free ? 0 : $book->price,
@@ -63,30 +82,29 @@ class BookPurchaseController extends Controller
             'state' => $book->is_free ? PurchaseStatus::COMPLETED->value : PurchaseStatus::PENDING_PAYMENT->value,
             'user_data' => $user,
             'book_data' => $book->load('publisher')
-        ]);
+        ];
     }
 
     protected function userHasAlreadyBoughtResponse($purchase)
     {
-        return response([
-            'message' => 'Siz allaqachon bu kitobni sotib olgansiz!',
-            'purchase' => PurchaseResource::make($purchase)
-        ]);
+        return $this->purchaseResponse($purchase, 'Siz allaqachon bu kitobni sotib olgansiz!');
     }
 
     protected function pendingPaymentResponse($purchase)
     {
-        return response([
-            'message' => "To'lov kutilmoqda!",
-            'purchase' => PurchaseResource::make($purchase)
-        ]);
+        return $this->purchaseResponse($purchase, "To'lov kutilmoqda!");
     }
 
     protected function hasBoughtResponse(Model|Builder $purchase)
     {
+        return $this->purchaseResponse($purchase, 'Kitob sotib olindi!');
+    }
+
+    protected function purchaseResponse($purchase, string $message)
+    {
         return response([
-            'message' => 'Kitob sotib olindi!',
-            'purchase' => PurchaseResource::make($purchase)
+            'message' => $message,
+            'purchase' => $purchase->load('book', 'book.publisher', 'book.author')
         ]);
     }
 

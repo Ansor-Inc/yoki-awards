@@ -19,14 +19,7 @@ class PurchaseResource extends JsonResource
             'amount' => $this->amount,
             'state' => $this->state,
             'created_at' => $this->created_at?->format('d.m.Y'),
-            'book' => [
-                'id' => $this->book_data['id'],
-                'title' => $this->book_data['title'],
-                'publisher' => isset($this->book_data['publisher']) ? [
-                    'id' => $this->book_data['publisher']['id'],
-                    'title' => $this->book_data['publisher']['title']
-                ] : null
-            ]
+            'book' => BookListingResource::make($this->whenLoaded('book'))
         ];
     }
 }
