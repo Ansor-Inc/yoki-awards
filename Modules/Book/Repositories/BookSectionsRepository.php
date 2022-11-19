@@ -15,7 +15,7 @@ class BookSectionsRepository implements BookSectionsRepositoryInterface
         return $this->getListingQuery()
             ->where('book_type', BookType::E_BOOK)
             ->whereRelation('tags', 'name', 'trending')
-            ->limit(4)
+            ->limit(6)
             ->get();
     }
 
@@ -24,7 +24,7 @@ class BookSectionsRepository implements BookSectionsRepositoryInterface
         return $this->getListingQuery()
             ->where('book_type', BookType::AUDIO_BOOK)
             ->whereRelation('tags', 'name', 'trending')
-            ->limit(4)
+            ->limit(6)
             ->get();
     }
 
