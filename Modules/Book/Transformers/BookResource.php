@@ -3,6 +3,7 @@
 namespace Modules\Book\Transformers;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Auth;
 
 class BookResource extends JsonResource
 {
@@ -36,7 +37,7 @@ class BookResource extends JsonResource
             'vote_count' => $this->vote_count,
             'page_count' => $this->page_count,
             'readers_count' => $this->readers_count,
-            'is_bought' => $this->isBoughtBy(auth()->user()),
+            'is_bought' => Auth::check() ? $this->isBoughtBy(auth()->user()) : false,
             'fragment' => $this->getFirstMediaUrl('fragment'),
             'book_file' => $this->getBookFileUrl(),
             'audio_files' => $this->getAudioFileUrls(),
