@@ -21,7 +21,7 @@ class GroupListingResource extends JsonResource
             'title' => $this->title,
             'category' => GroupCategoryResource::make($this->whenLoaded('category')),
             'group_status' => $this->whenNotNull($this->status),
-            'members' => UserResource::collection($this->whenLoaded('members')),
+            'members' => UserResource::collection($this->load(['members' => fn($query) => $query->select('users.id', 'users.avatar')->limit(3)])->members),
             'members_count' => (int)$this->members_count,
             'is_private' => (bool)$this->is_private,
             'is_full' => $this->isFull(),

@@ -21,15 +21,11 @@ class GroupRepository implements GroupRepositoryInterface
     public function getGroupsExceptMine(array $filters = [])
     {
         $query = Group::query()
-            ->filter($filters)
+            ->with(['category:id,title', 'currentUserMembershipStatus'])
+            ->withCount('members')
             ->whereNotNull('owner_id')
             ->whereNot('owner_id', $this->owner->id)
-            ->with([
-                'category:id,title',
-                'members' => fn($query) => $query->select('users.id', 'users.avatar')->limit(3),
-                'currentUserMembershipStatus'
-            ])
-            ->withCount('members');
+            ->filter($filters);
 
         return isset($filters['per_page']) ? $query->paginate($filters['per_page']) : $query->limit(100)->get();
     }
