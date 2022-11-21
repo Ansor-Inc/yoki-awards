@@ -81,7 +81,7 @@ class BookPurchaseController extends Controller
             'phone' => $phone,
             'state' => $book->is_free ? PurchaseStatus::COMPLETED->value : PurchaseStatus::PENDING_PAYMENT->value,
             'user_data' => $user,
-            'book_data' => $book->load('publisher')
+            'book_data' => $book->load('publisher')->append('image')
         ];
     }
 

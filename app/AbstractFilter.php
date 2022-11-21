@@ -16,9 +16,12 @@ abstract class AbstractFilter
 
     public function apply(array $filters)
     {
+
         foreach ($filters as $param => $value) {
-            if (method_exists($this, Str::camel($param))) {
-                $this->{$param}($value);
+            $methodName = Str::camel($param);
+
+            if (method_exists($this, $methodName)) {
+                $this->{$methodName}($value);
             }
         }
     }

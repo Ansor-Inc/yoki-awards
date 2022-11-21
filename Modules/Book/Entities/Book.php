@@ -124,4 +124,10 @@ class Book extends Model implements HasMedia
         $this->addMediaCollection('image')
             ->useFallbackUrl(asset('media/missingbook.png'));
     }
+
+    public function getImageAttribute(): string
+    {
+        return $this->getFirstMediaUrl('image');
+    }
+
 }
