@@ -12,7 +12,7 @@ trait InteractsWithBookFiles
             return $this->getFirstMediaUrl('book_file');
         }
 
-        if ($this->isBoughtBy(auth()->user())) {
+        if (auth()->check() && $this->isBoughtBy(auth()->user())) {
             return $this->getTemporaryUrl($this->getFirstMediaPath('book_file'));
         }
 
@@ -25,7 +25,7 @@ trait InteractsWithBookFiles
             return collect($this->getMedia('audio_files'))->map(fn($media) => $media->getUrl())->toArray();
         }
 
-        if ($this->isBoughtBy(auth()->user())) {
+        if (auth()->check() && $this->isBoughtBy(auth()->user())) {
             collect($this->getMedia('audio_files'))->map(fn($media) => $this->getTemporaryUrl($media->getUrl())->toArray());
         }
 
