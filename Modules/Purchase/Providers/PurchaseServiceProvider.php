@@ -3,7 +3,8 @@
 namespace Modules\Purchase\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Database\Eloquent\Factory;
+use Modules\Purchase\Repositories\Interfaces\PurchaseRepositoryInterface;
+use Modules\Purchase\Repositories\PurchaseRepository;
 
 class PurchaseServiceProvider extends ServiceProvider
 {
@@ -38,6 +39,7 @@ class PurchaseServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->register(RouteServiceProvider::class);
+        $this->app->bind(PurchaseRepositoryInterface::class, PurchaseRepository::class);
     }
 
     /**

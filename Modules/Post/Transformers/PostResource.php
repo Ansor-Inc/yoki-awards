@@ -24,6 +24,7 @@ class PostResource extends JsonResource
             'created_at_human_readable' => $this->created_at?->diffForHumans(),
             'comments_count' => $this->whenCounted('comments_count'),
             'likes_count' => $this->whenCounted('likes_count'),
+            'is_liked' => (bool)$this->is_liked,
             'can_edit_delete' => (int)$this->user_id === (int)auth()->id() || (int)$this->group->owner_id === (int)auth()->id()
         ];
     }

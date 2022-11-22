@@ -29,7 +29,7 @@ class Post extends Model
 
     public function likes(): HasMany
     {
-        return $this->hasMany(PostLike::class);
+        return $this->hasMany(PostLike::class)->where('liked', true);
     }
 
     public function comments(): MorphMany

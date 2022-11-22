@@ -15,6 +15,7 @@ class GroupPostRepository implements GroupPostRepositoryInterface
     {
         $query = $group->posts()
             ->with(['author:id,fullname', 'group:id,owner_id'])
+            ->withExists(['likes as is_liked' => fn($query) => $query->where('user_id', auth()->id())])
             ->withCount(['likes', 'comments'])
             ->latest();
         //->applyCurrentUserDegreeScopeFilter();

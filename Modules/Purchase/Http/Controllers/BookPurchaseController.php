@@ -3,39 +3,38 @@
 namespace Modules\Purchase\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Modules\Book\Entities\Book;
 use Modules\Book\Transformers\BookListingResource;
 use Modules\Book\Transformers\PurchaseResource;
-use Modules\Purchase\Entities\Purchase;
 use Modules\Purchase\Enums\PurchaseStatus;
 use Modules\Purchase\Http\Requests\GetCompletedPurchasesRequest;
 use Modules\Purchase\Http\Requests\MakePurchaseRequest;
+use Modules\Purchase\Repositories\Interfaces\PurchaseRepositoryInterface;
 
 class BookPurchaseController extends Controller
 {
+    protected PurchaseRepositoryInterface $purchaseRepository;
+
+    public function __construct(PurchaseRepositoryInterface $repository)
+    {
+        $this->purchaseRepository = $repository;
+    }
+
     public function index(Request $request)
     {
-        $query = $request->user()->purchases()->with('book')->latest();
-
-        $purchases = $request->has('per_page') ? $query->paginate($request->input('per_page')) : $query->get();
+        $purchases = $this->purchaseRepository->getPurchaseHistory($request->user(), $request->input('per_page'));
 
         return PurchaseResource::collection($purchases);
     }
 
     public function getCompletedPurchases(GetCompletedPurchasesRequest $request)
     {
-        $query = $request->user()->purchases()->completed()->with(['book', 'book.author']);
-        if ($request->has('type')) {
-            $query->whereRelation('book', 'book_type', $request->input('type'));
-        }
+        $purchasedBooks = $this->purchaseRepository->getPurchasedBooks($request->user(), $request->validated());
 
-        $purchasedBooks = $request->has('per_page') ? $query->paginate($request->input('per_page')) : $query->get();
-
-        return BookListingResource::collection($purchasedBooks->pluck('book'));
+        return BookListingResource::collection($purchasedBooks);
     }
 
     public function makePurchase(Book $book, MakePurchaseRequest $request)
@@ -54,7 +53,7 @@ class BookPurchaseController extends Controller
 
         //Create new purchase
         try {
-            $purchase = $this->createPurchase($user, $book, $request->input('phone'));
+            $purchase = $this->purchaseRepository->makePurchase($user, $book, $request->input('phone'));
         } catch (\Throwable $exception) {
             return response(['message' => $exception->getMessage()], 500);
         }
@@ -65,24 +64,6 @@ class BookPurchaseController extends Controller
         }
 
         return $this->pendingPaymentResponse($purchase);
-    }
-
-    protected function createPurchase(Authenticatable $user, Book $book, string $phone): Model|Builder
-    {
-        return Purchase::query()->create($this->purchasePayload($user, $book, $phone));
-    }
-
-    protected function purchasePayload(Authenticatable $user, Book $book, string $phone)
-    {
-        return [
-            'user_id' => $user->id,
-            'book_id' => $book->id,
-            'amount' => $book->is_free ? 0 : $book->price,
-            'phone' => $phone,
-            'state' => $book->is_free ? PurchaseStatus::COMPLETED->value : PurchaseStatus::PENDING_PAYMENT->value,
-            'user_data' => $user,
-            'book_data' => $book->load('publisher')->append('image')
-        ];
     }
 
     protected function userHasAlreadyBoughtResponse($purchase)

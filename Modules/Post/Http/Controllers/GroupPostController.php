@@ -72,6 +72,6 @@ class GroupPostController extends Controller
     {
         $liked = $this->groupPostRepository->togglePostLike($post, $request->user());
 
-        return response(['liked' => $liked]);
+        return response(['liked' => $liked, 'likes_count' => $post->likes()->count()]);
     }
 }
