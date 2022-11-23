@@ -19,16 +19,13 @@ class BlackList extends Model
         return $this->belongsTo(Membership::class);
     }
 
-    public function member()
+    public function getMemberAttribute()
     {
         return User::query()->select('users.id', 'users.fullname', 'users.avatar')
             ->join('memberships', 'memberships.user_id', '=', 'users.id')
-            ->join('black_list', 'black_list.membership_id', '=', 'memberships.id');
-    }
-
-    public function getMemberAttribute()
-    {
-        return $this->member()->first();
+            ->join('black_list', 'black_list.membership_id', '=', 'memberships.id')
+            ->where('black_list.id', $this->id)
+            ->first();
     }
 
 }
