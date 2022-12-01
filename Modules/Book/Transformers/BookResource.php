@@ -27,6 +27,7 @@ class BookResource extends JsonResource
             'compare_price' => $this->compare_price,
             'voice_director' => $this->voice_director,
             'book_type' => $this->book_type,
+            'shop_link' => $this->shop_link,
 
             'genre' => GenreResource::make($this->whenLoaded('genre')),
             'author' => AuthorResource::make($this->whenLoaded('author')),

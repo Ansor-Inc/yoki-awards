@@ -26,7 +26,7 @@ class BookRepository implements BookRepositoryInterface
 
     protected function makeSingleBookQueryFrom($query)
     {
-        return $query->select(['id', 'title', 'description', 'language', 'page_count', 'publication_date', 'price', 'compare_price', 'is_free', 'book_type', 'publisher_id', 'genre_id', 'author_id', 'voice_director'])
+        return $query->select(['id', 'title', 'description', 'language', 'page_count', 'publication_date', 'price', 'compare_price', 'is_free', 'book_type', 'publisher_id', 'genre_id', 'author_id', 'voice_director','shop_link'])
             ->withAvg('ratings as rating', 'rating')
             ->withCount('ratings as vote_count')
             ->with(['author:id,firstname,lastname,about,copyright', 'publisher:id,title', 'genre:id,title', 'tags:name', 'currentUserStatus']);
