@@ -53,5 +53,9 @@ class PurchaseRepository implements PurchaseRepositoryInterface
         ]);
     }
 
+    public function checkPurchaseIsValidForPayment(Purchase $purchase)
+    {
+        return is_null($purchase->book_id) || is_null($purchase->user_id) || $purchase->book->is_free || $purchase->completed();
+    }
 
 }

@@ -62,4 +62,9 @@ class Purchase extends Model
     {
         $query->where('book_id', $book->id);
     }
+
+    public function completed(): bool
+    {
+        return $this->state === PurchaseStatus::COMPLETED->value;
+    }
 }

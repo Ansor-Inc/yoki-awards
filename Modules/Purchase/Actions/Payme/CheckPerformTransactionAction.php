@@ -3,6 +3,7 @@
 namespace Modules\Purchase\Actions\Payme;
 
 use Illuminate\Http\Request;
+use Modules\Book\Entities\Book;
 use Modules\Purchase\Enums\PurchaseStatus;
 use Modules\Purchase\Payment\Payme\Response as PaymeResponse;
 use Modules\Purchase\Repositories\Interfaces\PurchaseRepositoryInterface;
@@ -25,13 +26,14 @@ class CheckPerformTransactionAction
         $purchase = $this->repository->getPurchaseById($request->params['account'][$this->config['key']]);
 
         //Checking if purchase exists
+
         if (is_null($purchase)) {
             $this->response->error(PaymeResponse::ERROR_INVALID_ACCOUNT, 'Object not fount.');
         }
 
         //Checking purchase state
-        if ($purchase->state !== PurchaseStatus::PENDING_PAYMENT->value) {
-            $this->response->error(PaymeResponse::ERROR_INVALID_ACCOUNT, 'Invalid purchase state. Completed or canceled purchase.');
+        if ($this->repository->checkPurchaseIsValidForPayment($purchase)) {
+            $this->response->error(PaymeResponse::ERROR_INVALID_ACCOUNT, 'Invalid purchase data. Completed, canceled purchase or purchase item does not exists (or free).');
         }
 
         //Checking amount of purchase

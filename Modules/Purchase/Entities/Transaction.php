@@ -46,7 +46,9 @@ class Transaction extends Model
         if ($this->state === self::STATE_COMPLETED) {
             // Scenario: CreateTransaction -> PerformTransaction -> CancelTransaction
             $this->state = self::STATE_CANCELLED_AFTER_COMPLETE;
-        } else {
+        }
+
+        if ($this->state === self::STATE_CREATED) {
             // Scenario: CreateTransaction -> CancelTransaction
             $this->state = self::STATE_CANCELLED;
         }

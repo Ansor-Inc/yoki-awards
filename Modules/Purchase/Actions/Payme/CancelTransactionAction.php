@@ -3,8 +3,10 @@
 namespace Modules\Purchase\Actions\Payme;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Modules\Purchase\Entities\Transaction;
 use Modules\Purchase\Enums\PaymentSystem;
+use Modules\Purchase\Enums\PurchaseStatus;
 use Modules\Purchase\Payment\DataFormat;
 use Modules\Purchase\Payment\Payme\Response as PaymeResponse;
 use Modules\Purchase\Repositories\Interfaces\PurchaseRepositoryInterface;
@@ -36,32 +38,57 @@ class CancelTransactionAction
         }
 
         if ($transaction->state === Transaction::STATE_CREATED) {
-            $this->cancelTransaction($transaction);
+            $this->cancelTransaction($transaction, $request);
+            $this->successResponse($transaction);
         }
 
         if ($transaction->state === Transaction::STATE_COMPLETED) {
-            $this->response->error(
-                PaymeResponse::ERROR_COULD_NOT_CANCEL,
-                'Could not cancel transaction. Order is delivered/Service is completed.'
-            );
+            $this->cancelTransactionAfterComplete($transaction, $request);
+            $this->successResponse($transaction);
         }
+
+        $this->response->success([
+            'state' => $transaction->state,
+            'cancel_time' => $transaction->detail['cancel_time'],
+            'transaction' => (string)$transaction->id,
+        ]);
+
     }
 
-    private function cancelTransaction($transaction)
+    private function cancelTransaction($transaction, $request)
     {
         // cancel transaction with given reason
-        $transaction->cancel(1 * $this->request->params['reason']);
+        $transaction->cancel(1 * $request->params['reason']);
 
         $cancelTime = DataFormat::timestamp(true);
 
+        $detail = $transaction->detail;
+        $detail['cancel_time'] = $cancelTime;
+
         $transaction->update([
             'updated_time' => $cancelTime,
-            'detail.cancel_time' => $cancelTime
+            'detail' => $detail
         ]);
 
+        $transaction->refresh();
+    }
+
+    private function cancelTransactionAfterComplete($transaction, $request)
+    {
+        DB::transaction(function () use ($transaction, $request) {
+            $purchase = $this->purchaseRepository->getPurchaseById($transaction->purchase_id);
+
+            $purchase->update(['state' => PurchaseStatus::CANCELED->value]);
+
+            $this->cancelTransaction($transaction, $request);
+        });
+    }
+
+    private function successResponse($transaction)
+    {
         $this->response->success([
             'state' => 1 * $transaction->state,
-            'cancel_time' => $cancelTime,
+            'cancel_time' => $transaction->detail['cancel_time'],
             'transaction' => (string)$transaction->id,
         ]);
     }
