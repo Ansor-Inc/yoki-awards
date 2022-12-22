@@ -51,6 +51,26 @@ class CheckPerformTransactionAction
             $this->response->error(PaymeResponse::ERROR_INVALID_TRANSACTION, 'There is other active/completed transaction for this object.');
         }
 
-        $this->response->success(['allow' => true]);
+        $this->response->success([
+            'allow' => true,
+            'detail' => $this->prepareCheckDetail($purchase)
+        ]);
+    }
+
+    private function prepareCheckDetail($purchase)
+    {
+        return [
+            'receipt_type' => 0,
+            'items' => [
+                [
+                    'title' => $purchase->book->title,
+                    'price' => $purchase->book->price * 100,
+                    'count' => 1,
+                    'code' => $purchase->book->code,
+                    'package_code' => $purchase->book->package_code,
+                    'vat_percent' => (int)setting('vat_percent', 0)
+                ]
+            ]
+        ];
     }
 }
