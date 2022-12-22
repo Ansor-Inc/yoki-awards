@@ -4,12 +4,16 @@ namespace Modules\Purchase\Http\Controllers;
 
 use Illuminate\Routing\Controller;
 use Modules\Purchase\Entities\Purchase;
+use Modules\Purchase\Enums\PurchaseStatus;
 
 class CheckoutController extends Controller
 {
     public function checkout(Purchase $purchase)
     {
-        return response(["checkout_link" => $this->generateCheckoutLinkForPayme($purchase)]);
+        if ($purchase->state === PurchaseStatus::PENDING_PAYMENT->value)
+            return response(["checkout_link" => $this->generateCheckoutLinkForPayme($purchase)]);
+
+        return response(['message' => 'Invalid purchase! Completed or canceled purchcase!']);
     }
 
     public function generateCheckoutLinkForPayme($purchase)
