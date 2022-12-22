@@ -9,8 +9,20 @@ class CheckoutController extends Controller
 {
     public function checkout(Purchase $purchase)
     {
-        return response([
-            "message" => "Checkout with payment system is not available now"
-        ], 500);
+        return response(["checkout_link" => $this->generateCheckoutLinkForPayme($purchase)]);
     }
+
+    public function generateCheckoutLinkForPayme($purchase)
+    {
+        $params = collect([
+            'm' => config('billing.payme')['merchant_id'],
+            'ac.purchase_id' => $purchase->id,
+            'a' => $purchase->amount * 100,
+        ])->implode(fn($value, $key) => "{$key}={$value}", ';');
+
+        $encodedParams = base64_encode($params);
+
+        return "https://checkout.paycom.uz/{$encodedParams}";
+    }
+
 }

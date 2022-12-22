@@ -2,8 +2,7 @@
 
 namespace Modules\Purchase\Payment\Payme;
 
-use Modules\Purchase\Payment\PaymentException;
-use function response;
+use Modules\Purchase\Exceptions\PaymentException;
 
 class Response
 {
@@ -65,5 +64,10 @@ class Response
     public function setRequest($request)
     {
         $this->response['id'] = $request->id;
+    }
+
+    public function ok()
+    {
+        return !isset($this->response['error']);
     }
 }

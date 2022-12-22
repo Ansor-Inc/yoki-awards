@@ -4,7 +4,9 @@ namespace Modules\Purchase\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Modules\Purchase\Repositories\Interfaces\PurchaseRepositoryInterface;
+use Modules\Purchase\Repositories\Interfaces\TransactionRepositoryInterface;
 use Modules\Purchase\Repositories\PurchaseRepository;
+use Modules\Purchase\Repositories\TransactionRepository;
 
 class PurchaseServiceProvider extends ServiceProvider
 {
@@ -40,6 +42,7 @@ class PurchaseServiceProvider extends ServiceProvider
     {
         $this->app->register(RouteServiceProvider::class);
         $this->app->bind(PurchaseRepositoryInterface::class, PurchaseRepository::class);
+        $this->app->bind(TransactionRepositoryInterface::class, TransactionRepository::class);
     }
 
     /**

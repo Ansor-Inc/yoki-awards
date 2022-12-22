@@ -18,6 +18,11 @@ class PurchaseRepository implements PurchaseRepositoryInterface
         return $perPage ? $query->paginate($perPage) : $query->get();
     }
 
+    public function getPurchaseById(int $id)
+    {
+        return Purchase::query()->find($id);
+    }
+
     public function getPurchasedBooks(User|Authenticatable $user, array $filters)
     {
         $query = Book::query()

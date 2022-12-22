@@ -1,14 +1,26 @@
 <?php
 
-namespace Modules\Purchase\Payment\Payme\MerchantApiMethods;
+namespace Modules\Purchase\Actions\Payme;
 
+use Illuminate\Http\Request;
+use Modules\Purchase\Enums\PaymentSystem;
 use Modules\Purchase\Payment\Payme\Response;
+use Modules\Purchase\Payment\Payme\Response as PaymeResponse;
+use Modules\Purchase\Repositories\Interfaces\TransactionRepositoryInterface;
 
-trait CheckTransaction
+class CheckTransactionAction
 {
-    private function checkTransaction()
+    use ValidatesParams;
+
+    public function __construct(private PaymeResponse $response, private TransactionRepositoryInterface $transactionRepository)
     {
-        $transaction = $this->findTransactionByParams($this->request->params);
+    }
+
+    public function execute(Request $request)
+    {
+        $this->validateTransactionId($request->params);
+
+        $transaction = $this->transactionRepository->getTransactionById($request->params['id'], PaymentSystem::PAYME);
 
         if (is_null($transaction)) {
             $this->response->error(Response::ERROR_TRANSACTION_NOT_FOUND, 'Transaction not found.');
@@ -25,5 +37,4 @@ trait CheckTransaction
             'reason' => ($transaction->comment && is_numeric($transaction->comment)) ? 1 * $transaction->comment : null,
         ]);
     }
-
 }

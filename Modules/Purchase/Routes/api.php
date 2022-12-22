@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Modules\Purchase\Enums\PaymentSystem;
 use Modules\Purchase\Http\Controllers\BookPurchaseController;
 use Modules\Purchase\Http\Controllers\CheckoutController;
+use Modules\Purchase\Http\Controllers\PaymentSystemController;
 use Modules\Purchase\Payment\PaymentService;
 
 /*
@@ -16,9 +17,6 @@ use Modules\Purchase\Payment\PaymentService;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::any('/billing/{paymentSystem}/handle', function (PaymentSystem $paymentSystem) {
-    return (new PaymentService())->driver($paymentSystem)->handle();
-});
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::post('/books/{book}/make-purchase', [BookPurchaseController::class, 'makePurchase']);
@@ -26,3 +24,4 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/purchases/completed', [BookPurchaseController::class, 'getCompletedPurchases']);
     Route::post('/purchases/{purchase}/checkout', [CheckoutController::class, 'checkout']);
 });
+

@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Purchase\Payment;
+namespace Modules\Purchase\Exceptions;
 
 class PaymentException extends \Exception
 {

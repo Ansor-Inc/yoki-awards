@@ -10,6 +10,8 @@ interface PurchaseRepositoryInterface
 {
     public function getPurchaseHistory(Authenticatable|User $user, $perPage);
 
+    public function getPurchaseById(int $id);
+
     public function getPurchasedBooks(Authenticatable|User $user, array $filters);
 
     public function makePurchase(Authenticatable|User $user, Book $book, string $phone);
