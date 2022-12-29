@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\ImageUploadController;
 use Illuminate\Support\Facades\Route;
-use Modules\Blog\Http\Controllers\BlogController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,5 +16,4 @@ use Modules\Blog\Http\Controllers\BlogController;
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::post('/upload/image', [ImageUploadController::class, 'upload']);
-    Route::post('/help', [\App\Http\Controllers\AppealController::class, 'submit'])->middleware('throttle:30,1');
 });

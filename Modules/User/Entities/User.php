@@ -90,6 +90,11 @@ class User extends Authenticatable implements CanResetPasswordContract
         return $this->hasMany(Complaint::class, 'complainer_id');
     }
 
+    public function appeals()
+    {
+        return $this->hasMany(Appeal::class);
+    }
+
     //Helper methods:
     public function isWaitingForJoinApproval(Group $group)
     {

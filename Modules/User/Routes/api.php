@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Modules\User\Http\Controllers\AppealController;
 use Modules\User\Http\Controllers\Auth\AuthController;
 use Modules\User\Http\Controllers\Auth\PasswordResetController;
 use Modules\User\Http\Controllers\Auth\PhoneVerifyController;
@@ -39,5 +40,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::put('/me', [UserController::class, 'updateMe']);
         Route::post('/update/phone', [UserController::class, 'updatePhone']);
         Route::post('/update/avatar', [UserController::class, 'updateAvatar']);
+
+        Route::get('/help', [AppealController::class, 'index']);
+        Route::post('/help', [AppealController::class, 'submit'])->middleware('throttle:30,1');
     });
 });

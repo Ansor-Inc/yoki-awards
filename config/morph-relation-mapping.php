@@ -24,5 +24,6 @@ return [
     'sms_token' => \Modules\User\Entities\SmsToken::class,
     'comment' => \App\Models\Comment::class,
     'complaint' => \Modules\User\Entities\Complaint::class,
-    'admin' => \App\Models\AdminUser::class
+    'admin' => \App\Models\AdminUser::class,
+    'appeal' => \Modules\User\Entities\Appeal::class
 ];
