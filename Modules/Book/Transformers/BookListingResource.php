@@ -17,7 +17,7 @@ class BookListingResource extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title,
-            'image' => $this->getFirstMediaUrl('image'),
+            'image' => $this->getFirstMediaUrl('image', 'image_optimized'),
             'is_free' => (bool)$this->is_free,
             'price' => $this->price,
             'book_type' => $this->book_type,
