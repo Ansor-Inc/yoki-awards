@@ -13,7 +13,9 @@ use Modules\Book\Enums\BookStatus;
 use Modules\Book\Filters\BookFilter;
 use Modules\Book\Helpers\BookRatingPercentage;
 use Modules\User\Entities\User;
+use Spatie\Image\Manipulations;
 use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Staudenmeir\LaravelAdjacencyList\Eloquent\HasRecursiveRelationships;
 
 class Book extends Model implements HasMedia
@@ -123,6 +125,11 @@ class Book extends Model implements HasMedia
     {
         $this->addMediaCollection('image')
             ->useFallbackUrl(asset('media/missingbook.png'));
+    }
+
+    public function registerMediaConversions(Media $media = null): void
+    {
+        $this->addMediaConversion('image_optimized');
     }
 
     public function getImageAttribute(): string
