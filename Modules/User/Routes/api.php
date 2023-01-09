@@ -35,7 +35,7 @@ Route::middleware(['guest:sanctum'])->group(function () {
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/me', [UserController::class, 'getMe']);
-
+    Route::post('/fcm-token', [UserController::class, 'setFcmToken']);
     Route::middleware('verified')->group(function () {
         Route::put('/me', [UserController::class, 'updateMe']);
         Route::post('/update/phone', [UserController::class, 'updatePhone']);
