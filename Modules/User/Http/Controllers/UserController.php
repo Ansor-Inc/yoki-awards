@@ -2,9 +2,9 @@
 
 namespace Modules\User\Http\Controllers;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\Storage;
+use Modules\User\Actions\UpdateUserAvatar;
 use Modules\User\Http\Requests\UpdateUserAvatarRequest;
 use Modules\User\Http\Requests\UpdateUserPhoneRequest;
 use Modules\User\Http\Requests\UpdateUserRequest;
@@ -39,17 +39,24 @@ class UserController extends Controller
         return response(['message' => 'Yaroqsiz yoki muddati o‘tgan kod!'], 500);
     }
 
-    public function updateAvatar(UpdateUserAvatarRequest $request)
+    public function updateAvatar(UpdateUserAvatarRequest $request, UpdateUserAvatar $updateUserAvatarAction)
     {
-        $relativePath = Storage::putFile("avatars/{$request->user()->id}", $request->file('image'), 'public');
+        $absolutePath = $updateUserAvatarAction->execute($request);
 
-        $absolutePath = Storage::url($relativePath);
+        if ($absolutePath) {
+            return response([
+                'message' => "Avatar muvaffaqiyatli oʻzgartirildi!",
+                'avatar' => $absolutePath
+            ]);
+        }
 
-        $request->user()->update(['avatar' => $absolutePath]);
+        return $this->failed();
+    }
 
-        return response([
-            'message' => "Avatar muvaffaqiyatli oʻzgartirildi!",
-            'avatar' => $absolutePath
-        ]);
+    public function setFcmToken(Request $request)
+    {
+        $request->user()->update($request->only('fcm_token'));
+
+        return response(['message' => 'FCM token has been set successfully!']);
     }
 }
