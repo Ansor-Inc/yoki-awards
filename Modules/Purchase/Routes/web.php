@@ -17,5 +17,5 @@ use Modules\Purchase\Http\Controllers\PaymentSystemController;
 Route::any('/billing/{paymentSystem}/handle', [PaymentSystemController::class, 'handle']);
 
 Route::get('/check', function () {
-    return request()->ip();
+    dd(request()) ;
 });
