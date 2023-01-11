@@ -15,7 +15,3 @@ use Illuminate\Support\Facades\Route;
 use Modules\Purchase\Http\Controllers\PaymentSystemController;
 
 Route::any('/billing/{paymentSystem}/handle', [PaymentSystemController::class, 'handle']);
-
-Route::get('/check', function () {
-    dd(request()->server());
-});
