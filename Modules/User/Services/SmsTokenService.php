@@ -49,7 +49,7 @@ class SmsTokenService
 
     protected function smsMessage($code)
     {
-        return "Yoki verification code:{$code}";
+        return "Yoki verification code: {$code}";
     }
 
     public function deleteOldCodes()
