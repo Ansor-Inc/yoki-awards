@@ -125,5 +125,13 @@ class User extends Authenticatable implements CanResetPasswordContract
     {
         return $this->hasMany(Purchase::class);
     }
+
+    public function currentDeviceToken()
+    {
+        return $this->tokens()
+            ->where('user_agent', request()->userAgent())
+            ->where('ip', request()->ip())
+            ->first();
+    }
 }
 

@@ -4,13 +4,14 @@ namespace Modules\User\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Modules\User\Actions\UpdateUser;
 use Modules\User\Actions\UpdateUserAvatar;
+use Modules\User\Actions\UpdateUserPhone;
+use Modules\User\Http\Requests\SetFcmTokenRequest;
 use Modules\User\Http\Requests\UpdateUserAvatarRequest;
 use Modules\User\Http\Requests\UpdateUserPhoneRequest;
 use Modules\User\Http\Requests\UpdateUserRequest;
 use Modules\User\Http\Resources\UserResource;
-use Modules\User\Services\Facades\SmsTokenServiceFacade;
-use Modules\User\UseCases\UpdatesUser;
 
 class UserController extends Controller
 {
@@ -19,31 +20,30 @@ class UserController extends Controller
         return UserResource::make($request->user());
     }
 
-    public function updateMe(UpdateUserRequest $request, UpdatesUser $useCase)
+    public function updateMe(UpdateUserRequest $request, UpdateUser $updateUser)
     {
-        $data = $request->validated();
+        if ($user = $updateUser->execute($request->validated())) {
+            return response([
+                'message' => "Foydalanuvchi ma'lumotlari muvaffaqiyatli o'zgartirildi",
+                'user' => UserResource::make($user)
+            ]);
+        }
 
-        return $useCase($data);
+        return response(['message' => "Eski parol noto'g'ri!"], 442);
     }
 
-    public function updatePhone(UpdateUserPhoneRequest $request)
+    public function updatePhone(UpdateUserPhoneRequest $request, UpdateUserPhone $updateUserPhone)
     {
-        $phoneIsVerified = SmsTokenServiceFacade::phone($request->input('phone'))->check($request->input('code'));
-
-        if ($phoneIsVerified) {
-            $request->user()->update(['phone' => $request->input('phone')]);
-            $request->user()->markPhoneAsVerified();
+        if ($updateUserPhone->execute($request)) {
             return response(['message' => "Telefon raqami muvaffaqiyatli o'zgartirildi!"]);
         }
 
         return response(['message' => 'Yaroqsiz yoki muddati o‘tgan kod!'], 500);
     }
 
-    public function updateAvatar(UpdateUserAvatarRequest $request, UpdateUserAvatar $updateUserAvatarAction)
+    public function updateAvatar(UpdateUserAvatarRequest $request, UpdateUserAvatar $updateUserAvatar)
     {
-        $absolutePath = $updateUserAvatarAction->execute($request);
-
-        if ($absolutePath) {
+        if ($absolutePath = $updateUserAvatar->execute($request)) {
             return response([
                 'message' => "Avatar muvaffaqiyatli oʻzgartirildi!",
                 'avatar' => $absolutePath
@@ -53,10 +53,10 @@ class UserController extends Controller
         return $this->failed();
     }
 
-    public function setFcmToken(Request $request)
+    public function setFcmToken(SetFcmTokenRequest $request)
     {
-        $request->user()->update($request->only('fcm_token'));
+        $request->user()->currentAccessToken()->update(['fcm_token' => $request->input('token')]);
 
-        return response(['message' => 'FCM token has been set successfully!']);
+        return response(['message' => 'Fcm token set successfully!']);
     }
 }

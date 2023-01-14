@@ -18,7 +18,7 @@ use Modules\Group\Http\Controllers\MembershipController;
 |
 */
 
-Route::middleware(['auth:sanctum', 'verified'])->prefix('groups')->group(function () {
+Route::middleware(['auth:sanctum', 'verified', 'verified.device'])->prefix('groups')->group(function () {
     Route::get('/', [GroupController::class, 'getGroups']);
     Route::get('/mine', [GroupController::class, 'getMyGroups']);
     Route::get('/categories', [GroupController::class, 'groupCategories']);

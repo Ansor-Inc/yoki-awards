@@ -2,7 +2,6 @@
 
 namespace App\Components\SpatieMedia;
 
-use Illuminate\Support\Str;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\MediaLibrary\Support\PathGenerator\PathGenerator;
 
@@ -38,10 +37,13 @@ class CustomPathGenerator implements PathGenerator
     protected function getBasePath(Media $media): string
     {
         $prefix = config('media-library.prefix', '');
-        $path = str($media->model_type)->afterLast('\\')->kebab()->plural()->value() . '/' . $media->model_id;
+
+        $modelType = str($media->model_type)->afterLast('\\')->kebab()->plural()->value();
+
+        $path = "{$modelType}/{$media->model_id}/{$media->id}";
 
         if ($prefix !== '') {
-            return $prefix . '/' . $path;
+            return "{$prefix}/{$path}";
         }
 
         return $path;

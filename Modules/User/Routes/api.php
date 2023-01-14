@@ -19,7 +19,7 @@ use Modules\User\Http\Controllers\UserController;
 */
 Route::post('/verification/sendsms', [PhoneVerifyController::class, 'sendCode'])->middleware('throttle:3,1');
 
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware(['auth:sanctum', 'verified.device'])->group(function () {
     Route::post('/verification/verify', [PhoneVerifyController::class, 'verify']);
     Route::post('/logout', [AuthController::class, 'logout']);
 });
@@ -33,9 +33,10 @@ Route::middleware(['guest:sanctum'])->group(function () {
     Route::post('/reset-password', [PasswordResetController::class, 'reset']);
 });
 
-Route::middleware(['auth:sanctum'])->group(function () {
+Route::middleware(['auth:sanctum', 'verified.device'])->group(function () {
     Route::get('/me', [UserController::class, 'getMe']);
     Route::post('/fcm-token', [UserController::class, 'setFcmToken']);
+
     Route::middleware('verified')->group(function () {
         Route::put('/me', [UserController::class, 'updateMe']);
         Route::post('/update/phone', [UserController::class, 'updatePhone']);

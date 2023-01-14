@@ -36,6 +36,10 @@ class SocialAuthController extends Controller
             ]
         );
 
+        if ($token = $user->currentDeviceToken()) {
+            $token->delete();
+        }
+
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return redirect()->to(config('auth.social_auth_redirect_url') . "?token={$token}");

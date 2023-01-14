@@ -18,7 +18,7 @@ use Modules\Purchase\Payment\PaymentService;
 |
 */
 
-Route::middleware(['auth:sanctum', 'verified'])->group(function () {
+Route::middleware(['auth:sanctum', 'verified', 'verified.device'])->group(function () {
     Route::post('/books/{book}/make-purchase', [BookPurchaseController::class, 'makePurchase']);
     Route::get('/purchases', [BookPurchaseController::class, 'index']);
     Route::get('/purchases/completed', [BookPurchaseController::class, 'getCompletedPurchases']);
