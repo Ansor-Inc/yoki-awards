@@ -17,7 +17,6 @@ class VerifyUserDevice
     public function handle(Request $request, Closure $next)
     {
         if ($request->user() &&
-            $request->user()->currentAccessToken()->ip === $request->ip() &&
             $request->user()->currentAccessToken()->user_agent === $request->userAgent()
         ) {
             return $next($request);
