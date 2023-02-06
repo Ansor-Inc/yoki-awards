@@ -2,6 +2,7 @@
 
 namespace Modules\Book\Repositories;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
 use Modules\Book\Entities\Book;
 use Modules\Book\Repositories\Interfaces\BookListingRepositoryInterface;
@@ -41,6 +42,10 @@ class BookListingRepository implements BookListingRepositoryInterface
             ->addSelect('publisher_id')
             ->with(['author:id,firstname,lastname', 'publisher:id,title'])
             ->where('title', 'like', "%{$query}%")
+            ->orWhereHas('author', function (Builder $builder) use ($query) {
+                $builder->where('firstname', 'like', "%{$query}%")
+                    ->orWhere('lastname', 'like', "%{$query}%");
+            })
             ->get();
     }
 

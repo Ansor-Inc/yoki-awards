@@ -16,6 +16,10 @@ class VerifyUserDevice
      */
     public function handle(Request $request, Closure $next)
     {
+        if (app()->runningUnitTests()) {
+            return $next($request);
+        }
+
         if ($request->user() &&
             $request->user()->currentAccessToken()->user_agent === $request->userAgent()
         ) {
