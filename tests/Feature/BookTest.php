@@ -4,8 +4,6 @@ namespace Tests\Feature;
 
 use Illuminate\Testing\Fluent\AssertableJson;
 use Modules\Book\Database\factories\BookFactory;
-use Modules\Book\Entities\Book;
-use Modules\Book\Transformers\BookListingResource;
 use Modules\User\Database\factories\UserFactory;
 use Tests\TestCase;
 

@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Stevebauman\Location\Facades\Location;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,10 +14,16 @@ use Stevebauman\Location\Facades\Location;
 */
 Route::get('/', fn() => 'Yoki-api - v1');
 Route::get('/privacy-policy', fn() => 'Privacy policy');
-
-Route::get('/test', function () {
-
-    $position = Location::get(request()->server('HTTP_X_FORWARDED_FOR'));
-
-    dd($position);
+Route::test('/test', function () {
+    dd(\Stevebauman\Location\Facades\Location::get());
 });
+
+Route::get('/test2', function () {
+    dd(request());
+});
+
+Route::get('/test3', function () {
+    dd(request()->ip());
+});
+
+
