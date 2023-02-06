@@ -17,6 +17,9 @@ return [
 
     'name' => env('APP_NAME', 'Laravel'),
 
+
+    'paid_books_available_countries' => ['UZ'],
+
     /*
     |--------------------------------------------------------------------------
     | Application Environment

@@ -61,9 +61,32 @@ class BookTest extends TestCase
         $book = BookFactory::new()->create(['is_free' => false]);
 
         $this->assertFalse($book->isBoughtBy($user));
-
-
     }
+
+    public function test_foreign_users_cannot_see_paid_books()
+    {
+        $user = $this->createUser();
+        $book = BookFactory::new()->create(['is_free' => false]);
+
+        $response = $this->withServerVariables(['REMOTE_ADDR' => '69.162.81.155'])
+            ->actingAs($user)
+            ->get("/api/books/{$book->id}");
+
+        $response->assertStatus(404);
+    }
+
+    public function test_local_users_can_see_paid_books()
+    {
+        $user = $this->createUser();
+        $book = BookFactory::new()->create(['is_free' => false]);
+
+        $response = $this->withServerVariables(['REMOTE_ADDR' => '185.139.137.51'])
+            ->actingAs($user)
+            ->get("/api/books/{$book->id}");
+
+        $response->assertStatus(200);
+    }
+
 
     public function createBook()
     {

@@ -9,6 +9,8 @@ use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use Modules\Book\Entities\Scopes\OnlyApprovedBooksScope;
+use Modules\Book\Entities\Scopes\ShowPaidBookOnlyToLocalUsersScope;
 use Modules\Book\Entities\Traits\InteractsWithBookFiles;
 use Modules\Book\Enums\BookStatus;
 use Modules\Book\Filters\BookFilter;
@@ -30,7 +32,8 @@ class Book extends Model implements HasMedia
 
     protected static function booted()
     {
-        static::addGlobalScope('available', fn($query) => $query->where('status', BookStatus::APPROVED->value));//always retrieve only approved books
+        static::addGlobalScope(new OnlyApprovedBooksScope);
+        static::addGlobalScope(new ShowPaidBookOnlyToLocalUsersScope);
     }
 
     // Relationships:
