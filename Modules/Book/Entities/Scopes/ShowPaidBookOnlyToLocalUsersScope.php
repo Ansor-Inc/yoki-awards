@@ -12,7 +12,8 @@ class ShowPaidBookOnlyToLocalUsersScope implements Scope
 
     public function apply(Builder $builder, Model $model)
     {
-        $countryCode = Location::get() ? Location::get()->countryCode : false;
+        $location = Location::get(request()->server('HTTP_DO_CONNECTING_IP'));
+        $countryCode = $location ? $location->countryCode : false;
 
         if (!in_array($countryCode, config('app.paid_books_available_countries'))) {
             $builder->where('is_free', true);
