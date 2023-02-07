@@ -15,3 +15,11 @@ use Stevebauman\Location\Facades\Location;
 */
 Route::get('/', fn() => 'Yoki-api - v1');
 Route::get('/privacy-policy', fn() => 'Privacy policy');
+Route::get('/test', function () {
+    $countryCode = Location::get() ? Location::get()->countryCode : false;
+    dd($countryCode);
+});
+
+Route::get('/test2', function () {
+    dd(request()->ip());
+});
