@@ -66,7 +66,7 @@ class BookTest extends TestCase
         $user = $this->createUser();
         $book = BookFactory::new()->create(['is_free' => false]);
 
-        $response = $this->withServerVariables(['REMOTE_ADDR' => '69.162.81.155'])
+        $response = $this->withServerVariables(['HTTP_DO_CONNECTING_IP' => '69.162.81.155'])
             ->actingAs($user)
             ->get("/api/books/{$book->id}");
 
@@ -78,7 +78,7 @@ class BookTest extends TestCase
         $user = $this->createUser();
         $book = BookFactory::new()->create(['is_free' => false]);
 
-        $response = $this->withServerVariables(['REMOTE_ADDR' => '185.139.137.51'])
+        $response = $this->withServerVariables(['HTTP_DO_CONNECTING_IP' => '185.139.137.51'])
             ->actingAs($user)
             ->get("/api/books/{$book->id}");
 
