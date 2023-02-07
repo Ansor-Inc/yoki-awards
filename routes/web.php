@@ -21,5 +21,5 @@ Route::get('/test', function () {
 });
 
 Route::get('/test2', function () {
-    dd(request()->ip());
+    dd(request());
 });
