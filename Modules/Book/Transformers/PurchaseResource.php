@@ -17,6 +17,7 @@ class PurchaseResource extends JsonResource
         return [
             'id' => $this->id,
             'amount' => $this->amount,
+            'from_balance' => $this->from_balance,
             'state' => $this->state,
             'created_at' => $this->created_at?->format('d.m.Y'),
             'book' => BookListingResource::make($this->whenLoaded('book'))

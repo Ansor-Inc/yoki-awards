@@ -3,10 +3,9 @@
 namespace Modules\Purchase\Actions\Payme;
 
 use Illuminate\Http\Request;
-use Modules\Book\Entities\Book;
-use Modules\Purchase\Enums\PurchaseStatus;
 use Modules\Purchase\Payment\Payme\Response as PaymeResponse;
 use Modules\Purchase\Repositories\Interfaces\PurchaseRepositoryInterface;
+use Modules\Purchase\Service\Interfaces\PurchaseServiceInterface;
 
 class CheckPerformTransactionAction
 {
@@ -14,7 +13,9 @@ class CheckPerformTransactionAction
 
     private mixed $config;
 
-    public function __construct(private PaymeResponse $response, private PurchaseRepositoryInterface $repository)
+    public function __construct(private PaymeResponse               $response,
+                                private PurchaseRepositoryInterface $repository,
+                                private PurchaseServiceInterface    $purchaseService)
     {
         $this->config = config('billing.payme');
     }
@@ -23,29 +24,31 @@ class CheckPerformTransactionAction
     {
         $this->validateParams($request->input('params'));
 
-        $purchase = $this->repository->getPurchaseById($request->params['account'][$this->config['key']]);
+        $purchaseId = $request->params['account'][$this->config['key']];
+        $amount = (float)$request->params['amount'];
+
+        $purchase = $this->repository->getPurchaseById($purchaseId);
 
         //Checking if purchase exists
-
         if (is_null($purchase)) {
             $this->response->error(PaymeResponse::ERROR_INVALID_ACCOUNT, 'Object not fount.');
         }
 
         //Checking purchase state
-        if ($this->repository->checkPurchaseIsValidForPayment($purchase)) {
+        if (!$this->purchaseService->checkPurchaseIsValidForPayment($purchase)) {
             $this->response->error(PaymeResponse::ERROR_INVALID_ACCOUNT, 'Invalid purchase data. Completed, canceled purchase or purchase item does not exists (or free).');
         }
 
         //Checking amount of purchase
-        $isProperAmount = (float)$request->params['amount'] === (float)$purchase->amount * 100;
+        $isProperAmount = $this->purchaseService->checkIsProperAmount($amount, $purchase);
 
         if (!$isProperAmount) {
             $this->response->error(PaymeResponse::ERROR_INVALID_AMOUNT, 'Invalid amount for this object.');
         }
 
         //Checking whether purchase has active or completed transactions
-        $hasActiveTransactions = $purchase->activeTransactions()->exists();
-        $hasCompletedTransaction = $purchase->completedTransactions()->exists();
+        $hasActiveTransactions = $this->purchaseService->checkPurchaseHasActiveTransactions($purchase);
+        $hasCompletedTransaction = $this->purchaseService->checkPurchaseHasCompletedTransactions($purchase);
 
         if ($hasActiveTransactions || $hasCompletedTransaction) {
             $this->response->error(PaymeResponse::ERROR_INVALID_TRANSACTION, 'There is other active/completed transaction for this object.');
@@ -61,14 +64,15 @@ class CheckPerformTransactionAction
     {
         return [
             'receipt_type' => 0,
+
             'items' => [
                 [
-                    'title' => $purchase->book->title,
-                    'price' => $purchase->book->price * 100,
-                    'count' => 1,
-                    'code' => $purchase->book->code,
-                    'package_code' => $purchase->book->package_code,
-                    'vat_percent' => (int)setting('vat_percent', 0)
+                    'title' => $this->purchaseService->getPurchaseItemTitle($purchase),
+                    'price' => $this->purchaseService->getPurchaseAmount($purchase),
+                    'count' => $this->purchaseService->getPurchaseItemsCount($purchase),
+                    'code' => $this->purchaseService->getPurchaseItemCode($purchase),
+                    'package_code' => $this->purchaseService->getPurchaseItemPackageCode($purchase),
+                    'vat_percent' => $this->purchaseService->getPurchaseVatPercent($purchase),
                 ]
             ]
         ];

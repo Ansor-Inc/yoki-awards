@@ -4,8 +4,8 @@ use Illuminate\Support\Facades\Route;
 use Modules\Purchase\Enums\PaymentSystem;
 use Modules\Purchase\Http\Controllers\BookPurchaseController;
 use Modules\Purchase\Http\Controllers\CheckoutController;
+use Modules\Purchase\Http\Controllers\CouponController;
 use Modules\Purchase\Http\Controllers\PaymentSystemController;
-use Modules\Purchase\Payment\PaymentService;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,5 +23,7 @@ Route::middleware(['auth:sanctum', 'verified', 'verified.device'])->group(functi
     Route::get('/purchases', [BookPurchaseController::class, 'index']);
     Route::get('/purchases/completed', [BookPurchaseController::class, 'getCompletedPurchases']);
     Route::post('/purchases/{purchase}/checkout', [CheckoutController::class, 'checkout']);
+    Route::post('/purchases/{purchase}/complete', [CheckoutController::class, 'complete']);
+    Route::post('/coupons', [CouponController::class, 'activateCoupon']);
 });
 

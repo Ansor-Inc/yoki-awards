@@ -11,7 +11,8 @@ use Modules\User\Http\Requests\SetFcmTokenRequest;
 use Modules\User\Http\Requests\UpdateUserAvatarRequest;
 use Modules\User\Http\Requests\UpdateUserPhoneRequest;
 use Modules\User\Http\Requests\UpdateUserRequest;
-use Modules\User\Http\Resources\UserResource;
+use Modules\User\Transformers\BalanceResource;
+use Modules\User\Transformers\UserResource;
 
 class UserController extends Controller
 {
@@ -52,6 +53,14 @@ class UserController extends Controller
 
         return $this->failed();
     }
+
+    public function getBalance()
+    {
+        $user = request()->user();
+
+        return response(BalanceResource::make($user), 200);
+    }
+
 
     public function setFcmToken(SetFcmTokenRequest $request)
     {

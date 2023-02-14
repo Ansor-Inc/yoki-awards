@@ -9,51 +9,33 @@ use Tests\TestCase;
 
 class BookTest extends TestCase
 {
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     */
     public function test_user_can_retrieve_books(): void
     {
-        $book = BookFactory::new()->create();
+        BookFactory::new()->create();
 
-        $response = $this->get('/api/books');
+        $response = $this->getJson('/api/books');
 
         $response->assertStatus(200);
     }
 
-    public function test_user_can_search_books_by_title()
+    public function test_user_can_search_books_by_title_and_by_authors_firstname_lastname()
     {
-        $book = $this->createBook();
+        $book = BookFactory::new()->create();
 
-        $response = $this->get("/api/books/search?query={$book->title}");
+        $this->getJson("/api/books/search?query={$book->title}")
+            ->assertOk()
+            ->assertJson(fn(AssertableJson $json) => $json->has('data', 1, fn($json) => $json->where('title', $book->title)->etc()));
 
-        $response->assertOk()
+        $this->getJson("/api/books/search?query={$book->author->firstname}")
+            ->assertOk()
+            ->assertJson(fn(AssertableJson $json) => $json->has('data', 1, fn($json) => $json->where('title', $book->title)->etc()));
+
+        $this->getJson("/api/books/search?query={$book->author->lastname}")
+            ->assertOk()
             ->assertJson(fn(AssertableJson $json) => $json->has('data', 1, fn($json) => $json->where('title', $book->title)->etc()));
     }
 
-    public function test_user_can_search_books_by_author_firstname()
-    {
-        $book = $this->createBook();
-
-        $response = $this->get("/api/books/search?query={$book->author->firstname}");
-
-        $response->assertOk()
-            ->assertJson(fn(AssertableJson $json) => $json->has('data', 1, fn($json) => $json->where('title', $book->title)->etc()));
-    }
-
-    public function test_user_can_search_books_by_author_lastname()
-    {
-        $book = $this->createBook();
-
-        $response = $this->get("/api/books/search?query={$book->author->lastname}");
-
-        $response->assertOk()
-            ->assertJson(fn(AssertableJson $json) => $json->has('data', 1, fn($json) => $json->where('title', $book->title)->etc()));
-    }
-
-    public function test_user_cannot_access_paid_book_without_buying()
+    public function test_user_cannot_access_paid_book_without_buying_it()
     {
         $user = $this->createUser();
         $book = BookFactory::new()->create(['is_free' => false]);
@@ -65,30 +47,18 @@ class BookTest extends TestCase
     {
         $user = $this->createUser();
         $book = BookFactory::new()->create(['is_free' => false]);
+        $localIp = '185.139.137.51';
+        $foreignIp = '69.162.81.155';
 
-        $response = $this->withServerVariables(['HTTP_DO_CONNECTING_IP' => '69.162.81.155'])
+        $this->withServerVariables(['HTTP_DO_CONNECTING_IP' => $foreignIp])
             ->actingAs($user)
-            ->get("/api/books/{$book->id}");
+            ->getJson("/api/books/{$book->id}")
+            ->assertStatus(404);
 
-        $response->assertStatus(404);
-    }
-
-    public function test_local_users_can_see_paid_books()
-    {
-        $user = $this->createUser();
-        $book = BookFactory::new()->create(['is_free' => false]);
-
-        $response = $this->withServerVariables(['HTTP_DO_CONNECTING_IP' => '185.139.137.51'])
+        $this->withServerVariables(['HTTP_DO_CONNECTING_IP' => $localIp])
             ->actingAs($user)
-            ->get("/api/books/{$book->id}");
-
-        $response->assertStatus(200);
-    }
-
-
-    public function createBook()
-    {
-        return BookFactory::new()->create();
+            ->getJson("/api/books/{$book->id}")
+            ->assertStatus(200);
     }
 
     private function createUser()

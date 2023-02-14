@@ -2,31 +2,42 @@
 
 namespace Modules\Purchase\Http\Controllers;
 
+use Exception;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\Routing\ResponseFactory;
+use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Modules\Purchase\Actions\Checkout\CheckoutAction;
+use Modules\Purchase\Actions\Checkout\CompletePurchaseAction;
 use Modules\Purchase\Entities\Purchase;
-use Modules\Purchase\Enums\PurchaseStatus;
+use Modules\Purchase\Http\Requests\CheckoutRequest;
+use Modules\Purchase\Http\Requests\CompletePurchaseRequest;
 
 class CheckoutController extends Controller
 {
-    public function checkout(Purchase $purchase)
+    public function checkout(Purchase $purchase, CheckoutRequest $request, CheckoutAction $checkoutAction): Response|Application|ResponseFactory
     {
-        if ($purchase->state === PurchaseStatus::PENDING_PAYMENT->value)
-            return response(["checkout_link" => $this->generateCheckoutLinkForPayme($purchase)]);
-
-        return response(['message' => 'Invalid purchase! Completed or canceled purchcase!'],500);
+        try {
+            $link = $checkoutAction->execute($purchase, $request);
+            return response(["checkout_link" => $link]);
+        } catch (Exception $exception) {
+            return response(["message" => $exception->getMessage()], 403);
+        }
     }
 
-    public function generateCheckoutLinkForPayme($purchase)
+    public function complete(Purchase $purchase, CompletePurchaseRequest $request, CompletePurchaseAction $action)
     {
-        $params = collect([
-            'm' => config('billing.payme')['merchant_id'],
-            'ac.purchase_id' => $purchase->id,
-            'a' => $purchase->amount * 100,
-        ])->implode(fn($value, $key) => "{$key}={$value}", ';');
-
-        $encodedParams = base64_encode($params);
-
-        return "https://checkout.paycom.uz/{$encodedParams}";
+        try {
+            $action->execute($purchase, $request);
+            return response([
+                'message' => 'Successfully completed purchase!',
+                'completed' => true
+            ]);
+        } catch (Exception $exception) {
+            return response([
+                "message" => $exception->getMessage(),
+                "completed" => false
+            ], 403);
+        }
     }
-
 }

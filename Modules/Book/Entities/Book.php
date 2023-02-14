@@ -9,6 +9,7 @@ use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use Modules\Book\Database\factories\BookFactory;
 use Modules\Book\Entities\Scopes\OnlyApprovedBooksScope;
 use Modules\Book\Entities\Scopes\ShowPaidBookOnlyToLocalUsersScope;
 use Modules\Book\Entities\Traits\InteractsWithBookFiles;
@@ -23,7 +24,6 @@ use Staudenmeir\LaravelAdjacencyList\Eloquent\HasRecursiveRelationships;
 
 class Book extends Model implements HasMedia
 {
-    use HasFactory;
     use HasMediaCollectionsTrait;
     use InteractsWithBookFiles;
     use HasRecursiveRelationships;
@@ -141,5 +141,4 @@ class Book extends Model implements HasMedia
     {
         return $this->getFirstMediaUrl('image');
     }
-
 }

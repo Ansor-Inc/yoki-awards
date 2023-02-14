@@ -52,10 +52,4 @@ class PurchaseRepository implements PurchaseRepositoryInterface
             'book_data' => $book->load('publisher')->append('image')
         ]);
     }
-
-    public function checkPurchaseIsValidForPayment(Purchase $purchase)
-    {
-        return is_null($purchase->book_id) || is_null($purchase->user_id) || $purchase->book->is_free || $purchase->completed();
-    }
-
 }

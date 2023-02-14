@@ -2,11 +2,20 @@
 
 namespace Tests;
 
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+use Modules\User\Database\factories\UserFactory;
 
 abstract class TestCase extends BaseTestCase
 {
     use CreatesApplication;
-    use DatabaseTransactions;
+    use RefreshDatabase;
+
+    protected function signIn()
+    {
+        $user = UserFactory::new()->create();
+        $this->actingAs($user);
+
+        return $user;
+    }
 }

@@ -9,7 +9,6 @@ use Modules\Purchase\Enums\PaymentSystem;
 use Modules\Purchase\Exceptions\PaymentException;
 use Modules\Purchase\Payment\DataFormat;
 use Modules\Purchase\Payment\Payme\Response as PaymeResponse;
-use Modules\Purchase\Repositories\Interfaces\PurchaseRepositoryInterface;
 use Modules\Purchase\Repositories\Interfaces\TransactionRepositoryInterface;
 
 class CreateTransactionAction
@@ -19,8 +18,7 @@ class CreateTransactionAction
     private mixed $config;
 
     public function __construct(private PaymeResponse                  $response,
-                                private TransactionRepositoryInterface $transactionRepository,
-                                private PurchaseRepositoryInterface    $purchaseRepository)
+                                private TransactionRepositoryInterface $transactionRepository)
     {
         $this->config = config('billing.payme');
     }

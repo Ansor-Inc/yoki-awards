@@ -17,5 +17,4 @@ interface PurchaseRepositoryInterface
 
     public function makePurchase(Authenticatable|User $user, Book $book, string $phone);
 
-    public function checkPurchaseIsValidForPayment(Purchase $purchase);
 }

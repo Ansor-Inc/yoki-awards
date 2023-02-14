@@ -11,6 +11,7 @@ use Modules\Purchase\Payment\DataFormat;
 use Modules\Purchase\Payment\Payme\Response as PaymeResponse;
 use Modules\Purchase\Repositories\Interfaces\PurchaseRepositoryInterface;
 use Modules\Purchase\Repositories\Interfaces\TransactionRepositoryInterface;
+use Modules\Purchase\Service\Interfaces\PurchaseServiceInterface;
 
 class CancelTransactionAction
 {
@@ -21,6 +22,7 @@ class CancelTransactionAction
     public function __construct(private PaymeResponse                  $response,
                                 private TransactionRepositoryInterface $transactionRepository,
                                 private PurchaseRepositoryInterface    $purchaseRepository,
+                                private PurchaseServiceInterface       $purchaseService,
                                 private Request                        $request)
     {
         $this->config = config('billing.payme');
@@ -77,9 +79,7 @@ class CancelTransactionAction
     {
         DB::transaction(function () use ($transaction, $request) {
             $purchase = $this->purchaseRepository->getPurchaseById($transaction->purchase_id);
-
-            $purchase->update(['state' => PurchaseStatus::CANCELED->value]);
-
+            $this->purchaseService->cancelPurchase($purchase);
             $this->cancelTransaction($transaction, $request);
         });
     }

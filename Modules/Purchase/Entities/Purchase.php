@@ -4,13 +4,15 @@ namespace Modules\Purchase\Entities;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Modules\Book\Entities\Book;
+use Modules\Purchase\Entities\Traits\HasTransactions;
 use Modules\Purchase\Enums\PurchaseStatus;
 use Modules\User\Entities\User;
 
 class Purchase extends Model
 {
+    use HasTransactions;
+
     protected $guarded = ['id'];
 
     protected $casts = [
@@ -28,19 +30,9 @@ class Purchase extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function transactions(): HasMany
+    public function completed(): bool
     {
-        return $this->hasMany(Transaction::class);
-    }
-
-    public function activeTransactions(): HasMany
-    {
-        return $this->transactions()->where('state', Transaction::STATE_CREATED);
-    }
-
-    public function completedTransactions(): HasMany
-    {
-        return $this->transactions()->where('state', Transaction::STATE_COMPLETED);
+        return $this->state === PurchaseStatus::COMPLETED->value;
     }
 
     public function scopeCompleted($query)
@@ -63,8 +55,28 @@ class Purchase extends Model
         $query->where('book_id', $book->id);
     }
 
-    public function completed(): bool
+    public function complete()
     {
-        return $this->state === PurchaseStatus::COMPLETED->value;
+        $this->update(['state' => PurchaseStatus::COMPLETED->value]);
+    }
+
+    public function cancel()
+    {
+        $this->update(['state' => PurchaseStatus::CANCELED->value]);
+    }
+
+    public function isPending(): bool
+    {
+        return $this->state === PurchaseStatus::PENDING_PAYMENT->value;
+    }
+
+    public function getPaidAmount(): float
+    {
+        return (float)($this->amount - $this->from_balance);
+    }
+
+    public function userHasEnoughBalance(float $amount): bool
+    {
+        return $this->user->getBalance() >= $amount;
     }
 }

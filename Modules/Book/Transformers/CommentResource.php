@@ -3,7 +3,6 @@
 namespace Modules\Book\Transformers;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use Modules\User\Http\Resources\UserResource;
 
 class CommentResource extends JsonResource
 {

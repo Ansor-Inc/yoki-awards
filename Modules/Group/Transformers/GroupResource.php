@@ -3,7 +3,6 @@
 namespace Modules\Group\Transformers;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use Modules\User\Http\Resources\UserResource;
 
 class GroupResource extends JsonResource
 {

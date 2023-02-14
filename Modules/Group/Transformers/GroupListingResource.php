@@ -3,8 +3,7 @@
 namespace Modules\Group\Transformers;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use Modules\Group\Enums\GroupUserStatus;
-use Modules\User\Http\Resources\UserResource;
+use Modules\User\Transformers\UserResource;
 
 class GroupListingResource extends JsonResource
 {

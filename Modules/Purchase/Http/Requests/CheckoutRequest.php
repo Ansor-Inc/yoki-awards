@@ -11,7 +11,8 @@ class CheckoutRequest extends FormRequest
     public function rules()
     {
         return [
-            'payment_system' => ['required', new Enum(PaymentSystem::class)]
+            'payment_system' => ['required', new Enum(PaymentSystem::class)],
+            'from_balance' => ['sometimes', 'integer', 'min:0']
         ];
     }
 }

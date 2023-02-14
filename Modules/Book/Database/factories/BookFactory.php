@@ -30,11 +30,13 @@ class BookFactory extends Factory
             'publication_date' => $this->faker->date(),
             'price' => $this->faker->randomNumber(5),
             'compare_price' => $this->faker->randomNumber(4),
-            'is_free' => $this->faker->boolean(),
+            'is_free' => 1,
             'status' => BookStatus::APPROVED->value,
-            'book_type' => array_rand([BookType::AUDIO_BOOK->value, BookType::E_BOOK]),
+            'book_type' => $this->faker->randomElement([BookType::AUDIO_BOOK->value, BookType::E_BOOK->value]),
             'voice_director' => $this->faker->name(),
-            'author_id' => AuthorFactory::new()->create()
+            'author_id' => AuthorFactory::new()->create(),
+            'code' => 145,
+            'package_code' => 'testcode'
         ];
     }
 }

@@ -11,6 +11,7 @@ use Modules\Purchase\Payment\DataFormat;
 use Modules\Purchase\Payment\Payme\Response as PaymeResponse;
 use Modules\Purchase\Repositories\Interfaces\PurchaseRepositoryInterface;
 use Modules\Purchase\Repositories\Interfaces\TransactionRepositoryInterface;
+use Modules\Purchase\Service\Interfaces\PurchaseServiceInterface;
 
 class PerformTransactionAction
 {
@@ -20,7 +21,8 @@ class PerformTransactionAction
 
     public function __construct(private PaymeResponse                  $response,
                                 private TransactionRepositoryInterface $transactionRepository,
-                                private PurchaseRepositoryInterface    $purchaseRepository)
+                                private PurchaseRepositoryInterface    $purchaseRepository,
+                                private PurchaseServiceInterface       $purchaseService)
     {
         $this->config = config('billing.payme');
     }
@@ -71,7 +73,7 @@ class PerformTransactionAction
         $performTime = DataFormat::timestamp(true);
 
         DB::transaction(function () use ($transaction, $purchase, $performTime) {
-            $purchase->update(['state' => PurchaseStatus::COMPLETED->value]);
+            $this->purchaseService->completePurchase($purchase);
 
             $detail = $transaction->detail;
             $detail['perform_time'] = $performTime;

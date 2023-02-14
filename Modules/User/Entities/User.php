@@ -12,13 +12,16 @@ use Modules\Book\Entities\BookUserStatus;
 use Modules\Group\Entities\Group;
 use Modules\Group\Entities\Membership;
 use Modules\Purchase\Entities\Purchase;
+use Modules\Purchase\Enums\BalanceType;
 use Modules\User\Contracts\CanResetPasswordContract;
+use Modules\User\Entities\Traits\HasBalance;
+use Modules\User\Entities\Traits\UsesCoupons;
 use Modules\User\Enums\UserDegree;
 use Modules\User\Filters\UserFilter;
 
 class User extends Authenticatable implements CanResetPasswordContract
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, HasBalance, UsesCoupons;
 
     /**
      * The attributes that are mass assignable.

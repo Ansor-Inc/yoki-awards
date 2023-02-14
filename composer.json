@@ -26,7 +26,9 @@
     "stevebauman/location": "^6.5"
   },
   "require-dev": {
+    "brianium/paratest": "*",
     "fakerphp/faker": "^1.9.1",
+    "kitloong/laravel-migrations-generator": "^6.8",
     "knuckleswtf/scribe": "^3.35",
     "laravel/pint": "^1.0",
     "laravel/sail": "^1.0.1",
