@@ -14,6 +14,8 @@ class Coupon extends Model
 
     protected $fillable = [];
 
+    protected $hidden = ['code'];
+
     protected static function newFactory()
     {
         return CouponFactory::new();

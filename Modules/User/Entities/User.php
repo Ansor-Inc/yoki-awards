@@ -12,7 +12,6 @@ use Modules\Book\Entities\BookUserStatus;
 use Modules\Group\Entities\Group;
 use Modules\Group\Entities\Membership;
 use Modules\Purchase\Entities\Purchase;
-use Modules\Purchase\Enums\BalanceType;
 use Modules\User\Contracts\CanResetPasswordContract;
 use Modules\User\Entities\Traits\HasBalance;
 use Modules\User\Entities\Traits\UsesCoupons;
@@ -29,8 +28,7 @@ class User extends Authenticatable implements CanResetPasswordContract
      * @var array<int, string>
      */
 
-    protected $guarded = ['id', 'remember_token'];
-
+    protected $guarded = ['id', 'remember_token', 'balance'];
     /**
      * The attributes that should be hidden for serialization.
      *
