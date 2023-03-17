@@ -5,7 +5,7 @@ namespace Modules\Book\Repositories;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
 use Modules\Book\Entities\Book;
-use Modules\Book\Repositories\Interfaces\BookListingRepositoryInterface;
+use Modules\Book\Interfaces\BookListingRepositoryInterface;
 
 class BookListingRepository implements BookListingRepositoryInterface
 {

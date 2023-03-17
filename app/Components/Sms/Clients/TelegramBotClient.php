@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Components\Sms\Clients;
 
+use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
 
 class TelegramBotClient
@@ -16,7 +19,7 @@ class TelegramBotClient
     {
     }
 
-    public function sendMessage(string $content)
+    public function sendMessage(string $content): Response
     {
         return Http::post("{$this->getBaseUrl()}/sendMessage", [
             'chat_id' => $this->chatId,
@@ -29,5 +32,4 @@ class TelegramBotClient
     {
         return self::BASE_URL . "/bot{$this->token}";
     }
-
 }

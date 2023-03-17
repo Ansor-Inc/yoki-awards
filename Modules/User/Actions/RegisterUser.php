@@ -2,7 +2,7 @@
 
 namespace Modules\User\Actions;
 
-use Modules\User\Repositories\Interfaces\UserRepositoryInterface;
+use Modules\User\Interfaces\UserRepositoryInterface;
 
 class RegisterUser
 {

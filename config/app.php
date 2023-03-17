@@ -17,7 +17,6 @@ return [
 
     'name' => env('APP_NAME', 'Laravel'),
 
-
     'paid_books_available_countries' => ['UZ'],
 
     /*
@@ -190,7 +189,7 @@ return [
          * Package Service Providers...
          */
         App\Providers\SmsServiceProvider::class,
-
+        \Modules\Purchase\Payment\Providers\PaymentServiceProvider::class,
         /*
          * Application Service Providers...
          */

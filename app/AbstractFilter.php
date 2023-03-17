@@ -7,16 +7,12 @@ use Illuminate\Support\Str;
 
 abstract class AbstractFilter
 {
-    protected Builder $query;
-
-    public function __construct(Builder $query)
+    public function __construct(protected Builder $query)
     {
-        $this->query = $query;
     }
 
-    public function apply(array $filters)
+    public function apply(array $filters): void
     {
-
         foreach ($filters as $param => $value) {
             $methodName = Str::camel($param);
 

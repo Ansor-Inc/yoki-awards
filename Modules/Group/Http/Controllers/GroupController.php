@@ -10,10 +10,10 @@ use Modules\Group\Http\Requests\CreateGroupRequest;
 use Modules\Group\Http\Requests\GetGroupsRequest;
 use Modules\Group\Http\Requests\UpdateGroupRequest;
 use Modules\Group\Notifications\GroupCreated;
-use Modules\Group\Repositories\Interfaces\GroupRepositoryInterface;
 use Modules\Group\Transformers\GroupCategoryResource;
 use Modules\Group\Transformers\GroupListingResource;
 use Modules\Group\Transformers\GroupResource;
+use Modules\GroupInterfaces\Interfaces\GroupRepositoryInterface;
 
 class GroupController extends Controller
 {

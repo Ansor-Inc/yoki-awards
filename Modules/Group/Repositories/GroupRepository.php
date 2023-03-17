@@ -7,7 +7,7 @@ use Illuminate\Support\Str;
 use Modules\Group\Entities\Group;
 use Modules\Group\Entities\GroupCategory;
 use Modules\Group\Enums\GroupStatus;
-use Modules\Group\Repositories\Interfaces\GroupRepositoryInterface;
+use Modules\GroupInterfaces\Interfaces\GroupRepositoryInterface;
 
 class GroupRepository implements GroupRepositoryInterface
 {

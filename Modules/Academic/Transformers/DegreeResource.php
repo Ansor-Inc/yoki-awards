@@ -7,13 +7,7 @@ use Modules\User\Entities\User;
 
 class DegreeResource extends JsonResource
 {
-    /**
-     * Transform the resource into an array.
-     *
-     * @param \Illuminate\Http\Request
-     * @return array
-     */
-    public function toArray($request)
+    public function toArray($request): array
     {
         return [
             'title' => $this->label(),

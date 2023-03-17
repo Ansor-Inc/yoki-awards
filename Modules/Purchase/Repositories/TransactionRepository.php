@@ -3,8 +3,8 @@
 namespace Modules\Purchase\Repositories;
 
 use Modules\Purchase\Entities\Transaction;
-use Modules\Purchase\Enums\PaymentSystem;
-use Modules\Purchase\Repositories\Interfaces\TransactionRepositoryInterface;
+use Modules\Purchase\Interfaces\TransactionRepositoryInterface;
+use Modules\Purchase\Payment\Enums\PaymentSystem;
 
 class TransactionRepository implements TransactionRepositoryInterface
 {

@@ -8,8 +8,7 @@ use Modules\User\Actions\LoginUser;
 use Modules\User\Actions\RegisterUser;
 use Modules\User\Http\Requests\Auth\LoginRequest;
 use Modules\User\Http\Requests\Auth\RegisterUserRequest;
-use Modules\User\Http\Requests\SetFcmTokenRequest;
-use Modules\User\Repositories\Interfaces\UserRepositoryInterface;
+use Modules\User\Interfaces\UserRepositoryInterface;
 
 class AuthController extends Controller
 {

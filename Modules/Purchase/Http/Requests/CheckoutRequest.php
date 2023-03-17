@@ -4,7 +4,7 @@ namespace Modules\Purchase\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Enum;
-use Modules\Purchase\Enums\PaymentSystem;
+use Modules\Purchase\Payment\Enums\PaymentSystem;
 
 class CheckoutRequest extends FormRequest
 {

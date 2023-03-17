@@ -4,7 +4,7 @@ namespace Modules\User\Entities\Traits;
 
 trait HasBalance
 {
-    public function getBalance()
+    public function getBalance(): int
     {
         return (int)$this->balance;
     }
@@ -14,7 +14,7 @@ trait HasBalance
         $this->increment('balance', $amount);
     }
 
-    public function withdraw(int $amount)
+    public function withdraw(int $amount): void
     {
         $this->decrement('balance', $amount);
     }

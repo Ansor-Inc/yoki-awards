@@ -36,3 +36,6 @@ DIGITALOCEAN_SPACES_BUCKET
 ```
 
 ## Testing:
+
+## Exceptions:
+App exceptions are thrown to https://sentry.io/

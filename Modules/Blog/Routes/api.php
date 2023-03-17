@@ -15,5 +15,5 @@ use Modules\Blog\Http\Controllers\BlogController;
 */
 Route::get('/articles', [BlogController::class, 'index']);
 Route::get('/articles/tags', [BlogController::class, 'tags']);
-Route::get('/articles/{article}', [BlogController::class, 'show']);
-Route::put('/articles/{article}', [BlogController::class, 'incrementViewsCount']);
+Route::get('/articles/{articleId}', [BlogController::class, 'show']);
+Route::put('/articles/{articleId}', [BlogController::class, 'incrementViewsCount']);

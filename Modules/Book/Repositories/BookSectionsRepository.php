@@ -5,7 +5,7 @@ namespace Modules\Book\Repositories;
 use Illuminate\Support\Facades\DB;
 use Modules\Book\Entities\Book;
 use Modules\Book\Enums\BookType;
-use Modules\Book\Repositories\Interfaces\BookSectionsRepositoryInterface;
+use Modules\Book\Interfaces\BookSectionsRepositoryInterface;
 use Modules\Book\Transformers\BookListingResource;
 
 class BookSectionsRepository implements BookSectionsRepositoryInterface

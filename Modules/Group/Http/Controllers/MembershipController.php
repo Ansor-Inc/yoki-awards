@@ -5,8 +5,8 @@ namespace Modules\Group\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Modules\Group\Entities\Group;
 use Modules\Group\Http\Requests\GetGroupApprovedMembersRequest;
-use Modules\Group\Repositories\Interfaces\MembershipRepositoryInterface;
 use Modules\Group\Transformers\MemberResource;
+use Modules\GroupInterfaces\Interfaces\MembershipRepositoryInterface;
 use Modules\User\Entities\User;
 
 class MembershipController extends Controller

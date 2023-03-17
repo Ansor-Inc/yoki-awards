@@ -3,7 +3,7 @@
 namespace Modules\Book\Repositories;
 
 use Modules\Book\Entities\Publisher;
-use Modules\Book\Repositories\Interfaces\PublisherRepositoryInterface;
+use Modules\Book\Interfaces\PublisherRepositoryInterface;
 
 class PublisherRepository implements PublisherRepositoryInterface
 {

@@ -3,33 +3,30 @@
 namespace Modules\Blog\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Modules\Blog\Entities\Article;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Modules\Blog\Http\Requests\IndexBlog;
-use Modules\Blog\Repositories\Interfaces\BlogRepositoryInterface;
+use Modules\Blog\Interfaces\BlogRepositoryInterface;
 use Modules\Blog\Transformers\ArticleListingResource;
 use Modules\Blog\Transformers\ArticleResource;
 
 class BlogController extends Controller
 {
-    protected BlogRepositoryInterface $repository;
-
-    public function __construct(BlogRepositoryInterface $repository)
+    public function __construct(protected BlogRepositoryInterface $repository)
     {
-        $this->repository = $repository;
     }
 
-    public function index(IndexBlog $request)
+    public function index(IndexBlog $request): AnonymousResourceCollection
     {
         $data = $this->repository->getArticles($request->validated());
 
         return ArticleListingResource::collection($data);
     }
 
-    public function show(Article $article)
+    public function show(int $articleId): array
     {
-        $article->load('tags:name');
+        $article = $this->repository->getArticleById($articleId);
 
-        $similarArticles = $this->repository->getSimilarArticles($article);
+        $similarArticles = $this->repository->getSimilarArticles($articleId, $article->tags->pluck('name')->toArray());
 
         return [
             'article' => ArticleResource::make($article),
@@ -37,9 +34,9 @@ class BlogController extends Controller
         ];
     }
 
-    public function incrementViewsCount(Article $article)
+    public function incrementViewsCount(int $articleId): ArticleResource
     {
-        $article->increment('views');
+        $article = $this->repository->incrementArticleViewsCount($articleId);
 
         return ArticleResource::make($article);
     }

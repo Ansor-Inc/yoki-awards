@@ -12,12 +12,15 @@ use Modules\Book\Entities\BookUserStatus;
 use Modules\Group\Entities\Group;
 use Modules\Group\Entities\Membership;
 use Modules\Purchase\Entities\Purchase;
-use Modules\User\Contracts\CanResetPasswordContract;
 use Modules\User\Entities\Traits\HasBalance;
 use Modules\User\Entities\Traits\UsesCoupons;
 use Modules\User\Enums\UserDegree;
 use Modules\User\Filters\UserFilter;
+use Modules\User\Interfaces\CanResetPasswordContract;
 
+/**
+ * @property mixed $balance
+ */
 class User extends Authenticatable implements CanResetPasswordContract
 {
     use HasApiTokens, HasFactory, Notifiable, HasBalance, UsesCoupons;

@@ -4,7 +4,7 @@ namespace Modules\User\Repositories;
 
 use Illuminate\Support\Facades\Hash;
 use Modules\User\Entities\User;
-use Modules\User\Repositories\Interfaces\UserRepositoryInterface;
+use Modules\User\Interfaces\UserRepositoryInterface;
 
 class UserRepository implements UserRepositoryInterface
 {

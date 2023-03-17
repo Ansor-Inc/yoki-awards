@@ -2,19 +2,13 @@
 
 namespace Modules\Purchase\Http\Controllers;
 
-use Exception;
-use Illuminate\Http\Request;
-use Modules\Purchase\Actions\PaymentSystemRequestHandler;
-use Modules\Purchase\Enums\PaymentSystem;
+use Modules\Purchase\Payment\Enums\PaymentSystem;
+use Modules\Purchase\Payment\Facades\Payment;
 
 class PaymentSystemController
 {
-    public function handle(PaymentSystem $paymentSystem, Request $request, PaymentSystemRequestHandler $handler)
+    public function handle(PaymentSystem $paymentSystem)
     {
-        try {
-            return $handler->execute($paymentSystem, $request);
-        } catch (Exception $exception) {
-            return response(['message' => $exception->getMessage()]);
-        }
+        return Payment::driver($paymentSystem)->handle();
     }
 }

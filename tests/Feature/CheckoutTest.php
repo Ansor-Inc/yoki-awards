@@ -18,7 +18,8 @@ class CheckoutTest extends TestCase
 
         $this->postJson("/api/purchases/{$purchase->id}/checkout", [
             "payment_system" => "payme"
-        ])->assertOk()
+        ])->dd()
+            ->assertOk()
             ->assertValid()
             ->assertJsonStructure(["checkout_link"]);
     }

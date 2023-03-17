@@ -3,7 +3,7 @@
 namespace Modules\User\Actions;
 
 use Illuminate\Support\Facades\Hash;
-use Modules\User\Repositories\Interfaces\UserRepositoryInterface;
+use Modules\User\Interfaces\UserRepositoryInterface;
 
 class LoginUser
 {

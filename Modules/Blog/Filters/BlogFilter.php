@@ -20,5 +20,4 @@ class BlogFilter extends AbstractFilter
     {
         $this->query->limit($limit);
     }
-
 }

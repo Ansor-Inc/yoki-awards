@@ -5,7 +5,7 @@ namespace Modules\Group\Repositories;
 use Modules\Group\Entities\BlackList;
 use Modules\Group\Entities\Group;
 use Modules\Group\Entities\Membership;
-use Modules\Group\Repositories\Interfaces\BlackListRepositoryInterface;
+use Modules\GroupInterfaces\Interfaces\BlackListRepositoryInterface;
 use Modules\User\Entities\User;
 
 class BlackListRepository implements BlackListRepositoryInterface

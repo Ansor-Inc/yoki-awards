@@ -3,41 +3,42 @@
 namespace Modules\Purchase\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Http\Response;
 use Modules\Book\Entities\Book;
 use Modules\Book\Transformers\BookListingResource;
 use Modules\Book\Transformers\PurchaseResource;
 use Modules\Purchase\Enums\PurchaseStatus;
 use Modules\Purchase\Http\Requests\GetCompletedPurchasesRequest;
 use Modules\Purchase\Http\Requests\MakePurchaseRequest;
-use Modules\Purchase\Repositories\Interfaces\PurchaseRepositoryInterface;
+use Modules\Purchase\Interfaces\PurchaseRepositoryInterface;
 
 class BookPurchaseController extends Controller
 {
-    protected PurchaseRepositoryInterface $purchaseRepository;
-
-    public function __construct(PurchaseRepositoryInterface $repository)
+    public function __construct(protected PurchaseRepositoryInterface $purchaseRepository)
     {
-        $this->purchaseRepository = $repository;
     }
 
-    public function index(Request $request)
+    public function index(Request $request): AnonymousResourceCollection
     {
         $purchases = $this->purchaseRepository->getPurchaseHistory($request->user(), $request->input('per_page'));
 
         return PurchaseResource::collection($purchases);
     }
 
-    public function getCompletedPurchases(GetCompletedPurchasesRequest $request)
+    public function getCompletedPurchases(GetCompletedPurchasesRequest $request): AnonymousResourceCollection
     {
         $purchasedBooks = $this->purchaseRepository->getPurchasedBooks($request->user(), $request->validated());
 
         return BookListingResource::collection($purchasedBooks);
     }
 
-    public function makePurchase(Book $book, MakePurchaseRequest $request)
+    public function makePurchase(Book $book, MakePurchaseRequest $request): Response|Application|ResponseFactory
     {
         $user = auth()->user();
 
@@ -55,6 +56,7 @@ class BookPurchaseController extends Controller
         try {
             $purchase = $this->purchaseRepository->makePurchase($user, $book, $request->input('phone'));
         } catch (\Throwable $exception) {
+            report($exception);
             return response(['message' => $exception->getMessage()], 500);
         }
 
@@ -66,27 +68,26 @@ class BookPurchaseController extends Controller
         return $this->pendingPaymentResponse($purchase);
     }
 
-    protected function userHasAlreadyBoughtResponse($purchase)
+    protected function userHasAlreadyBoughtResponse($purchase): Response|Application|ResponseFactory
     {
         return $this->purchaseResponse($purchase, 'Siz allaqachon bu kitobni sotib olgansiz!');
     }
 
-    protected function pendingPaymentResponse($purchase)
+    protected function pendingPaymentResponse($purchase): Response|Application|ResponseFactory
     {
         return $this->purchaseResponse($purchase, "To'lov kutilmoqda!");
     }
 
-    protected function hasBoughtResponse(Model|Builder $purchase)
+    protected function hasBoughtResponse(Model|Builder $purchase): Response|Application|ResponseFactory
     {
         return $this->purchaseResponse($purchase, 'Kitob sotib olindi!');
     }
 
-    protected function purchaseResponse($purchase, string $message)
+    protected function purchaseResponse($purchase, string $message): Response|Application|ResponseFactory
     {
         return response([
             'message' => $message,
-            'purchase' => $purchase->load('book', 'book.publisher', 'book.author')
+            'purchase' => PurchaseResource::make($purchase->load('book', 'book.publisher', 'book.author'))
         ]);
     }
-
 }

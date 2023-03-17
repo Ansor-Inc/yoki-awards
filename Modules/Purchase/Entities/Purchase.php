@@ -30,6 +30,16 @@ class Purchase extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function pending(): bool
+    {
+        return $this->state === PurchaseStatus::PENDING_PAYMENT->value;
+    }
+
+    public function canceled(): bool
+    {
+        return $this->state === PurchaseStatus::CANCELED->value;
+    }
+
     public function completed(): bool
     {
         return $this->state === PurchaseStatus::COMPLETED->value;

@@ -4,17 +4,14 @@ namespace Modules\Academic\Http\Controllers;
 
 use Illuminate\Routing\Controller;
 use Modules\Academic\Http\Requests\GetAcademicsRequest;
-use Modules\Academic\Repositories\Interfaces\AcademicsRepositoryInterface;
+use Modules\Academic\Interfaces\AcademicsRepositoryInterface;
 use Modules\Academic\Transformers\AcademicResource;
 use Modules\Academic\Transformers\DegreeResource;
 
 class AcademicController extends Controller
 {
-    protected AcademicsRepositoryInterface $repository;
-
-    public function __construct(AcademicsRepositoryInterface $repository)
+    public function __construct(protected AcademicsRepositoryInterface $repository)
     {
-        $this->repository = $repository;
     }
 
     public function getAcademics(GetAcademicsRequest $request)

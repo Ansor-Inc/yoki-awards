@@ -8,7 +8,7 @@ use Modules\Book\Entities\Book;
 use Modules\Book\Entities\Bookmark;
 use Modules\Book\Entities\BookRead;
 use Modules\Book\Entities\Rating;
-use Modules\Book\Repositories\Interfaces\BookRepositoryInterface;
+use Modules\Book\Interfaces\BookRepositoryInterface;
 
 class BookRepository implements BookRepositoryInterface
 {

@@ -21,7 +21,7 @@ class IndexBlog extends FormRequest
      *
      * @return array<string, mixed>
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'per_page' => ['sometimes', 'integer', 'min:1'],

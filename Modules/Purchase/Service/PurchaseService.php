@@ -2,76 +2,43 @@
 
 namespace Modules\Purchase\Service;
 
-use Illuminate\Support\Facades\DB;
-use Modules\Purchase\Service\Interfaces\PurchaseServiceInterface;
+use Modules\Purchase\Entities\Purchase;
 
-class PurchaseService implements PurchaseServiceInterface
+class PurchaseService
 {
-    public function getPurchaseItemTitle($purchase): string
-    {
-        return $purchase->book->title;
-    }
-
-    public function getPurchaseAmount($purchase): float
-    {
-        return $purchase->getPaidAmount() * 100;
-    }
-
-    public function getPurchaseItemCode($purchase): string
-    {
-        return $purchase->book->code;
-    }
-
-    public function getPurchaseItemsCount($purchase): int
-    {
-        return 1;
-    }
-
-    public function getPurchaseItemPackageCode($purchase): string
-    {
-        return $purchase->book->package_code;
-    }
-
-    public function getPurchaseVatPercent($purchase): int
-    {
-        return (int)setting('vat_percent', 0);
-    }
-
-    public function checkPurchaseIsValidForPayment($purchase): bool
+    public static function checkPurchaseIsValidForPayment(Purchase $purchase): bool
     {
         return $purchase->book()->exists() and
             $purchase->user()->exists() and
             !$purchase->book->is_free and
-            !$purchase->completed();
+            $purchase->pending();
     }
 
-    public function checkIsProperAmount(float $amount, $purchase): bool
+    public static function checkIsProperAmount(float $amount, Purchase $purchase): bool
     {
-        if ($purchase->user->getBalance() < $purchase->from_balance) return false;
+        if ($purchase->user->getBalance() < $purchase->getAttribute('from_balance')) return false;
 
-        return $amount === (((float)$purchase->book->price - (float)$purchase->from_balance) * 100);
+        return $amount === (float)$purchase->book->price - (float)$purchase->getAttribute('from_balance');
     }
 
-    public function checkPurchaseHasActiveTransactions($purchase): bool
+    public static function checkPurchaseHasActiveTransactions(Purchase $purchase): bool
     {
         return $purchase->activeTransactions()->exists();
     }
 
-    public function checkPurchaseHasCompletedTransactions($purchase): bool
+    public static function checkPurchaseHasCompletedTransactions(Purchase $purchase): bool
     {
         return $purchase->completedTransactions()->exists();
     }
 
-    public function cancelPurchase($purchase): void
+    public static function cancelPurchase(Purchase $purchase): void
     {
         $purchase->cancel();
     }
 
-    public function completePurchase($purchase): void
+    public static function completePurchase(Purchase $purchase): void
     {
-        DB::transaction(function () use ($purchase) {
-            $purchase->complete();
-            $purchase->user->withdraw($purchase->from_balance);
-        });
+        $purchase->complete();
+        $purchase->user->withdraw($purchase->getAttribute('from_balance'));
     }
 }

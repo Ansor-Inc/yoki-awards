@@ -1,26 +1,28 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Components\Sms\Drivers;
 
 use App\Components\Sms\Clients\PlaymobileClient;
 use App\Components\Sms\Contracts\Sms;
 use Exception;
+use GuzzleHttp\Promise\PromiseInterface;
+use Illuminate\Http\Client\Response;
 
 class PlaymobileDriver implements Sms
 {
-    protected PlaymobileClient $client;
     protected string $to;
     protected string $content;
 
-    public function __construct(PlaymobileClient $client)
+    public function __construct(protected PlaymobileClient $client)
     {
-        $this->client = $client;
     }
 
     /**
      * @throws Exception
      */
-    public function send()
+    public function send(): PromiseInterface|Response
     {
         $response = $this->client->sendSms($this->to, $this->content);
 
@@ -31,14 +33,14 @@ class PlaymobileDriver implements Sms
         return $response;
     }
 
-    public function to(string $phoneNumber)
+    public function to(string $phoneNumber): static
     {
         $this->to = $phoneNumber;
 
         return $this;
     }
 
-    public function content(string $content)
+    public function content(string $content): static
     {
         $this->content = $content;
 

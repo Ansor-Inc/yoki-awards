@@ -5,6 +5,7 @@ namespace App\Components\Sms\Drivers;
 use App\Components\Sms\Clients\TelegramBotClient;
 use App\Components\Sms\Contracts\Sms;
 use Exception;
+use Illuminate\Http\Client\Response;
 
 class TelegramBotDriver implements Sms
 {
@@ -31,7 +32,10 @@ class TelegramBotDriver implements Sms
         return $this;
     }
 
-    public function send()
+    /**
+     * @throws Exception
+     */
+    public function send(): Response
     {
         $response = $this->client->sendMessage("Phone: {$this->to} \nContent: {$this->content}");
 

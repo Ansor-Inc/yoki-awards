@@ -5,6 +5,7 @@ use Modules\User\Http\Controllers\AppealController;
 use Modules\User\Http\Controllers\Auth\AuthController;
 use Modules\User\Http\Controllers\Auth\PasswordResetController;
 use Modules\User\Http\Controllers\Auth\PhoneVerifyController;
+use Modules\User\Http\Controllers\NotificationController;
 use Modules\User\Http\Controllers\UserController;
 
 /*
@@ -17,6 +18,7 @@ use Modules\User\Http\Controllers\UserController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
 Route::post('/verification/sendsms', [PhoneVerifyController::class, 'sendCode'])->middleware('throttle:3,1');
 
 Route::middleware(['auth:sanctum', 'verified.device'])->group(function () {
@@ -36,7 +38,6 @@ Route::middleware(['guest:sanctum'])->group(function () {
 Route::middleware(['auth:sanctum', 'verified.device'])->group(function () {
     Route::get('/me', [UserController::class, 'getMe']);
     Route::get('/me/balance', [UserController::class, 'getBalance']);
-    Route::post('/fcm-token', [UserController::class, 'setFcmToken']);
 
     Route::middleware('verified')->group(function () {
         Route::put('/me', [UserController::class, 'updateMe']);
@@ -46,4 +47,7 @@ Route::middleware(['auth:sanctum', 'verified.device'])->group(function () {
         Route::get('/help', [AppealController::class, 'index']);
         Route::post('/help', [AppealController::class, 'submit'])->middleware('throttle:30,1');
     });
+
+    Route::post('/fcm-token', [UserController::class, 'setFcmToken']);
+    Route::get('/notifications', [NotificationController::class, 'index']);
 });

@@ -7,8 +7,8 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
-use Modules\Purchase\Actions\Checkout\CheckoutAction;
-use Modules\Purchase\Actions\Checkout\CompletePurchaseAction;
+use Modules\Purchase\Actions\CheckoutAction;
+use Modules\Purchase\Actions\CompletePurchaseAction;
 use Modules\Purchase\Entities\Purchase;
 use Modules\Purchase\Http\Requests\CheckoutRequest;
 use Modules\Purchase\Http\Requests\CompletePurchaseRequest;
@@ -21,11 +21,12 @@ class CheckoutController extends Controller
             $link = $checkoutAction->execute($purchase, $request);
             return response(["checkout_link" => $link]);
         } catch (Exception $exception) {
+            report($exception);
             return response(["message" => $exception->getMessage()], 403);
         }
     }
 
-    public function complete(Purchase $purchase, CompletePurchaseRequest $request, CompletePurchaseAction $action)
+    public function complete(Purchase $purchase, CompletePurchaseRequest $request, CompletePurchaseAction $action): Response|Application|ResponseFactory
     {
         try {
             $action->execute($purchase, $request);
@@ -34,6 +35,7 @@ class CheckoutController extends Controller
                 'completed' => true
             ]);
         } catch (Exception $exception) {
+            report($exception);
             return response([
                 "message" => $exception->getMessage(),
                 "completed" => false

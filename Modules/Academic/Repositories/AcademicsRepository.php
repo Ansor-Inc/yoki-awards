@@ -2,13 +2,15 @@
 
 namespace Modules\Academic\Repositories;
 
-use Modules\Academic\Repositories\Interfaces\AcademicsRepositoryInterface;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Collection;
+use Modules\Academic\Interfaces\AcademicsRepositoryInterface;
 use Modules\User\Entities\User;
 use Modules\User\Enums\UserDegree;
 
 class AcademicsRepository implements AcademicsRepositoryInterface
 {
-    public function getAcademics(string $degree, int|null $perPage)
+    public function getAcademics(string $degree, int|null $perPage): Collection|LengthAwarePaginator|array
     {
         $query = User::query()
             ->where('degree', $degree)
@@ -19,7 +21,7 @@ class AcademicsRepository implements AcademicsRepositoryInterface
         return isset($perPage) ? $query->paginate($perPage) : $query->limit(100)->get();
     }
 
-    public function getDegrees()
+    public function getDegrees(): \Illuminate\Support\Collection
     {
         return collect(UserDegree::cases())->filter(fn($degree) => $degree != UserDegree::USER);
     }

@@ -1,10 +1,9 @@
 <?php
 
 use Modules\Book\Database\factories\BookFactory;
-use Modules\Book\Enums\BookType;
 use Modules\Purchase\Database\factories\PurchaseFactory;
 use Modules\Purchase\Enums\PurchaseStatus;
-use Modules\Purchase\Repositories\Interfaces\PurchaseRepositoryInterface;
+use Modules\Purchase\Interfaces\PurchaseRepositoryInterface;
 use Tests\TestCase;
 
 class PurchaseTest extends TestCase

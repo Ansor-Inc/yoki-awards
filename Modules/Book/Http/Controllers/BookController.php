@@ -10,9 +10,9 @@ use Modules\Book\Http\Requests\GetBooksRequest;
 use Modules\Book\Http\Requests\GetSavedBooksRequest;
 use Modules\Book\Http\Requests\GetSimilarBooksRequest;
 use Modules\Book\Http\Requests\UpdateBookRatingRequest;
+use Modules\Book\Interfaces\BookListingRepositoryInterface;
+use Modules\Book\Interfaces\BookRepositoryInterface;
 use Modules\Book\Repositories\BookSectionsRepository;
-use Modules\Book\Repositories\Interfaces\BookListingRepositoryInterface;
-use Modules\Book\Repositories\Interfaces\BookRepositoryInterface;
 use Modules\Book\Transformers\BookListingResource;
 use Modules\Book\Transformers\BookResource;
 

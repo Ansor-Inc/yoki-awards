@@ -10,39 +10,27 @@ use Illuminate\Support\Manager;
 
 class SmsManager extends Manager
 {
-    /**
-     * Get a driver instance.
-     *
-     * @param string|null $name
-     * @return mixed
-     */
-    public function channel($name = null)
+    public function channel(string $name = null): mixed
     {
         return $this->driver($name);
     }
 
-    public function createPlaymobileDriver()
+    public function createPlaymobileDriver(): PlaymobileDriver
     {
         return new PlaymobileDriver($this->createPlaymobileClient());
     }
 
-    public function createTelegramBotDriver()
+    public function createTelegramBotDriver(): TelegramBotDriver
     {
         return new TelegramBotDriver($this->createTelegramBotClient());
     }
 
-
-    /**
-     * Get the default SMS driver name.
-     *
-     * @return string
-     */
-    public function getDefaultDriver()
+    public function getDefaultDriver(): mixed
     {
         return $this->config['sms.default'] ?? 'null';
     }
 
-    protected function createPlaymobileClient()
+    protected function createPlaymobileClient(): PlaymobileClient
     {
         return new PlaymobileClient(
             $this->config['sms.drivers.playmobile.host'],
@@ -52,7 +40,7 @@ class SmsManager extends Manager
         );
     }
 
-    protected function createTelegramBotClient()
+    protected function createTelegramBotClient(): TelegramBotClient
     {
         return new TelegramBotClient(
             $this->config['sms.drivers.telegram_bot.token'],
@@ -60,6 +48,4 @@ class SmsManager extends Manager
             $this->config['sms.drivers.telegram_bot.parse_mode']
         );
     }
-
-
 }

@@ -6,8 +6,8 @@ use App\Http\Controllers\Controller;
 use Modules\Group\Entities\Group;
 use Modules\Group\Entities\GroupAdmin;
 use Modules\Group\Http\Requests\UpdateAdminPermissionsRequest;
-use Modules\Group\Repositories\Interfaces\GroupAdminRepositoryInterface;
 use Modules\Group\Transformers\GroupAdminResource;
+use Modules\GroupInterfaces\Interfaces\GroupAdminRepositoryInterface;
 use Modules\User\Entities\User;
 
 class GroupAdminController extends Controller

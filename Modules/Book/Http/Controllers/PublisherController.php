@@ -6,7 +6,7 @@ use Illuminate\Routing\Controller;
 use Modules\Book\Entities\Publisher;
 use Modules\Book\Http\Requests\GetPublisherBooksRequest;
 use Modules\Book\Http\Requests\GetPublishersRequest;
-use Modules\Book\Repositories\Interfaces\PublisherRepositoryInterface;
+use Modules\Book\Interfaces\PublisherRepositoryInterface;
 use Modules\Book\Transformers\BookListingResource;
 use Modules\Book\Transformers\PublisherResource;
 

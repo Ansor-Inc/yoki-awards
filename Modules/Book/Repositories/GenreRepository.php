@@ -3,7 +3,7 @@
 namespace Modules\Book\Repositories;
 
 use Modules\Book\Entities\Genre;
-use Modules\Book\Repositories\Interfaces\GenreRepositoryInterface;
+use Modules\Book\Interfaces\GenreRepositoryInterface;
 
 class GenreRepository implements GenreRepositoryInterface
 {

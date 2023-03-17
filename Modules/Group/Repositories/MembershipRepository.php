@@ -5,7 +5,7 @@ namespace Modules\Group\Repositories;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Modules\Group\Entities\Group;
 use Modules\Group\Entities\Membership;
-use Modules\Group\Repositories\Interfaces\MembershipRepositoryInterface;
+use Modules\GroupInterfaces\Interfaces\MembershipRepositoryInterface;
 use Modules\User\Entities\User;
 
 class MembershipRepository implements MembershipRepositoryInterface

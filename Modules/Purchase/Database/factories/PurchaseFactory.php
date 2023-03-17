@@ -9,19 +9,9 @@ use Modules\User\Database\factories\UserFactory;
 
 class PurchaseFactory extends Factory
 {
-    /**
-     * The name of the factory's corresponding model.
-     *
-     * @var string
-     */
     protected $model = \Modules\Purchase\Entities\Purchase::class;
 
-    /**
-     * Define the model's default state.
-     *
-     * @return array
-     */
-    public function definition()
+    public function definition(): array
     {
         $book = BookFactory::new()->create();
         $user = UserFactory::new()->create();

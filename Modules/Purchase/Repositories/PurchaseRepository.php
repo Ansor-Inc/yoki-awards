@@ -6,7 +6,7 @@ use Illuminate\Contracts\Auth\Authenticatable;
 use Modules\Book\Entities\Book;
 use Modules\Purchase\Entities\Purchase;
 use Modules\Purchase\Enums\PurchaseStatus;
-use Modules\Purchase\Repositories\Interfaces\PurchaseRepositoryInterface;
+use Modules\Purchase\Interfaces\PurchaseRepositoryInterface;
 use Modules\User\Entities\User;
 
 class PurchaseRepository implements PurchaseRepositoryInterface

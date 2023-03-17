@@ -4,6 +4,7 @@ namespace Modules\Blog\Entities;
 
 use App\Models\Tag;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Modules\Blog\Filters\BlogFilter;
 
 class Article extends Model
@@ -13,7 +14,7 @@ class Article extends Model
         static::addGlobalScope('published', fn($query) => $query->where('published', true));
     }
 
-    public function tags()
+    public function tags(): MorphToMany
     {
         return $this->morphToMany(Tag::class, 'taggable');
     }

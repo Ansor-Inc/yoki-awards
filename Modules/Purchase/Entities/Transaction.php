@@ -15,13 +15,6 @@ class Transaction extends Model
     const STATE_CANCELLED = -1;
     const STATE_CANCELLED_AFTER_COMPLETE = -2;
 
-    const REASON_RECEIVERS_NOT_FOUND = 1;
-    const REASON_PROCESSING_EXECUTION_FAILED = 2;
-    const REASON_EXECUTION_FAILED = 3;
-    const REASON_CANCELLED_BY_TIMEOUT = 4;
-    const REASON_FUND_RETURNED = 5;
-    const REASON_UNKNOWN = 10;
-
     const TIMEOUT = 43200000;
 
     protected $dates = ['deleted_at'];
@@ -29,40 +22,74 @@ class Transaction extends Model
     protected $casts = ['detail' => 'json'];
 
     protected $fillable = [
-        'payment_system', //varchar 191
-        'system_transaction_id', // varchar 191
-        'amount', // double (15,5)
-        'state', // int(11)
-        'updated_time', //datetime
-        'comment', // varchar 191
+        'payment_system',
+        'system_transaction_id',
+        'amount',
+        'state',
+        'updated_time',
+        'comment',
         'purchase_id',
-        'detail', // details
+        'detail'
     ];
+
+    public function isCreated(): bool
+    {
+        return $this->getAttribute('state') === self::STATE_CREATED;
+    }
+
+    public function isCompleted(): bool
+    {
+        return $this->getAttribute('state') === self::STATE_COMPLETED;
+    }
+
+    public function isCanceled(): bool
+    {
+        return (int)$this->getAttribute('state') === self::STATE_CANCELLED ||
+            (int)$this->getAttribute('state') === self::STATE_CANCELLED_AFTER_COMPLETE;
+    }
+
+    public function isExpired(): bool
+    {
+        return (int)$this->getAttribute('state') === self::STATE_CREATED &&
+            (DataFormat::timestamp(true) - $this->getAttribute('updated_time')) > self::TIMEOUT;
+    }
+
+    public function complete()
+    {
+        $performTime = DataFormat::timestamp(true);
+
+        $this->update([
+            'state' => Transaction::STATE_COMPLETED,
+            'updated_time' => $performTime,
+            'detail' => array_merge($this->detail, ['perform_time' => $performTime])
+        ]);
+    }
 
     public function cancel($reason)
     {
-        $this->updated_time = DataFormat::timestamp(true);
-
-        if ($this->state === self::STATE_COMPLETED) {
-            // Scenario: CreateTransaction -> PerformTransaction -> CancelTransaction
-            $this->state = self::STATE_CANCELLED_AFTER_COMPLETE;
-        }
-
-        if ($this->state === self::STATE_CREATED) {
-            // Scenario: CreateTransaction -> CancelTransaction
-            $this->state = self::STATE_CANCELLED;
-        }
-
-        $this->comment = $reason;
-        $detail = $this->detail;
-        $detail['cancel_time'] = $this->updated_time;
-        $this->detail = $detail;
-
-        $this->update();
+        $this->update($this->preparePayloadToCancelTransaction($reason));
     }
 
-    public function isExpired()
+    private function preparePayloadToCancelTransaction($reason): array
     {
-        return $this->state === self::STATE_CREATED && (DataFormat::timestamp(true) - $this->updated_time) > self::TIMEOUT;
+        $updatedTime = DataFormat::timestamp(true);
+
+        $payload = [
+            'updated_time' => $updatedTime,
+            'comment' => $reason,
+            'detail' => array_merge($this->getAttribute('detail'), ['cancel_time' => $updatedTime])
+        ];
+
+        if ($this->isCompleted()) {
+            // Scenario: CreateTransaction -> PerformTransaction -> CancelTransaction
+            $payload['state'] = self::STATE_CANCELLED_AFTER_COMPLETE;
+        }
+
+        if ($this->isCreated()) {
+            // Scenario: CreateTransaction -> CancelTransaction
+            $payload['state'] = self::STATE_CANCELLED;
+        }
+
+        return $payload;
     }
 }

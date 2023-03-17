@@ -5,8 +5,8 @@ namespace Modules\User\Repositories;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
-use Modules\User\Contracts\CanResetPasswordContract;
-use Modules\User\Repositories\Interfaces\PasswordResetsRepositoryInterface;
+use Modules\User\Interfaces\CanResetPasswordContract;
+use Modules\User\Interfaces\PasswordResetsRepositoryInterface;
 
 class PasswordResetsRepository implements PasswordResetsRepositoryInterface
 {
