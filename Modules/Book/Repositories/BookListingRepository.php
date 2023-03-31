@@ -13,7 +13,7 @@ class BookListingRepository implements BookListingRepositoryInterface
     {
         $query = $this->getListingQuery()->filter($filters);
 
-        return isset($filters['per_page']) ? $query->paginate($filters['per_page']) : $query->limit(100)->get();
+        return isset($filters['per_page']) ? $query->paginate($filters['per_page']) : $query->get();
     }
 
     public function getSimilarBooks(Book $book, int|null $limit)

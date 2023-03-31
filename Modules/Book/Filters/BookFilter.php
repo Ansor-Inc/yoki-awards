@@ -20,4 +20,14 @@ class BookFilter extends AbstractFilter
     {
         $this->query->where('is_free', $isFree);
     }
+
+    public function limit(int $limit)
+    {
+        $this->query->limit($limit);
+    }
+
+    public function latest()
+    {
+        $this->query->latest();
+    }
 }

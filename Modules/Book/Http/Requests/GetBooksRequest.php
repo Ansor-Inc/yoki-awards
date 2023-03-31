@@ -18,6 +18,8 @@ class GetBooksRequest extends FormRequest
         return [
             'per_page' => ['sometimes', 'integer', 'min:0'],
             'trending' => ['nullable'],
+            'latest' => ['nullable'],
+            'limit' => ['sometimes', 'integer', 'min:1'],
             'type' => ['sometimes', new Enum(BookType::class), 'string'],
             'free' => ['sometimes', 'boolean']
         ];

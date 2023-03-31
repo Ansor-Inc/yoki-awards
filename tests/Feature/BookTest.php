@@ -18,6 +18,12 @@ class BookTest extends TestCase
         $response->assertStatus(200);
     }
 
+    public function test_user_can_retrieve_latest_books()
+    {
+        $response = $this->getJson('/api/books?latest&limit=6');
+        $response->assertStatus(200);
+    }
+
     public function test_user_can_search_books_by_title_and_by_authors_firstname_lastname()
     {
         $book = BookFactory::new()->create();

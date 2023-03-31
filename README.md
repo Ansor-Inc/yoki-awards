@@ -36,6 +36,8 @@ DIGITALOCEAN_SPACES_BUCKET
 ```
 
 ## Testing:
+1. <code>php artisan migrate:generate --squash</code>
+2. <code>php artisan test</code>
 
 ## Exceptions:
 App exceptions are thrown to https://sentry.io/
