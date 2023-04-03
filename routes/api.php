@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BannerController;
 use App\Http\Controllers\ImageUploadController;
 use Illuminate\Support\Facades\Route;
 
@@ -17,3 +18,5 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['auth:sanctum', 'verified', 'verified.device'])->group(function () {
     Route::post('/upload/image', [ImageUploadController::class, 'upload']);
 });
+
+Route::get('/banners', [BannerController::class, 'index']);
