@@ -10,6 +10,8 @@ interface GroupPostRepositoryInterface
 {
     public function getGroupPosts(Group $group, array $filters);
 
+    public function getActualPosts(int $limit = null);
+
     public function createPost(Group $group, array $payload);
 
     public function updatePost(Post $post, array $payload);

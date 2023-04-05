@@ -14,6 +14,11 @@ use Modules\Post\Http\Controllers\PostCommentController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+Route::prefix('posts')->group(function () {
+    Route::get('/actual', [GroupPostController::class, 'getActualPosts']);
+});
+
 Route::middleware(['auth:sanctum', 'verified', 'verified.device'])->group(function () {
     Route::get('/groups/{group}/posts', [GroupPostController::class, 'index']);
     Route::post('/groups/{group}/posts', [GroupPostController::class, 'create']);
@@ -32,3 +37,5 @@ Route::middleware(['auth:sanctum', 'verified', 'verified.device'])->group(functi
         Route::post('/comments/{comment}/complain', [PostCommentController::class, 'complain']);
     });
 });
+
+

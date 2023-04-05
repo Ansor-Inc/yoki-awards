@@ -11,6 +11,7 @@ use Modules\Post\Http\Requests\CreateGroupPostRequest;
 use Modules\Post\Http\Requests\GetGroupPostsRequest;
 use Modules\Post\Http\Requests\UpdateGroupPostRequest;
 use Modules\Post\Repositories\Interfaces\GroupPostRepositoryInterface;
+use Modules\Post\Transformers\ActualPostResource;
 use Modules\Post\Transformers\PostResource;
 
 class GroupPostController extends Controller
@@ -35,6 +36,11 @@ class GroupPostController extends Controller
     public function show(Post $post)
     {
         return PostResource::make($post->loadCount('likes'));
+    }
+
+    public function getActualPosts(Request $request)
+    {
+        return ActualPostResource::collection($this->groupPostRepository->getActualPosts($request->input('limit')));
     }
 
     public function create(Group $group, CreateGroupPostRequest $request)

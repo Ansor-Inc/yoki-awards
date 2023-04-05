@@ -23,6 +23,17 @@ class GroupPostRepository implements GroupPostRepositoryInterface
         return isset($filters['per_page']) ? $query->paginate($filters['per_page']) : $query->get();
     }
 
+    public function getActualPosts(int $limit = null)
+    {
+        $query = Post::query()
+            ->with(['group:id,title,group_category_id', 'group.category:id,title'])
+            ->select('id', 'title', 'body', 'group_id')
+            ->whereRelation('tags', 'name', '=', 'actual')
+            ->latest();
+
+        return isset($limit) ? $query->limit($limit)->get() : $query->get();
+    }
+
     public function createPost(Group $group, array $payload): Model
     {
         return $group->posts()->create($payload);

@@ -8,7 +8,7 @@ class BookFilter extends AbstractFilter
 {
     public function trending()
     {
-        $this->query->whereRelation('tags', 'name', 'trending');
+        $this->query->whereRelation('tags', 'name', '=', 'trending');
     }
 
     public function type($bookType)
