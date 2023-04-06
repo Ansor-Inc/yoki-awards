@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Modules\Group\Http\Controllers\BlackListController;
 use Modules\Group\Http\Controllers\GroupAdminController;

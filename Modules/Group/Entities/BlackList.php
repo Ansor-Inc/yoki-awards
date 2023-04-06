@@ -2,19 +2,17 @@
 
 namespace Modules\Group\Entities;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Modules\User\Entities\User;
 
 class BlackList extends Model
 {
-    use HasFactory;
-
     protected $table = 'black_list';
 
     protected $fillable = ['membership_id'];
 
-    public function membership()
+    public function membership(): BelongsTo
     {
         return $this->belongsTo(Membership::class);
     }
@@ -27,5 +25,4 @@ class BlackList extends Model
             ->where('black_list.id', $this->id)
             ->first();
     }
-
 }

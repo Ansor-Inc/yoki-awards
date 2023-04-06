@@ -7,8 +7,8 @@ use App\Policies\Traits\AuthorizesGroupBlackListActions;
 use Modules\Group\Entities\BlackList;
 use Modules\Group\Entities\Group;
 use Modules\Group\Http\Requests\UpdateBlackListPermissionsRequest;
+use Modules\Group\Interfaces\BlackListRepositoryInterface;
 use Modules\Group\Transformers\BlackListMemberResource;
-use Modules\GroupInterfaces\Interfaces\BlackListRepositoryInterface;
 use Modules\User\Entities\User;
 
 class BlackListController extends Controller

@@ -3,6 +3,7 @@
 namespace Modules\Group\Entities;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Modules\User\Entities\User;
 
 class Membership extends Model
@@ -19,12 +20,12 @@ class Membership extends Model
         $query->where('approved', false);
     }
 
-    public function isRejected()
+    public function isRejected(): bool
     {
         return !is_null($this->rejected_at);
     }
 
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }

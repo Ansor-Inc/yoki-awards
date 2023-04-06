@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Support\Str;
 use Modules\Group\Entities\Traits\HasGroupAdmins;
 use Modules\Group\Entities\Traits\HasGroupPermissions;
 use Modules\Group\Enums\GroupStatus;

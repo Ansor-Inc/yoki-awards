@@ -2,16 +2,16 @@
 
 namespace Modules\Group\Providers;
 
-use Illuminate\Database\Eloquent\Factory;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\ServiceProvider;
+use Modules\Group\Interfaces\BlackListRepositoryInterface;
+use Modules\Group\Interfaces\GroupAdminRepositoryInterface;
+use Modules\Group\Interfaces\GroupRepositoryInterface;
+use Modules\Group\Interfaces\MembershipRepositoryInterface;
 use Modules\Group\Repositories\BlackListRepository;
 use Modules\Group\Repositories\GroupAdminRepository;
 use Modules\Group\Repositories\GroupRepository;
 use Modules\Group\Repositories\MembershipRepository;
-use Modules\GroupInterfaces\Interfaces\BlackListRepositoryInterface;
-use Modules\GroupInterfaces\Interfaces\GroupAdminRepositoryInterface;
-use Modules\GroupInterfaces\Interfaces\GroupRepositoryInterface;
-use Modules\GroupInterfaces\Interfaces\MembershipRepositoryInterface;
 
 class GroupServiceProvider extends ServiceProvider
 {
@@ -49,7 +49,7 @@ class GroupServiceProvider extends ServiceProvider
     private function getPublishableViewPaths(): array
     {
         $paths = [];
-        foreach (\Config::get('view.paths') as $path) {
+        foreach (Config::get('view.paths') as $path) {
             if (is_dir($path . '/modules/' . $this->moduleNameLower)) {
                 $paths[] = $path . '/modules/' . $this->moduleNameLower;
             }
