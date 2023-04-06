@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\GroupInterfaces\Interfaces;
+namespace Modules\Group\Interfaces;
 
 use Illuminate\Contracts\Auth\Authenticatable;
 use Modules\Group\Entities\Group;

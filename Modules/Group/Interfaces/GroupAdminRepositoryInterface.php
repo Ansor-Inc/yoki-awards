@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\GroupInterfaces\Interfaces;
+namespace Modules\Group\Interfaces;
 
 use Modules\Group\Entities\Group;
 use Modules\Group\Entities\GroupAdmin;

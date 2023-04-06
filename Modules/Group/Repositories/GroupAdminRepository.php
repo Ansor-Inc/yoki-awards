@@ -5,7 +5,7 @@ namespace Modules\Group\Repositories;
 use Modules\Group\Entities\Group;
 use Modules\Group\Entities\GroupAdmin;
 use Modules\Group\Entities\Membership;
-use Modules\GroupInterfaces\Interfaces\GroupAdminRepositoryInterface;
+use Modules\Group\Interfaces\GroupAdminRepositoryInterface;
 use Modules\User\Entities\User;
 
 class GroupAdminRepository implements GroupAdminRepositoryInterface
