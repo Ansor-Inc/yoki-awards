@@ -20,6 +20,7 @@ class ActualPostResource extends JsonResource
             'title' => $this->title,
             'excerpt' => Str::limit($this->body, 60),
             'group' => [
+                'id' => $this->group?->id,
                 'title' => $this->group?->title,
                 'category' => $this->group?->category?->title
             ],
