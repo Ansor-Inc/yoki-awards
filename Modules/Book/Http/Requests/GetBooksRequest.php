@@ -21,7 +21,8 @@ class GetBooksRequest extends FormRequest
             'latest' => ['nullable'],
             'limit' => ['sometimes', 'integer', 'min:1'],
             'type' => ['sometimes', new Enum(BookType::class), 'string'],
-            'free' => ['sometimes', 'boolean']
+            'free' => ['sometimes', 'boolean'],
+            'special' => ['nullable']
         ];
     }
 

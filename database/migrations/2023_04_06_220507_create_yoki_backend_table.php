@@ -15,7 +15,6 @@ return new class extends Migration
     public function up()
     {
         Schema::create('activations', function (Blueprint $table) {
-            $table->comment('');
             $table->bigIncrements('id');
             $table->string('email')->index();
             $table->string('token');
@@ -24,7 +23,6 @@ return new class extends Migration
         });
 
         Schema::create('admin_activations', function (Blueprint $table) {
-            $table->comment('');
             $table->bigIncrements('id');
             $table->string('email')->index();
             $table->string('token');
@@ -33,7 +31,6 @@ return new class extends Migration
         });
 
         Schema::create('admin_password_resets', function (Blueprint $table) {
-            $table->comment('');
             $table->bigIncrements('id');
             $table->string('email')->index();
             $table->string('token');
@@ -41,7 +38,6 @@ return new class extends Migration
         });
 
         Schema::create('admin_users', function (Blueprint $table) {
-            $table->comment('');
             $table->increments('id');
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
@@ -59,7 +55,6 @@ return new class extends Migration
         });
 
         Schema::create('appeals', function (Blueprint $table) {
-            $table->comment('');
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id')->index('appeals_user_id_foreign');
             $table->text('body');
@@ -70,7 +65,6 @@ return new class extends Migration
         });
 
         Schema::create('articles', function (Blueprint $table) {
-            $table->comment('');
             $table->bigIncrements('id');
             $table->text('title');
             $table->longText('body');
@@ -80,7 +74,6 @@ return new class extends Migration
         });
 
         Schema::create('authors', function (Blueprint $table) {
-            $table->comment('');
             $table->bigIncrements('id');
             $table->string('firstname');
             $table->string('lastname')->nullable();
@@ -91,8 +84,14 @@ return new class extends Migration
             $table->timestamps();
         });
 
+        Schema::create('banners', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->string('title')->nullable();
+            $table->string('link')->nullable();
+            $table->timestamps();
+        });
+
         Schema::create('black_list', function (Blueprint $table) {
-            $table->comment('');
             $table->bigIncrements('id');
             $table->unsignedBigInteger('membership_id')->unique();
             $table->boolean('can_comment')->default(false);
@@ -101,7 +100,6 @@ return new class extends Migration
         });
 
         Schema::create('book_reads', function (Blueprint $table) {
-            $table->comment('');
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id')->index();
             $table->unsignedBigInteger('book_id')->index('book_reads_book_id_foreign');
@@ -111,7 +109,6 @@ return new class extends Migration
         });
 
         Schema::create('book_user_statuses', function (Blueprint $table) {
-            $table->comment('');
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id')->nullable();
             $table->unsignedBigInteger('book_id')->index('book_user_statuses_book_id_foreign');
@@ -124,7 +121,6 @@ return new class extends Migration
         });
 
         Schema::create('books', function (Blueprint $table) {
-            $table->comment('');
             $table->bigIncrements('id');
             $table->string('title')->index();
             $table->text('description')->nullable();
@@ -145,12 +141,11 @@ return new class extends Migration
             $table->timestamps();
             $table->unsignedBigInteger('parent_id')->nullable()->index();
             $table->string('shop_link')->nullable();
-            $table->string('code')->nullable();
-            $table->string('package_code')->nullable();
+            $table->string('code');
+            $table->string('package_code');
         });
 
         Schema::create('comments', function (Blueprint $table) {
-            $table->comment('');
             $table->bigIncrements('id');
             $table->text('body');
             $table->unsignedBigInteger('user_id')->index();
@@ -163,7 +158,6 @@ return new class extends Migration
         });
 
         Schema::create('complaints', function (Blueprint $table) {
-            $table->comment('');
             $table->bigIncrements('id');
             $table->text('body');
             $table->unsignedBigInteger('complainer_id')->nullable()->index('complaints_complainer_id_foreign');
@@ -175,7 +169,6 @@ return new class extends Migration
         });
 
         Schema::create('coupon_uses', function (Blueprint $table) {
-            $table->comment('');
             $table->bigIncrements('id');
             $table->unsignedBigInteger('coupon_id');
             $table->unsignedBigInteger('user_id')->index('coupon_uses_user_id_foreign');
@@ -185,7 +178,6 @@ return new class extends Migration
         });
 
         Schema::create('coupons', function (Blueprint $table) {
-            $table->comment('');
             $table->bigIncrements('id');
             $table->string('name');
             $table->bigInteger('amount');
@@ -196,7 +188,6 @@ return new class extends Migration
         });
 
         Schema::create('failed_jobs', function (Blueprint $table) {
-            $table->comment('');
             $table->bigIncrements('id');
             $table->string('uuid')->unique();
             $table->text('connection');
@@ -207,14 +198,12 @@ return new class extends Migration
         });
 
         Schema::create('genres', function (Blueprint $table) {
-            $table->comment('');
             $table->bigIncrements('id');
             $table->string('title');
             $table->timestamps();
         });
 
         Schema::create('group_admins', function (Blueprint $table) {
-            $table->comment('');
             $table->bigIncrements('id');
             $table->unsignedBigInteger('membership_id')->unique();
             $table->boolean('can_update_group')->default(false);
@@ -224,14 +213,12 @@ return new class extends Migration
         });
 
         Schema::create('group_categories', function (Blueprint $table) {
-            $table->comment('');
             $table->bigIncrements('id');
             $table->string('title');
             $table->timestamps();
         });
 
         Schema::create('groups', function (Blueprint $table) {
-            $table->comment('');
             $table->bigIncrements('id');
             $table->string('title');
             $table->unsignedBigInteger('group_category_id')->nullable()->index();
@@ -245,7 +232,6 @@ return new class extends Migration
         });
 
         Schema::create('media', function (Blueprint $table) {
-            $table->comment('');
             $table->bigIncrements('id');
             $table->string('model_type');
             $table->unsignedBigInteger('model_id');
@@ -268,7 +254,6 @@ return new class extends Migration
         });
 
         Schema::create('memberships', function (Blueprint $table) {
-            $table->comment('');
             $table->bigIncrements('id');
             $table->unsignedBigInteger('group_id');
             $table->unsignedBigInteger('user_id')->index('memberships_user_id_foreign');
@@ -281,7 +266,6 @@ return new class extends Migration
         });
 
         Schema::create('model_has_permissions', function (Blueprint $table) {
-            $table->comment('');
             $table->unsignedBigInteger('permission_id');
             $table->string('model_type');
             $table->unsignedBigInteger('model_id');
@@ -291,7 +275,6 @@ return new class extends Migration
         });
 
         Schema::create('model_has_roles', function (Blueprint $table) {
-            $table->comment('');
             $table->unsignedBigInteger('role_id');
             $table->string('model_type');
             $table->unsignedBigInteger('model_id');
@@ -301,7 +284,6 @@ return new class extends Migration
         });
 
         Schema::create('notifications', function (Blueprint $table) {
-            $table->comment('');
             $table->char('id', 36)->primary();
             $table->string('type');
             $table->string('notifiable_type');
@@ -314,7 +296,6 @@ return new class extends Migration
         });
 
         Schema::create('password_resets', function (Blueprint $table) {
-            $table->comment('');
             $table->bigIncrements('id');
             $table->string('phone')->index();
             $table->string('token');
@@ -322,7 +303,6 @@ return new class extends Migration
         });
 
         Schema::create('permissions', function (Blueprint $table) {
-            $table->comment('');
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('guard_name');
@@ -332,7 +312,6 @@ return new class extends Migration
         });
 
         Schema::create('personal_access_tokens', function (Blueprint $table) {
-            $table->comment('');
             $table->bigIncrements('id');
             $table->string('tokenable_type');
             $table->unsignedBigInteger('tokenable_id');
@@ -350,7 +329,6 @@ return new class extends Migration
         });
 
         Schema::create('post_likes', function (Blueprint $table) {
-            $table->comment('');
             $table->bigIncrements('id');
             $table->unsignedBigInteger('post_id')->index();
             $table->unsignedBigInteger('user_id')->nullable()->index('post_likes_user_id_foreign');
@@ -361,7 +339,6 @@ return new class extends Migration
         });
 
         Schema::create('posts', function (Blueprint $table) {
-            $table->comment('');
             $table->bigIncrements('id');
             $table->string('title', 200);
             $table->text('body');
@@ -373,7 +350,6 @@ return new class extends Migration
         });
 
         Schema::create('product_codes', function (Blueprint $table) {
-            $table->comment('');
             $table->bigIncrements('id');
             $table->string('title');
             $table->string('code');
@@ -381,7 +357,6 @@ return new class extends Migration
         });
 
         Schema::create('publishers', function (Blueprint $table) {
-            $table->comment('');
             $table->bigIncrements('id');
             $table->string('title');
             $table->text('description');
@@ -389,10 +364,11 @@ return new class extends Migration
             $table->string('address')->nullable();
             $table->string('location_url')->nullable();
             $table->timestamps();
+            $table->string('username')->nullable();
+            $table->string('password')->nullable();
         });
 
         Schema::create('purchases', function (Blueprint $table) {
-            $table->comment('');
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id')->nullable()->index('purchases_user_id_foreign');
             $table->unsignedBigInteger('book_id')->nullable()->index('purchases_book_id_foreign');
@@ -405,8 +381,15 @@ return new class extends Migration
             $table->unsignedBigInteger('from_balance')->default(0);
         });
 
+        Schema::create('quotes', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->text('body');
+            $table->unsignedBigInteger('book_id')->index('quotes_book_id_foreign');
+            $table->unsignedBigInteger('user_id')->index('quotes_user_id_foreign');
+            $table->timestamps();
+        });
+
         Schema::create('role_has_permissions', function (Blueprint $table) {
-            $table->comment('');
             $table->unsignedBigInteger('permission_id');
             $table->unsignedBigInteger('role_id')->index('role_has_permissions_role_id_foreign');
 
@@ -414,7 +397,6 @@ return new class extends Migration
         });
 
         Schema::create('roles', function (Blueprint $table) {
-            $table->comment('');
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('guard_name');
@@ -424,14 +406,12 @@ return new class extends Migration
         });
 
         Schema::create('settings', function (Blueprint $table) {
-            $table->comment('');
             $table->increments('id');
             $table->string('key')->index();
             $table->text('value');
         });
 
         Schema::create('sms_tokens', function (Blueprint $table) {
-            $table->comment('');
             $table->bigIncrements('id');
             $table->string('phone')->unique();
             $table->string('code')->index('code');
@@ -439,7 +419,6 @@ return new class extends Migration
         });
 
         Schema::create('taggables', function (Blueprint $table) {
-            $table->comment('');
             $table->bigIncrements('id');
             $table->unsignedBigInteger('tag_id');
             $table->string('taggable_type');
@@ -450,14 +429,12 @@ return new class extends Migration
         });
 
         Schema::create('tags', function (Blueprint $table) {
-            $table->comment('');
             $table->bigIncrements('id');
             $table->string('name');
             $table->timestamps();
         });
 
         Schema::create('transactions', function (Blueprint $table) {
-            $table->comment('');
             $table->bigIncrements('id');
             $table->enum('payment_system', ['payme', 'click']);
             $table->string('system_transaction_id');
@@ -472,7 +449,6 @@ return new class extends Migration
         });
 
         Schema::create('translations', function (Blueprint $table) {
-            $table->comment('');
             $table->increments('id');
             $table->string('namespace')->default('*')->index();
             $table->string('group')->index();
@@ -484,7 +460,6 @@ return new class extends Migration
         });
 
         Schema::create('users', function (Blueprint $table) {
-            $table->comment('');
             $table->bigIncrements('id');
             $table->string('fullname');
             $table->unsignedBigInteger('balance')->default(0);
@@ -507,7 +482,6 @@ return new class extends Migration
         });
 
         Schema::create('wysiwyg_media', function (Blueprint $table) {
-            $table->comment('');
             $table->increments('id');
             $table->string('file_path');
             $table->unsignedInteger('wysiwygable_id')->nullable()->index();
@@ -591,6 +565,11 @@ return new class extends Migration
             $table->foreign(['user_id'])->references(['id'])->on('users')->onUpdate('NO ACTION')->onDelete('SET NULL');
         });
 
+        Schema::table('quotes', function (Blueprint $table) {
+            $table->foreign(['book_id'])->references(['id'])->on('books')->onUpdate('NO ACTION')->onDelete('CASCADE');
+            $table->foreign(['user_id'])->references(['id'])->on('users')->onUpdate('NO ACTION')->onDelete('CASCADE');
+        });
+
         Schema::table('role_has_permissions', function (Blueprint $table) {
             $table->foreign(['permission_id'])->references(['id'])->on('permissions')->onUpdate('NO ACTION')->onDelete('CASCADE');
             $table->foreign(['role_id'])->references(['id'])->on('roles')->onUpdate('NO ACTION')->onDelete('CASCADE');
@@ -615,6 +594,11 @@ return new class extends Migration
         Schema::table('role_has_permissions', function (Blueprint $table) {
             $table->dropForeign('role_has_permissions_permission_id_foreign');
             $table->dropForeign('role_has_permissions_role_id_foreign');
+        });
+
+        Schema::table('quotes', function (Blueprint $table) {
+            $table->dropForeign('quotes_book_id_foreign');
+            $table->dropForeign('quotes_user_id_foreign');
         });
 
         Schema::table('purchases', function (Blueprint $table) {
@@ -713,6 +697,8 @@ return new class extends Migration
 
         Schema::dropIfExists('role_has_permissions');
 
+        Schema::dropIfExists('quotes');
+
         Schema::dropIfExists('purchases');
 
         Schema::dropIfExists('publishers');
@@ -764,6 +750,8 @@ return new class extends Migration
         Schema::dropIfExists('book_reads');
 
         Schema::dropIfExists('black_list');
+
+        Schema::dropIfExists('banners');
 
         Schema::dropIfExists('authors');
 

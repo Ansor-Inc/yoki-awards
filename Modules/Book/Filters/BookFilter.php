@@ -30,4 +30,9 @@ class BookFilter extends AbstractFilter
     {
         $this->query->latest();
     }
+
+    public function special()
+    {
+        $this->query->addSelect('publisher_id', 'description')->with('publisher:id,title');
+    }
 }

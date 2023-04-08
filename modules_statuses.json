@@ -6,5 +6,7 @@
     "Academic": true,
     "Purchase": true,
     "Billing": true,
-    "Blog": true
+    "Blog": true,
+    "Model": true,
+    "Quote": true
 }

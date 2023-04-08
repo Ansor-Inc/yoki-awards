@@ -1,7 +1,8 @@
-Yoki backend 
+Yoki backend
 https://api.yoki.uz
 
 .env setup
+
 ```
 APP_ADMIN_URL=<yoki-admin-panel-url>
 API_SECRET=<api-key>
@@ -36,8 +37,14 @@ DIGITALOCEAN_SPACES_BUCKET
 ```
 
 ## Testing:
-1. <code>php artisan migrate:generate --squash</code>
-2. <code>php artisan test</code>
+
+### How to run tests?
+
+1. First make sure you have connection to database
+2. Delete all migration files in <code>database/migrations</code> folder
+3. Run <code>php artisan migrate:generate --squash</code> to generate new migration file
+4. Then run tests: <code>php artisan test</code>
 
 ## Exceptions:
+
 App exceptions are thrown to https://sentry.io/

@@ -26,7 +26,8 @@
     "socialiteproviders/google": "^4.1",
     "spatie/laravel-data": "^3.1",
     "staudenmeir/laravel-adjacency-list": "^1.11",
-    "stevebauman/location": "^6.5"
+    "stevebauman/location": "^6.5",
+    "ext-couchbase": "*"
   },
   "require-dev": {
     "brianium/paratest": "*",
