@@ -25,5 +25,6 @@ return [
     'comment' => \App\Models\Comment::class,
     'complaint' => \Modules\User\Entities\Complaint::class,
     'admin' => \App\Models\AdminUser::class,
-    'appeal' => \Modules\User\Entities\Appeal::class
+    'appeal' => \Modules\User\Entities\Appeal::class,
+    'slide' => \App\Models\Banner::class
 ];
