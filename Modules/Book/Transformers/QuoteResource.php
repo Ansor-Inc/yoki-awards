@@ -17,6 +17,7 @@ class QuoteResource extends JsonResource
             ],
             'created_at' => $this->created_at,
             'book' => [
+                'id' => $this->book?->id,
                 'image' => $this->book?->image
             ]
         ];
