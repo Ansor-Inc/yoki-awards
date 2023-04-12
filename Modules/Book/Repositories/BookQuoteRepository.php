@@ -15,7 +15,7 @@ class BookQuoteRepository implements BookQuoteRepositoryInterface
     {
         return Quote::query()
             ->where('book_id', $bookId)
-            ->with('user:id,avatar')
+            ->with('user:id,avatar,fullname')
             ->latest()
             ->get();
     }
