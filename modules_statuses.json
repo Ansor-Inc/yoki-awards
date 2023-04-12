@@ -8,5 +8,6 @@
     "Billing": true,
     "Blog": true,
     "Model": true,
-    "Quote": true
+    "Quote": true,
+    "Content": true
 }
