@@ -2,7 +2,6 @@
 
 namespace Modules\Book\Repositories;
 
-use Http\Discovery\Exception\NotFoundException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Modules\Book\Entities\Book;
 use Modules\Book\Entities\Quote;

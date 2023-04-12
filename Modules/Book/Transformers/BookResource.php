@@ -43,8 +43,7 @@ class BookResource extends JsonResource
             'book_file' => $this->getBookFileUrl(),
             'audio_files' => $this->getAudioFileUrls(),
             'user_status' => BookUserStatusResource::make($this->whenLoaded('currentUserStatus')),
-            'rating_percentage' => $this->percentage_per_rating,
-
+            'rating_percentage' => $this->percentage_per_rating
         ];
     }
 }
