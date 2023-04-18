@@ -2,8 +2,10 @@
 
 namespace Modules\User\Entities;
 
+use App\Models\Article;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -17,13 +19,19 @@ use Modules\User\Entities\Traits\UsesCoupons;
 use Modules\User\Enums\UserDegree;
 use Modules\User\Filters\UserFilter;
 use Modules\User\Interfaces\CanResetPasswordContract;
+use Spatie\Permission\Traits\HasRoles;
 
 /**
  * @property mixed $balance
  */
 class User extends Authenticatable implements CanResetPasswordContract
 {
-    use HasApiTokens, HasFactory, Notifiable, HasBalance, UsesCoupons;
+    use HasApiTokens,
+        HasFactory,
+        Notifiable,
+        HasBalance,
+        UsesCoupons,
+        HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -67,6 +75,11 @@ class User extends Authenticatable implements CanResetPasswordContract
     public function bookUserStatuses()
     {
         return $this->hasMany(BookUserStatus::class);
+    }
+
+    public function articles(): MorphMany
+    {
+        return $this->morphMany(Article::class, 'user');
     }
 
     public function groups()

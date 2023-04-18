@@ -17,3 +17,8 @@ Route::get('/articles', [BlogController::class, 'index']);
 Route::get('/articles/tags', [BlogController::class, 'tags']);
 Route::get('/articles/{articleId}', [BlogController::class, 'show']);
 Route::put('/articles/{articleId}', [BlogController::class, 'incrementViewsCount']);
+
+Route::middleware('auth')->group(function () {
+    Route::post('/articles', [BlogController::class, 'store']);
+    Route::post('/articles/{articleId}/publish', [BlogController::class, 'publish']);
+});

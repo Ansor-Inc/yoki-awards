@@ -2,13 +2,12 @@
 
 namespace Modules\User\Enums;
 
-use Modules\User\Entities\User;
-
 enum UserDegree: string
 {
     case GENIUS = 'GENIUS';
     case SCIENTIST = 'SCIENTIST';
     case CLEVER = 'CLEVER';
+
     case USER = 'USER';
 
     public function label()

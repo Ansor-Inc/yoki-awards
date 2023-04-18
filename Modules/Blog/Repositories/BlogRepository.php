@@ -48,4 +48,14 @@ class BlogRepository implements BlogRepositoryInterface
         $article->increment('views');
         return $article;
     }
+
+    public function storeArticle(array $payload)
+    {
+        return Article::query()->create($payload);
+    }
+
+    public function publishArticle(int $articleId)
+    {
+        DB::table('articles')->where('id', $articleId)->update(['published' => true]);
+    }
 }

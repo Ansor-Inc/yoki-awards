@@ -12,5 +12,9 @@ interface BlogRepositoryInterface
 
     public function getAllTags();
 
+    public function storeArticle(array $payload);
+
+    public function publishArticle(int $articleId);
+
     public function incrementArticleViewsCount(int $articleId);
 }
