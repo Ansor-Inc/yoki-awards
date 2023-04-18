@@ -9,7 +9,6 @@
   "license": "MIT",
   "require": {
     "php": "^8.1.0",
-    "ext-couchbase": "*",
     "ext-gd": "*",
     "akaunting/laravel-setting": "^1.2",
     "brackets/media": "^7.0",
