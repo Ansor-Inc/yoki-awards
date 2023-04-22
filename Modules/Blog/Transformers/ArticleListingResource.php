@@ -13,7 +13,7 @@ class ArticleListingResource extends JsonResource
             'id' => $this->id,
             'title' => $this->title,
             'excerpt' => Str::limit(strip_tags($this->body), 190),
-            'published' => $this->published,
+            'published' => (bool)$this->published,
             'views' => (int)$this->views,
             'created_at' => $this->created_at?->toDateTimeString()
         ];
