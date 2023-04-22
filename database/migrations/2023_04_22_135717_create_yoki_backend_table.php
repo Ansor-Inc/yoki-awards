@@ -71,6 +71,10 @@ return new class extends Migration
             $table->boolean('published')->default(false);
             $table->bigInteger('views')->default(0);
             $table->timestamps();
+            $table->string('user_type');
+            $table->unsignedBigInteger('user_id');
+
+            $table->index(['user_type', 'user_id']);
         });
 
         Schema::create('authors', function (Blueprint $table) {

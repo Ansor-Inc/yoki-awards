@@ -103,4 +103,21 @@ class BlogTest extends TestCase
             'published' => true
         ]));
     }
+
+    public function test_user_can_retrieve_his_articles()
+    {
+        $user = $this->signIn();
+
+        $user->articles()->create(['title' => 'test', 'body' => 'body']);
+
+        $response = $this->getJson('/api/me/articles')
+            ->assertOk();
+
+        $response->assertJson([
+            'data' => [
+                ['title' => 'test', 'excerpt' => 'body', 'published' => false]
+            ]
+        ]);
+    }
+
 }

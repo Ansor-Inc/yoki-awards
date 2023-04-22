@@ -2,9 +2,13 @@
 
 namespace Modules\Blog\Interfaces;
 
+use Modules\User\Entities\User;
+
 interface BlogRepositoryInterface
 {
     public function getArticleById(int $articleId);
+
+    public function getUserArticles(User $user);
 
     public function getArticles(array $filters);
 

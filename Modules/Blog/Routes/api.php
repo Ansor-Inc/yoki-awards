@@ -19,6 +19,7 @@ Route::get('/articles/{articleId}', [BlogController::class, 'show']);
 Route::put('/articles/{articleId}', [BlogController::class, 'incrementViewsCount']);
 
 Route::middleware('auth')->group(function () {
+    Route::get('/me/articles', [BlogController::class, 'getUserArticles']);
     Route::post('/articles', [BlogController::class, 'store']);
     Route::post('/articles/{articleId}/publish', [BlogController::class, 'publish']);
 });

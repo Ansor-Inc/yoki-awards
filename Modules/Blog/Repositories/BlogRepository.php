@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Modules\Blog\Entities\Article;
 use Modules\Blog\Interfaces\BlogRepositoryInterface;
+use Modules\User\Entities\User;
 
 class BlogRepository implements BlogRepositoryInterface
 {
@@ -57,5 +58,10 @@ class BlogRepository implements BlogRepositoryInterface
     public function publishArticle(int $articleId)
     {
         DB::table('articles')->where('id', $articleId)->update(['published' => true]);
+    }
+
+    public function getUserArticles(User $user)
+    {
+        return $user->articles()->withoutGlobalScopes()->get();
     }
 }

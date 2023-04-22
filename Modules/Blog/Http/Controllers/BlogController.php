@@ -23,6 +23,13 @@ class BlogController extends Controller
         return ArticleListingResource::collection($data);
     }
 
+    public function getUserArticles()
+    {
+        $articles = $this->repository->getUserArticles(auth()->user());
+
+        return ArticleListingResource::collection($articles);
+    }
+
     public function show(int $articleId): array
     {
         $article = $this->repository->getArticleById($articleId);

@@ -2,13 +2,13 @@
 
 namespace Modules\User\Entities;
 
-use App\Models\Article;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Modules\Blog\Entities\Article;
 use Modules\Book\Entities\Book;
 use Modules\Book\Entities\BookUserStatus;
 use Modules\Group\Entities\Group;
