@@ -2,11 +2,9 @@
 
 namespace Tests\Feature;
 
+use Database\Seeders\UserRolesAndPermissionsSeeder;
 use Modules\Blog\Database\factories\BlogFactory;
-use Modules\User\Enums\UserPermissions;
-use Modules\User\Enums\UserRole;
 use Spatie\Permission\Models\Permission;
-use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
 class BlogTest extends TestCase
@@ -65,9 +63,9 @@ class BlogTest extends TestCase
     {
         $user = $this->signIn();
 
-        $role = Role::create(['name' => UserRole::AMATEUR_BLOGGER->value]);
-        $role->givePermissionTo(Permission::create(['name' => UserPermissions::CAN_CREATE_ARTICLE->value]));
-        $user->assignRole($role);
+        $this->seed(UserRolesAndPermissionsSeeder::class);
+
+        $user->assignRole('amateur_blogger');
 
         $payload = [
             'title' => 'title',
@@ -89,14 +87,9 @@ class BlogTest extends TestCase
     {
         $user = $this->signIn();
 
-        $role = Role::create(['name' => UserRole::BLOGGER->value]);
+        $this->seed(UserRolesAndPermissionsSeeder::class);
 
-        $role->syncPermissions([
-            Permission::create(['name' => UserPermissions::CAN_CREATE_ARTICLE->value]),
-            Permission::create(['name' => UserPermissions::CAN_PUBLISH_ARTICLE->value])
-        ]);
-
-        $user->assignRole($role);
+        $user->assignRole('blogger');
 
         $payload = [
             'title' => 'title',

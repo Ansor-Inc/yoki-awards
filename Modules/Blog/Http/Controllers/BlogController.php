@@ -9,7 +9,6 @@ use Modules\Blog\Http\Requests\StoreBlogRequest;
 use Modules\Blog\Interfaces\BlogRepositoryInterface;
 use Modules\Blog\Transformers\ArticleListingResource;
 use Modules\Blog\Transformers\ArticleResource;
-use Modules\User\Enums\UserPermissions;
 
 class BlogController extends Controller
 {
@@ -51,7 +50,7 @@ class BlogController extends Controller
 
     public function publish($articleId)
     {
-        $this->authorize(UserPermissions::CAN_PUBLISH_ARTICLE->value);
+        $this->authorize('sanctum.article.publish');
 
         $this->repository->publishArticle($articleId);
 

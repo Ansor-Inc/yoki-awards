@@ -4,7 +4,6 @@ namespace Modules\Blog\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
-use Modules\User\Enums\UserPermissions;
 
 class StoreBlogRequest extends FormRequest
 {
@@ -26,8 +25,8 @@ class StoreBlogRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
-        return Gate::allows(UserPermissions::CAN_CREATE_ARTICLE->value);
+        return Gate::allows('sanctum.article.create');
     }
 }
