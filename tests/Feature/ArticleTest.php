@@ -3,15 +3,14 @@
 namespace Tests\Feature;
 
 use Database\Seeders\UserRolesAndPermissionsSeeder;
-use Modules\Blog\Database\factories\BlogFactory;
-use Spatie\Permission\Models\Permission;
+use Modules\Blog\Database\factories\ArticleFactory;
 use Tests\TestCase;
 
-class BlogTest extends TestCase
+class ArticleTest extends TestCase
 {
     public function test_user_can_retrieve_articles()
     {
-        BlogFactory::new()->create();
+        ArticleFactory::new()->create();
 
         $this->get('/api/articles')
             ->assertStatus(200)
@@ -22,19 +21,39 @@ class BlogTest extends TestCase
 
     public function test_user_can_retrieve_article()
     {
-        $article = BlogFactory::new()->create();
+        $user = $this->signIn();
 
-        $this->get("/api/articles/{$article->id}")
+        $article = ArticleFactory::new()->create();
+
+        $user->like($article);
+
+        $response = $this->get("/api/articles/{$article->id}")
             ->assertStatus(200)
             ->assertJsonStructure([
-                'article' => ['id', 'title', 'body', 'views', 'tags', 'created_at'],
+                'article' => [
+                    'id',
+                    'title',
+                    'body',
+                    'views',
+                    'tags',
+                    'created_at',
+                    'comments_count',
+                    'reaction' => ['likes_count', 'dislikes_count', 'has_liked', 'has_disliked']
+                ],
                 'similar_articles' => []
             ]);
+
+        $this->assertEquals(1, $response['article']['reaction']['likes_count']);
+        $this->assertEquals(0, $response['article']['reaction']['dislikes_count']);
+
+        $user->dislike($article);
+        $this->assertEquals(0, $article->likes()->count());
+        $this->assertEquals(1, $article->dislikes()->count());
     }
 
     public function test_user_can_increment_blog_views_count()
     {
-        $article = BlogFactory::new()->create();
+        $article = ArticleFactory::new()->create();
 
         $this->put("/api/articles/{$article->id}")
             ->assertStatus(200)

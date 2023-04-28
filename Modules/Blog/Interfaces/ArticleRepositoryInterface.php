@@ -4,7 +4,7 @@ namespace Modules\Blog\Interfaces;
 
 use Modules\User\Entities\User;
 
-interface BlogRepositoryInterface
+interface ArticleRepositoryInterface
 {
     public function getArticleById(int $articleId);
 

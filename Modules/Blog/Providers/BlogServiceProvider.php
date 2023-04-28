@@ -2,10 +2,11 @@
 
 namespace Modules\Blog\Providers;
 
-use Illuminate\Database\Eloquent\Factory;
 use Illuminate\Support\ServiceProvider;
-use Modules\Blog\Interfaces\BlogRepositoryInterface;
-use Modules\Blog\Repositories\BlogRepository;
+use Modules\Blog\Interfaces\ArticleCommentRepositoryInterface;
+use Modules\Blog\Interfaces\ArticleRepositoryInterface;
+use Modules\Blog\Repositories\ArticleCommentRepository;
+use Modules\Blog\Repositories\ArticleRepository;
 
 class BlogServiceProvider extends ServiceProvider
 {
@@ -13,10 +14,11 @@ class BlogServiceProvider extends ServiceProvider
 
     protected string $moduleNameLower = 'blog';
 
-    public function register()
+    public function register(): void
     {
         $this->app->register(RouteServiceProvider::class);
-        $this->app->bind(BlogRepositoryInterface::class, BlogRepository::class);
+        $this->app->bind(ArticleRepositoryInterface::class, ArticleRepository::class);
+        $this->app->bind(ArticleCommentRepositoryInterface::class, ArticleCommentRepository::class);
     }
 
     public function provides(): array

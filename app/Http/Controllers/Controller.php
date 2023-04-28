@@ -14,6 +14,11 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
+    protected function success(array $payload)
+    {
+        return response(['success' => true, 'data' => $payload]);
+    }
+
     protected function failed(): Response|Application|ResponseFactory
     {
         return response(['message' => 'Something went wrong!'], 500);

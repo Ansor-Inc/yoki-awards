@@ -4,13 +4,13 @@ namespace Modules\Post\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\AdminUser;
-use App\Models\Comment;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Notification;
 use Modules\Book\Transformers\CommentResource;
+use Modules\Comment\Entities\Comment;
 use Modules\Post\Entities\Post;
 use Modules\Post\Http\Requests\ComplainToCommentRequest;
 use Modules\Post\Http\Requests\CreatePostCommentRequest;

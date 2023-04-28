@@ -2,7 +2,7 @@
 
 namespace Modules\Post\Repositories;
 
-use App\Models\Comment;
+use Modules\Comment\Entities\Comment;
 use Modules\Post\Entities\Post;
 use Modules\Post\Repositories\Interfaces\PostCommentRepositoryInterface;
 use Modules\User\Entities\Complaint;

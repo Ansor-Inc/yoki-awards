@@ -2,22 +2,18 @@
 
 namespace Modules\Book\Entities;
 
-use App\Models\Comment;
 use App\Models\Tag;
-use Brackets\Media\HasMedia\HasMediaCollectionsTrait;
+use App\Traits\HasMediaCollectionsTrait;
 use Illuminate\Contracts\Auth\Authenticatable;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
-use Modules\Book\Database\factories\BookFactory;
 use Modules\Book\Entities\Scopes\OnlyApprovedBooksScope;
 use Modules\Book\Entities\Scopes\ShowPaidBookOnlyToLocalUsersScope;
 use Modules\Book\Entities\Traits\InteractsWithBookFiles;
-use Modules\Book\Enums\BookStatus;
 use Modules\Book\Filters\BookFilter;
 use Modules\Book\Helpers\BookRatingPercentage;
+use Modules\Comment\Entities\Comment;
 use Modules\User\Entities\User;
-use Spatie\Image\Manipulations;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Staudenmeir\LaravelAdjacencyList\Eloquent\HasRecursiveRelationships;

@@ -7,14 +7,17 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Modules\Blog\Entities\Article;
-use Modules\Blog\Interfaces\BlogRepositoryInterface;
+use Modules\Blog\Interfaces\ArticleRepositoryInterface;
 use Modules\User\Entities\User;
 
-class BlogRepository implements BlogRepositoryInterface
+class ArticleRepository implements ArticleRepositoryInterface
 {
     public function getArticleById(int $articleId): Model|Collection|Builder|array|null
     {
-        return Article::query()->findOrFail($articleId);
+        return Article::query()
+            ->with('userLike')
+            ->withCount('likes', 'dislikes', 'comments')
+            ->findOrFail($articleId);
     }
 
     public function getArticles(array $filters)
@@ -45,7 +48,7 @@ class BlogRepository implements BlogRepositoryInterface
 
     public function incrementArticleViewsCount(int $articleId): Model|Collection|Builder|array|null
     {
-        $article = $this->getArticleById($articleId);
+        $article = Article::query()->findOrFail($articleId);
         $article->increment('views');
         return $article;
     }

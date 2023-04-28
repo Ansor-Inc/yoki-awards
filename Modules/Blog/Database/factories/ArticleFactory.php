@@ -3,8 +3,9 @@
 namespace Modules\Blog\Database\factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Modules\User\Database\factories\UserFactory;
 
-class BlogFactory extends Factory
+class ArticleFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
@@ -23,6 +24,8 @@ class BlogFactory extends Factory
         return [
             'title' => $this->faker->text(),
             'body' => $this->faker->paragraph(),
+            'user_type' => 'user',
+            'user_id' => UserFactory::new()->create()->id,
             'published' => true,
         ];
     }

@@ -2,9 +2,9 @@
 
 namespace App\Policies;
 
-use App\Models\Comment;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Auth\Access\Response;
+use Modules\Comment\Entities\Comment;
 use Modules\Post\Entities\Post;
 use Modules\User\Entities\User;
 

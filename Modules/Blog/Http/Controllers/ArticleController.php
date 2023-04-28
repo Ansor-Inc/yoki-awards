@@ -4,19 +4,19 @@ namespace Modules\Blog\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
-use Modules\Blog\Http\Requests\IndexBlog;
-use Modules\Blog\Http\Requests\StoreBlogRequest;
-use Modules\Blog\Interfaces\BlogRepositoryInterface;
+use Modules\Blog\Http\Requests\GetArticlesRequest;
+use Modules\Blog\Http\Requests\StoreArticleRequest;
+use Modules\Blog\Interfaces\ArticleRepositoryInterface;
 use Modules\Blog\Transformers\ArticleListingResource;
 use Modules\Blog\Transformers\ArticleResource;
 
-class BlogController extends Controller
+class ArticleController extends Controller
 {
-    public function __construct(protected BlogRepositoryInterface $repository)
+    public function __construct(protected ArticleRepositoryInterface $repository)
     {
     }
 
-    public function index(IndexBlog $request): AnonymousResourceCollection
+    public function index(GetArticlesRequest $request): AnonymousResourceCollection
     {
         $data = $this->repository->getArticles($request->validated());
 
@@ -42,7 +42,7 @@ class BlogController extends Controller
         ];
     }
 
-    public function store(StoreBlogRequest $request)
+    public function store(StoreArticleRequest $request)
     {
         $article = $this->repository->storeArticle(array_merge($request->validated(), [
             'user_id' => auth()->id(),

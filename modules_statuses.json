@@ -9,5 +9,7 @@
     "Blog": true,
     "Model": true,
     "Quote": true,
-    "Content": true
+    "Content": true,
+    "Comment": true,
+    "Reaction": true
 }

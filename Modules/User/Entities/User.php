@@ -4,6 +4,9 @@ namespace Modules\User\Entities;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -14,11 +17,13 @@ use Modules\Book\Entities\BookUserStatus;
 use Modules\Group\Entities\Group;
 use Modules\Group\Entities\Membership;
 use Modules\Purchase\Entities\Purchase;
+use Modules\Reaction\Traits\DisLiker;
 use Modules\User\Entities\Traits\HasBalance;
 use Modules\User\Entities\Traits\UsesCoupons;
 use Modules\User\Enums\UserDegree;
 use Modules\User\Filters\UserFilter;
 use Modules\User\Interfaces\CanResetPasswordContract;
+use Modules\Reaction\Traits\Liker;
 use Spatie\Permission\Traits\HasRoles;
 
 /**
@@ -31,7 +36,9 @@ class User extends Authenticatable implements CanResetPasswordContract
         Notifiable,
         HasBalance,
         UsesCoupons,
-        HasRoles;
+        HasRoles,
+        Liker,
+        DisLiker;
 
     /**
      * The attributes that are mass assignable.
@@ -61,18 +68,18 @@ class User extends Authenticatable implements CanResetPasswordContract
     ];
 
     //Scopes:
-    public function scopeOfDegree(Builder $query, UserDegree $degree)
+    public function scopeOfDegree(Builder $query, UserDegree $degree): void
     {
         $query->where('degree', $degree->value);
     }
 
-    public function scopeFilter(Builder $builder, array $filters)
+    public function scopeFilter(Builder $builder, array $filters): void
     {
         (new UserFilter($builder))->apply($filters);
     }
 
     //Relations:
-    public function bookUserStatuses()
+    public function bookUserStatuses(): HasMany
     {
         return $this->hasMany(BookUserStatus::class);
     }
@@ -82,48 +89,48 @@ class User extends Authenticatable implements CanResetPasswordContract
         return $this->morphMany(Article::class, 'user');
     }
 
-    public function groups()
+    public function groups(): HasMany
     {
         return $this->hasMany(Group::class, 'owner_id');
     }
 
-    public function joinedGroups()
+    public function joinedGroups(): BelongsToMany
     {
         return $this->belongsToMany(Group::class, 'memberships')->wherePivot('approved', true);
     }
 
-    public function readBooks()
+    public function readBooks(): BelongsToMany
     {
         return $this->belongsToMany(Book::class, 'book_reads');
     }
 
-    public function memberships()
+    public function memberships(): HasMany
     {
         return $this->hasMany(Membership::class);
     }
 
-    public function complaints()
+    public function complaints(): HasMany
     {
         return $this->hasMany(Complaint::class, 'complainer_id');
     }
 
-    public function appeals()
+    public function appeals(): HasMany
     {
         return $this->hasMany(Appeal::class);
     }
 
     //Helper methods:
-    public function isWaitingForJoinApproval(Group $group)
+    public function isWaitingForJoinApproval(Group $group): bool
     {
         return $this->memberships()->where('memberships.group_id', $group->id)->where('approved', false)->exists();
     }
 
-    public function complain(Complaint $complaint)
+    public function complain(Complaint $complaint): Model|bool
     {
         return $this->complaints()->save($complaint);
     }
 
-    public function hasVerifiedPhone()
+    public function hasVerifiedPhone(): bool
     {
         return !is_null($this->phone_verified_at);
     }
@@ -138,12 +145,12 @@ class User extends Authenticatable implements CanResetPasswordContract
         return $this->phone;
     }
 
-    public function purchases()
+    public function purchases(): HasMany
     {
         return $this->hasMany(Purchase::class);
     }
 
-    public function currentDeviceToken()
+    public function currentDeviceToken(): object|null
     {
         return $this->tokens()
             ->where('user_agent', request()->userAgent())

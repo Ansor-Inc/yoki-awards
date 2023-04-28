@@ -1,0 +1,11 @@
+{
+    "name": "Reaction",
+    "alias": "reaction",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Reaction\\Providers\\ReactionServiceProvider"
+    ],
+    "files": []
+}

@@ -2,13 +2,13 @@
 
 namespace Modules\Post\Entities;
 
-use App\Models\Comment;
 use App\Models\Tag;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Modules\Comment\Entities\Comment;
 use Modules\Group\Entities\Group;
 use Modules\User\Entities\User;
 

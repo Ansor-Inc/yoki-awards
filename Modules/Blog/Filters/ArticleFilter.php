@@ -4,19 +4,19 @@ namespace Modules\Blog\Filters;
 
 use App\AbstractFilter;
 
-class BlogFilter extends AbstractFilter
+class ArticleFilter extends AbstractFilter
 {
-    public function popular()
+    public function popular(): void
     {
         $this->query->orderBy('views', 'DESC');
     }
 
-    public function tag($tag)
+    public function tag($tag): void
     {
         $this->query->whereHas('tags', fn($query) => $query->where('name', $tag));
     }
 
-    public function limit($limit)
+    public function limit($limit): void
     {
         $this->query->limit($limit);
     }

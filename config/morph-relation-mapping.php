@@ -22,7 +22,7 @@ return [
     'post' => \Modules\Post\Entities\Post::class,
     'post_like' => \Modules\Post\Entities\PostLike::class,
     'sms_token' => \Modules\User\Entities\SmsToken::class,
-    'comment' => \App\Models\Comment::class,
+    'comment' => \Modules\Comment\Entities\Comment::class,
     'complaint' => \Modules\User\Entities\Complaint::class,
     'admin' => \App\Models\AdminUser::class,
     'appeal' => \Modules\User\Entities\Appeal::class,

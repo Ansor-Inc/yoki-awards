@@ -2,12 +2,12 @@
 
 namespace App\Providers;
 
-use App\Models\Comment;
 use App\Policies\CommentPolicy;
 use App\Policies\GroupPolicy;
 use App\Policies\PostPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Laravel\Sanctum\Sanctum;
+use Modules\Comment\Entities\Comment;
 use Modules\Group\Entities\Group;
 use Modules\Post\Entities\Post;
 use Modules\User\Entities\PersonalAccessToken;

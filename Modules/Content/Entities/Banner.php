@@ -2,7 +2,7 @@
 
 namespace Modules\Content\Entities;
 
-use Brackets\Media\HasMedia\HasMediaCollectionsTrait;
+use App\Traits\HasMediaCollectionsTrait;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia;
 

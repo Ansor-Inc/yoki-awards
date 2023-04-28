@@ -73,6 +73,7 @@ return new class extends Migration
             $table->timestamps();
             $table->string('user_type');
             $table->unsignedBigInteger('user_id');
+            $table->string('group_link')->nullable();
 
             $table->index(['user_type', 'user_id']);
         });
@@ -233,6 +234,17 @@ return new class extends Migration
             $table->string('invite_link')->nullable()->unique();
             $table->string('status')->default('PENDING_APPROVAL')->index();
             $table->timestamps();
+        });
+
+        Schema::create('likes', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('user_id')->nullable()->index('likes_user_id_foreign');
+            $table->string('likeable_type');
+            $table->unsignedBigInteger('likeable_id');
+            $table->boolean('disliked')->default(false);
+            $table->timestamps();
+
+            $table->index(['likeable_type', 'likeable_id']);
         });
 
         Schema::create('media', function (Blueprint $table) {
@@ -438,6 +450,30 @@ return new class extends Migration
             $table->timestamps();
         });
 
+        Schema::create('telescope_entries', function (Blueprint $table) {
+            $table->bigIncrements('sequence');
+            $table->char('uuid', 36)->unique();
+            $table->char('batch_id', 36)->index();
+            $table->string('family_hash')->nullable()->index();
+            $table->boolean('should_display_on_index')->default(true);
+            $table->string('type', 20);
+            $table->longText('content');
+            $table->dateTime('created_at')->nullable()->index();
+
+            $table->index(['type', 'should_display_on_index']);
+        });
+
+        Schema::create('telescope_entries_tags', function (Blueprint $table) {
+            $table->char('entry_uuid', 36);
+            $table->string('tag')->index();
+
+            $table->index(['entry_uuid', 'tag']);
+        });
+
+        Schema::create('telescope_monitoring', function (Blueprint $table) {
+            $table->string('tag');
+        });
+
         Schema::create('transactions', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->enum('payment_system', ['payme', 'click']);
@@ -541,6 +577,10 @@ return new class extends Migration
             $table->foreign(['owner_id'])->references(['id'])->on('users')->onDelete('SET NULL');
         });
 
+        Schema::table('likes', function (Blueprint $table) {
+            $table->foreign(['user_id'])->references(['id'])->on('users')->onUpdate('NO ACTION')->onDelete('SET NULL');
+        });
+
         Schema::table('memberships', function (Blueprint $table) {
             $table->foreign(['group_id'])->references(['id'])->on('groups')->onUpdate('CASCADE')->onDelete('CASCADE');
             $table->foreign(['user_id'])->references(['id'])->on('users')->onUpdate('CASCADE')->onDelete('CASCADE');
@@ -579,6 +619,10 @@ return new class extends Migration
             $table->foreign(['role_id'])->references(['id'])->on('roles')->onUpdate('NO ACTION')->onDelete('CASCADE');
         });
 
+        Schema::table('telescope_entries_tags', function (Blueprint $table) {
+            $table->foreign(['entry_uuid'])->references(['uuid'])->on('telescope_entries')->onUpdate('NO ACTION')->onDelete('CASCADE');
+        });
+
         Schema::table('transactions', function (Blueprint $table) {
             $table->foreign(['purchase_id'])->references(['id'])->on('purchases')->onUpdate('NO ACTION');
         });
@@ -593,6 +637,10 @@ return new class extends Migration
     {
         Schema::table('transactions', function (Blueprint $table) {
             $table->dropForeign('transactions_purchase_id_foreign');
+        });
+
+        Schema::table('telescope_entries_tags', function (Blueprint $table) {
+            $table->dropForeign('telescope_entries_tags_entry_uuid_foreign');
         });
 
         Schema::table('role_has_permissions', function (Blueprint $table) {
@@ -631,6 +679,10 @@ return new class extends Migration
         Schema::table('memberships', function (Blueprint $table) {
             $table->dropForeign('memberships_group_id_foreign');
             $table->dropForeign('memberships_user_id_foreign');
+        });
+
+        Schema::table('likes', function (Blueprint $table) {
+            $table->dropForeign('likes_user_id_foreign');
         });
 
         Schema::table('groups', function (Blueprint $table) {
@@ -689,6 +741,12 @@ return new class extends Migration
 
         Schema::dropIfExists('transactions');
 
+        Schema::dropIfExists('telescope_monitoring');
+
+        Schema::dropIfExists('telescope_entries_tags');
+
+        Schema::dropIfExists('telescope_entries');
+
         Schema::dropIfExists('tags');
 
         Schema::dropIfExists('taggables');
@@ -728,6 +786,8 @@ return new class extends Migration
         Schema::dropIfExists('memberships');
 
         Schema::dropIfExists('media');
+
+        Schema::dropIfExists('likes');
 
         Schema::dropIfExists('groups');
 

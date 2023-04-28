@@ -4,7 +4,7 @@ namespace Modules\Blog\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class IndexBlog extends FormRequest
+class GetArticlesRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

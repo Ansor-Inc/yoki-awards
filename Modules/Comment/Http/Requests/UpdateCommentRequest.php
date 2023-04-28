@@ -1,11 +1,10 @@
 <?php
 
-namespace Modules\Blog\Http\Requests;
+namespace Modules\Comment\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Gate;
 
-class StoreBlogRequest extends FormRequest
+class UpdateCommentRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -15,8 +14,7 @@ class StoreBlogRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => ['required', 'string'],
-            'body' => ['required', 'string']
+            //
         ];
     }
 
@@ -25,8 +23,8 @@ class StoreBlogRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize(): bool
+    public function authorize()
     {
-        return Gate::allows('sanctum.article.create');
+        return true;
     }
 }
