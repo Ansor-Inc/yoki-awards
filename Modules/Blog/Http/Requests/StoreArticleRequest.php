@@ -12,11 +12,12 @@ class StoreArticleRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'title' => ['required', 'string'],
-            'body' => ['required', 'string']
+            'body' => ['required', 'string'],
+            'group_link' => ['sometimes', 'string']
         ];
     }
 

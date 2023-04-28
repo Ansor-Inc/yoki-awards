@@ -12,6 +12,7 @@ use Modules\Reaction\Transformers\ReactionResource;
  * @property mixed $created_at
  * @property mixed $tags
  * @property mixed $body
+ * @property mixed $group_link
  */
 class ArticleResource extends JsonResource
 {
@@ -24,6 +25,7 @@ class ArticleResource extends JsonResource
             'views' => (int)$this->views,
             'tags' => $this->tags->pluck('name'),
             'created_at' => $this->created_at?->toDateTimeString(),
+            'group_link' => $this->group_link,
             'comments_count' => $this->whenCounted('comments'),
             'reaction' => ReactionResource::make($this)
         );

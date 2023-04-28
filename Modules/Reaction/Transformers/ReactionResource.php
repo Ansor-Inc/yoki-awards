@@ -13,7 +13,7 @@ class ReactionResource extends JsonResource
     {
         return [
             'has_liked' => $this->when($this->relationLoaded('userLike'), fn() => !is_null($this->userLike) && !$this->userLike->disliked),
-            'has_disliked' => (bool)$this->when($this->relationLoaded('userLike'), fn() => $this->userLike?->disliked),
+            'has_disliked' => $this->when($this->relationLoaded('userLike'), fn() => (bool)$this->userLike?->disliked),
             'likes_count' => $this->whenCounted('likes'),
             'dislikes_count' => $this->whenCounted('dislikes'),
         ];
