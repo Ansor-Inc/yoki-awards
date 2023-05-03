@@ -4,7 +4,7 @@ namespace Tests\Feature;
 
 use Tests\TestCase;
 
-class AuthTest extends TestCase
+class AuthenticationTest extends TestCase
 {
     public function test_user_can_register()
     {

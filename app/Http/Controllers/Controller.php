@@ -12,11 +12,14 @@ use Illuminate\Routing\Controller as BaseController;
 
 class Controller extends BaseController
 {
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+    use AuthorizesRequests;
+    use DispatchesJobs;
+    use ValidatesRequests;
 
-    protected function success(array $payload)
+    protected function success(array $payload = [])
     {
-        return response(['success' => true, 'data' => $payload]);
+        $response = array_merge(['success' => true], $payload ? ['data' => $payload] : []);
+        return response($response);
     }
 
     protected function failed(): Response|Application|ResponseFactory

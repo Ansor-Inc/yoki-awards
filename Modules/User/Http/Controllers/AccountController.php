@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Modules\User\Actions\UpdateUser;
 use Modules\User\Actions\UpdateUserAvatar;
 use Modules\User\Actions\UpdateUserPhone;
+use Modules\User\Http\Requests\DestroyAccountRequest;
 use Modules\User\Http\Requests\SetFcmTokenRequest;
 use Modules\User\Http\Requests\UpdateUserAvatarRequest;
 use Modules\User\Http\Requests\UpdateUserPhoneRequest;
@@ -14,7 +15,7 @@ use Modules\User\Http\Requests\UpdateUserRequest;
 use Modules\User\Transformers\BalanceResource;
 use Modules\User\Transformers\UserResource;
 
-class UserController extends Controller
+class AccountController extends Controller
 {
     public function getMe(Request $request): UserResource
     {
@@ -67,5 +68,16 @@ class UserController extends Controller
         $request->user()->currentAccessToken()->update(['fcm_token' => $request->input('token')]);
 
         return response(['message' => 'Fcm token set successfully!']);
+    }
+
+    public function destroy(DestroyAccountRequest $request)
+    {
+        $user = $request->user();
+
+        $user->tokens()->delete();
+
+        $user->delete();
+
+        return $this->success();
     }
 }

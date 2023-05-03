@@ -3,6 +3,7 @@
 namespace Modules\User\Database\factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Hash;
 
 class UserFactory extends Factory
 {
@@ -30,7 +31,7 @@ class UserFactory extends Factory
             'region' => $this->faker->country(),
             'verified' => true,
             'phone_verified_at' => now(),
-            'password' => $this->faker->password()
+            'password' => Hash::make('password')
         ];
     }
 }

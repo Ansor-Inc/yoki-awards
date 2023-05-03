@@ -6,7 +6,7 @@ use Modules\User\Http\Controllers\Auth\AuthController;
 use Modules\User\Http\Controllers\Auth\PasswordResetController;
 use Modules\User\Http\Controllers\Auth\PhoneVerifyController;
 use Modules\User\Http\Controllers\NotificationController;
-use Modules\User\Http\Controllers\UserController;
+use Modules\User\Http\Controllers\AccountController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,18 +36,20 @@ Route::middleware(['guest:sanctum'])->group(function () {
 });
 
 Route::middleware(['auth:sanctum', 'verified.device'])->group(function () {
-    Route::get('/me', [UserController::class, 'getMe']);
-    Route::get('/me/balance', [UserController::class, 'getBalance']);
+    Route::get('/me', [AccountController::class, 'getMe']);
+    Route::get('/me/balance', [AccountController::class, 'getBalance']);
 
     Route::middleware('verified')->group(function () {
-        Route::put('/me', [UserController::class, 'updateMe']);
-        Route::post('/update/phone', [UserController::class, 'updatePhone']);
-        Route::post('/update/avatar', [UserController::class, 'updateAvatar']);
+        Route::put('/me', [AccountController::class, 'updateMe']);
+        Route::delete('/me', [AccountController::class, 'destroy']);
+        Route::post('/update/phone', [AccountController::class, 'updatePhone']);
+        Route::post('/update/avatar', [AccountController::class, 'updateAvatar']);
 
         Route::get('/help', [AppealController::class, 'index']);
         Route::post('/help', [AppealController::class, 'submit'])->middleware('throttle:30,1');
     });
 
-    Route::post('/fcm-token', [UserController::class, 'setFcmToken']);
+
+    Route::post('/fcm-token', [AccountController::class, 'setFcmToken']);
     Route::get('/notifications', [NotificationController::class, 'index']);
 });
