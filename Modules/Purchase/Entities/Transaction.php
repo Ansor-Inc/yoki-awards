@@ -10,14 +10,14 @@ class Transaction extends Model
 {
     use SoftDeletes;
 
-    const STATE_CREATED = 1;
-    const STATE_COMPLETED = 2;
-    const STATE_CANCELLED = -1;
-    const STATE_CANCELLED_AFTER_COMPLETE = -2;
+    public const STATE_CREATED = 1;
+    public const STATE_COMPLETED = 2;
+    public const STATE_CANCELLED = -1;
+    public const STATE_CANCELLED_AFTER_COMPLETE = -2;
 
-    const TIMEOUT = 43200000;
+    public const TIMEOUT = 43200000;
 
-    protected $dates = ['deleted_at'];
+    protected array $dates = ['deleted_at'];
 
     protected $casts = ['detail' => 'json'];
 
@@ -65,7 +65,7 @@ class Transaction extends Model
         ]);
     }
 
-    public function cancel($reason)
+    public function cancel($reason): void
     {
         $this->update($this->preparePayloadToCancelTransaction($reason));
     }
