@@ -68,12 +68,12 @@ return new class extends Migration
             $table->bigIncrements('id');
             $table->text('title');
             $table->longText('body');
-            $table->boolean('published')->default(false);
             $table->bigInteger('views')->default(0);
             $table->timestamps();
             $table->string('user_type');
             $table->unsignedBigInteger('user_id');
             $table->string('group_link')->nullable();
+            $table->string('status');
 
             $table->index(['user_type', 'user_id']);
         });
@@ -101,6 +101,18 @@ return new class extends Migration
             $table->unsignedBigInteger('membership_id')->unique();
             $table->boolean('can_comment')->default(false);
             $table->boolean('can_see_post')->default(false);
+            $table->timestamps();
+        });
+
+        Schema::create('blogger_applications', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('user_id')->index('blogger_applications_user_id_foreign');
+            $table->string('firstname')->nullable();
+            $table->string('lastname')->nullable();
+            $table->string('email')->nullable();
+            $table->string('phone')->nullable();
+            $table->string('telegram_username')->nullable();
+            $table->dateTime('read_at')->nullable();
             $table->timestamps();
         });
 
@@ -238,13 +250,14 @@ return new class extends Migration
 
         Schema::create('likes', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('user_id')->nullable()->index('likes_user_id_foreign');
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->string('likeable_type');
             $table->unsignedBigInteger('likeable_id');
             $table->boolean('disliked')->default(false);
             $table->timestamps();
 
             $table->index(['likeable_type', 'likeable_id']);
+            $table->unique(['user_id', 'likeable_type', 'likeable_id']);
         });
 
         Schema::create('media', function (Blueprint $table) {
@@ -521,6 +534,17 @@ return new class extends Migration
             $table->index(['social_auth_id', 'social_auth_type']);
         });
 
+        Schema::create('withdrawals', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->double('amount', 8, 2);
+            $table->string('state');
+            $table->string('account_type');
+            $table->unsignedBigInteger('account_id');
+            $table->timestamps();
+
+            $table->index(['account_type', 'account_id']);
+        });
+
         Schema::create('wysiwyg_media', function (Blueprint $table) {
             $table->increments('id');
             $table->string('file_path');
@@ -535,6 +559,10 @@ return new class extends Migration
 
         Schema::table('black_list', function (Blueprint $table) {
             $table->foreign(['membership_id'])->references(['id'])->on('memberships')->onUpdate('CASCADE')->onDelete('CASCADE');
+        });
+
+        Schema::table('blogger_applications', function (Blueprint $table) {
+            $table->foreign(['user_id'])->references(['id'])->on('users')->onUpdate('NO ACTION')->onDelete('CASCADE');
         });
 
         Schema::table('book_reads', function (Blueprint $table) {
@@ -725,6 +753,10 @@ return new class extends Migration
             $table->dropForeign('book_reads_user_id_foreign');
         });
 
+        Schema::table('blogger_applications', function (Blueprint $table) {
+            $table->dropForeign('blogger_applications_user_id_foreign');
+        });
+
         Schema::table('black_list', function (Blueprint $table) {
             $table->dropForeign('black_list_membership_id_foreign');
         });
@@ -734,6 +766,8 @@ return new class extends Migration
         });
 
         Schema::dropIfExists('wysiwyg_media');
+
+        Schema::dropIfExists('withdrawals');
 
         Schema::dropIfExists('users');
 
@@ -812,6 +846,8 @@ return new class extends Migration
         Schema::dropIfExists('book_user_statuses');
 
         Schema::dropIfExists('book_reads');
+
+        Schema::dropIfExists('blogger_applications');
 
         Schema::dropIfExists('black_list');
 

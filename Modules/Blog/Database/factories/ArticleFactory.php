@@ -3,6 +3,7 @@
 namespace Modules\Blog\Database\factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Modules\Blog\Enums\ArticleStatus;
 use Modules\User\Database\factories\UserFactory;
 
 class ArticleFactory extends Factory
@@ -26,7 +27,7 @@ class ArticleFactory extends Factory
             'body' => $this->faker->paragraph(),
             'user_type' => 'user',
             'user_id' => UserFactory::new()->create()->id,
-            'published' => true,
+            'status' => ArticleStatus::PUBLISHED->value,
         ];
     }
 }

@@ -4,8 +4,8 @@ namespace Modules\Blog\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Modules\Blog\Entities\Article;
 use Modules\Blog\Http\Requests\GetArticlesRequest;
-use Modules\Blog\Http\Requests\StoreArticleRequest;
 use Modules\Blog\Interfaces\ArticleRepositoryInterface;
 use Modules\Blog\Transformers\ArticleListingResource;
 use Modules\Blog\Transformers\ArticleResource;
@@ -23,47 +23,18 @@ class ArticleController extends Controller
         return ArticleListingResource::collection($data);
     }
 
-    public function getUserArticles()
+    public function show(Article $article): array
     {
-        $articles = $this->repository->getUserArticles(auth()->user());
+        $article->load('userLike')
+            ->loadCount('likes', 'dislikes', 'comments');
 
-        return ArticleListingResource::collection($articles);
-    }
-
-    public function show(int $articleId): array
-    {
-        $article = $this->repository->getArticleById($articleId);
-
-        $similarArticles = $this->repository->getSimilarArticles($articleId, $article->tags->pluck('name')->toArray());
+        $similarArticles = $this->repository->getSimilarArticles($article);
 
         return [
             'article' => ArticleResource::make($article),
             'similar_articles' => ArticleListingResource::collection($similarArticles)
         ];
     }
-
-    public function store(StoreArticleRequest $request)
-    {
-        $article = $this->repository->storeArticle(array_merge($request->validated(), [
-            'user_id' => auth()->id(),
-            'user_type' => auth()->user()->getMorphClass()
-        ]));
-
-        return response([
-            'message' => 'Successfully created!',
-            'article' => ArticleResource::make($article)
-        ]);
-    }
-
-    public function publish($articleId)
-    {
-        $this->authorize('sanctum.article.publish');
-
-        $this->repository->publishArticle($articleId);
-
-        return response(['message' => 'Published successfully!']);
-    }
-
 
     public function incrementViewsCount(int $articleId): ArticleResource
     {

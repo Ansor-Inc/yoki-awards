@@ -5,6 +5,14 @@ namespace Modules\Blog\Transformers;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Str;
 
+/**
+ * @property mixed $status
+ * @property mixed $id
+ * @property mixed $title
+ * @property mixed $body
+ * @property mixed $views
+ * @property mixed $created_at
+ */
 class ArticleListingResource extends JsonResource
 {
     public function toArray($request): array
@@ -13,7 +21,7 @@ class ArticleListingResource extends JsonResource
             'id' => $this->id,
             'title' => $this->title,
             'excerpt' => Str::limit(strip_tags($this->body), 190),
-            'published' => (bool)$this->published,
+            'status' => $this->status,
             'views' => (int)$this->views,
             'created_at' => $this->created_at?->toDateTimeString()
         ];

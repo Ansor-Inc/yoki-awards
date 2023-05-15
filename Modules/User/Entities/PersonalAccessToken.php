@@ -16,7 +16,7 @@ class PersonalAccessToken extends SanctumPersonalAccessToken
         'fcm_token'
     ];
 
-    protected static function booted()
+    protected static function booted(): void
     {
         static::creating(function ($token) {
             $token->ip = request()->ip();

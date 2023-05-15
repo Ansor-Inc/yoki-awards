@@ -4,15 +4,22 @@ namespace Modules\User\Transformers;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * @property mixed $id
+ * @property mixed $fullname
+ * @property mixed $phone_verified_at
+ * @property mixed $phone
+ * @property mixed $degree
+ * @property mixed $gender
+ * @property mixed $birthdate
+ * @property mixed $email
+ * @property mixed $region
+ * @property mixed $created_at
+ * @property mixed $roles
+ */
 class UserResource extends JsonResource
 {
-    /**
-     * Transform the resource into an array.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
-     */
-    public function toArray($request)
+    public function toArray($request): array
     {
         return [
             'id' => $this->id,
@@ -25,7 +32,8 @@ class UserResource extends JsonResource
             'birthdate' => $this->birthdate,
             'email' => $this->email,
             'region' => $this->region,
-            'registered_at' => $this->created_at?->format('d.m.Y')
+            'registered_at' => $this->created_at?->format('d.m.Y'),
+            'roles' => $this->roles->pluck('name')
         ];
     }
 }

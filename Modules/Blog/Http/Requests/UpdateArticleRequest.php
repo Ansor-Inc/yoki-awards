@@ -4,9 +4,11 @@ namespace Modules\Blog\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
-use Modules\Blog\Entities\Article;
 
-class StoreArticleRequest extends FormRequest
+/**
+ * @property mixed $articleWithoutScopes
+ */
+class UpdateArticleRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -16,8 +18,8 @@ class StoreArticleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => ['required', 'string'],
-            'body' => ['required', 'string'],
+            'title' => ['sometimes', 'string'],
+            'body' => ['sometimes', 'string'],
             'group_link' => ['sometimes', 'string'],
             'tags' => ['sometimes', 'array']
         ];
@@ -30,6 +32,6 @@ class StoreArticleRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return Gate::allows('create', Article::class);
+        return Gate::allows('own', $this->articleWithoutScopes);
     }
 }

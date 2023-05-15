@@ -19,14 +19,14 @@ class AccountController extends Controller
 {
     public function getMe(Request $request): UserResource
     {
-        return UserResource::make($request->user());
+        return UserResource::make($request->user()->load('roles'));
     }
 
     public function updateMe(UpdateUserRequest $request, UpdateUser $updateUser)
     {
         if ($user = $updateUser->execute($request->validated())) {
             return response([
-                'message' => "Foydalanuvchi ma'lumotlari muvaffaqiyatli o'zgartirildi",
+                'message' => "ok",
                 'user' => UserResource::make($user)
             ]);
         }

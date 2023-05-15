@@ -13,7 +13,7 @@ class SmsToken extends Model
         'code'
     ];
 
-    public function isExpired()
+    public function isExpired(): bool
     {
         return $this->created_at?->diffInSeconds(now()) > config('sms.sms_code_lifetime');
     }

@@ -28,17 +28,18 @@ use Spatie\Permission\Traits\HasRoles;
 
 /**
  * @property mixed $balance
+ * @property mixed $id
  */
 class User extends Authenticatable implements CanResetPasswordContract
 {
-    use HasApiTokens,
-        HasFactory,
-        Notifiable,
-        HasBalance,
-        UsesCoupons,
-        HasRoles,
-        Liker,
-        DisLiker;
+    use DisLiker;
+    use HasApiTokens;
+    use HasBalance;
+    use HasFactory;
+    use HasRoles;
+    use Liker;
+    use Notifiable;
+    use UsesCoupons;
 
     /**
      * The attributes that are mass assignable.
@@ -148,6 +149,11 @@ class User extends Authenticatable implements CanResetPasswordContract
     public function purchases(): HasMany
     {
         return $this->hasMany(Purchase::class);
+    }
+
+    public function applications(): HasMany
+    {
+        return $this->hasMany(BloggerApplication::class, 'user_id');
     }
 
     public function currentDeviceToken(): object|null

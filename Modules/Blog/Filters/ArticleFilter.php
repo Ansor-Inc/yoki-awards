@@ -20,4 +20,9 @@ class ArticleFilter extends AbstractFilter
     {
         $this->query->limit($limit);
     }
+
+    public function status(string $status): void
+    {
+        $this->query->where('status', $status);
+    }
 }

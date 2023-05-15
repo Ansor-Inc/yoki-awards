@@ -3,10 +3,10 @@
 namespace Modules\Blog\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Gate;
-use Modules\Blog\Entities\Article;
+use Illuminate\Validation\Rules\Enum;
+use Modules\Blog\Enums\ArticleStatus;
 
-class StoreArticleRequest extends FormRequest
+class GetUserArticlesRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -16,10 +16,8 @@ class StoreArticleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => ['required', 'string'],
-            'body' => ['required', 'string'],
-            'group_link' => ['sometimes', 'string'],
-            'tags' => ['sometimes', 'array']
+            'per_page' => ['sometimes', 'integer', 'min:1'],
+            'status' => ['sometimes', new Enum(ArticleStatus::class)]
         ];
     }
 
@@ -30,6 +28,6 @@ class StoreArticleRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return Gate::allows('create', Article::class);
+        return true;
     }
 }

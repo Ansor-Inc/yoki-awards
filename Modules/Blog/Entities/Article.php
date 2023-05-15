@@ -2,29 +2,31 @@
 
 namespace Modules\Blog\Entities;
 
-use App\Models\Tag;
+use App\Traits\HasTagsTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
-use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Modules\Blog\Enums\ArticleStatus;
 use Modules\Blog\Filters\ArticleFilter;
 use Modules\Comment\Entities\Comment;
 use Modules\Reaction\Traits\LikeAndDislikeable;
 
+/**
+ * @property mixed $tags
+ * @property mixed $id
+ * @property mixed $user_id
+ * @property mixed $user_type
+ */
 class Article extends Model
 {
     use LikeAndDislikeable;
+    use HasTagsTrait;
 
-    protected $guarded = ['id', 'published'];
+    protected $guarded = ['id'];
 
     protected static function booted(): void
     {
-        static::addGlobalScope('published', fn($query) => $query->where('published', true));
-    }
-
-    public function tags(): MorphToMany
-    {
-        return $this->morphToMany(Tag::class, 'taggable');
+        static::addGlobalScope('published', fn($query) => $query->where('status', ArticleStatus::PUBLISHED->value));
     }
 
     public function comments(): MorphMany

@@ -7,6 +7,8 @@ use App\Policies\GroupPolicy;
 use App\Policies\PostPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Laravel\Sanctum\Sanctum;
+use Modules\Blog\Entities\Article;
+use Modules\Blog\Policies\ArticlePolicy;
 use Modules\Comment\Entities\Comment;
 use Modules\Group\Entities\Group;
 use Modules\Post\Entities\Post;
@@ -23,7 +25,7 @@ class AuthServiceProvider extends ServiceProvider
         Group::class => GroupPolicy::class,
         Comment::class => CommentPolicy::class,
         Post::class => PostPolicy::class,
-        // 'App\Models\Model' => 'App\Policies\ModelPolicy',
+        Article::class => ArticlePolicy::class
     ];
 
     /**
@@ -31,7 +33,7 @@ class AuthServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         $this->registerPolicies();
         Sanctum::usePersonalAccessTokenModel(PersonalAccessToken::class);

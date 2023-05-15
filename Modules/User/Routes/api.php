@@ -38,6 +38,7 @@ Route::middleware(['guest:sanctum'])->group(function () {
 Route::middleware(['auth:sanctum', 'verified.device'])->group(function () {
     Route::get('/me', [AccountController::class, 'getMe']);
     Route::get('/me/balance', [AccountController::class, 'getBalance']);
+    Route::post('/me/apply-to-be-blogger', [AppealController::class, 'applyToBeBlogger']);
 
     Route::middleware('verified')->group(function () {
         Route::put('/me', [AccountController::class, 'updateMe']);

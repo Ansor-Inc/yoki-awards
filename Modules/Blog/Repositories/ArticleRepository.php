@@ -5,6 +5,7 @@ namespace Modules\Blog\Repositories;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection as CollectionAlias;
 use Illuminate\Support\Facades\DB;
 use Modules\Blog\Entities\Article;
 use Modules\Blog\Interfaces\ArticleRepositoryInterface;
@@ -12,38 +13,27 @@ use Modules\User\Entities\User;
 
 class ArticleRepository implements ArticleRepositoryInterface
 {
-    public function getArticleById(int $articleId): Model|Collection|Builder|array|null
-    {
-        return Article::query()
-            ->with('userLike')
-            ->withCount('likes', 'dislikes', 'comments')
-            ->findOrFail($articleId);
-    }
-
     public function getArticles(array $filters)
     {
-        $query = Article::query()->withoutEagerLoads()->filter($filters);
+        $query = Article::query()
+            ->filter($filters)
+            ->latest();
 
         return isset($filters['per_page']) ? $query->paginate($filters['per_page']) : $query->get();
     }
 
-    public function getSimilarArticles(int $articleId, array $tags): Collection|array
+    public function getSimilarArticles(Article $article): Collection|array
     {
         return Article::query()
-            ->whereNot('id', $articleId)
-            ->whereHas('tags', fn($query) => $query->whereIn('name', $tags))
+            ->whereNot('id', $article->id)
+            ->whereHas('tags', fn($query) => $query->whereIn('name', $article->tags->pluck('name')->toArray()))
             ->limit(4)
             ->get();
     }
 
-    public function getAllTags(): \Illuminate\Support\Collection
+    public function getAllTags(): CollectionAlias
     {
-        return DB::table('taggables')
-            ->join('tags', 'tags.id', '=', 'taggables.tag_id')
-            ->where('taggable_type', Article::class)
-            ->select('name')
-            ->distinct()
-            ->pluck('name');
+        return app(Article::class)->getModelTags();
     }
 
     public function incrementArticleViewsCount(int $articleId): Model|Collection|Builder|array|null
@@ -58,13 +48,22 @@ class ArticleRepository implements ArticleRepositoryInterface
         return Article::query()->create($payload);
     }
 
-    public function publishArticle(int $articleId)
+    public function getUserArticles(User $user, array $filters)
     {
-        DB::table('articles')->where('id', $articleId)->update(['published' => true]);
+        $query = $user->articles()
+            ->withoutGlobalScopes()
+            ->filter($filters);
+
+        return isset($filters['per_page']) ? $query->paginate($filters['per_page']) : $query->get();
     }
 
-    public function getUserArticles(User $user)
+    public function updateArticle(Article $article, array $payload): void
     {
-        return $user->articles()->withoutGlobalScopes()->get();
+        DB::transaction(function () use ($article, $payload) {
+            $article->update($payload);
+            if (isset($payload['tags'])) {
+                $article->syncTags($payload['tags']);
+            }
+        });
     }
 }
