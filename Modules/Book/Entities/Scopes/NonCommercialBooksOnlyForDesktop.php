@@ -12,10 +12,14 @@ class NonCommercialBooksOnlyForDesktop implements Scope
 {
     public function apply(Builder $builder, Model $model): void
     {
-        logger('user_agent:' . request()->userAgent());
-        logger('is_mobile:' . (bool)Agent::isMobile());
-        if (Agent::isMobile()) {
+        if ($this->isRequestFromMobileDevice()) {
             $builder->whereNot('book_type', BookType::NON_COMMERCIAL->value);
         }
+    }
+
+    protected function isRequestFromMobileDevice(): bool
+    {
+        return str(request()->userAgent()->contains('Dart'))
+            || Agent::isMobile();
     }
 }
