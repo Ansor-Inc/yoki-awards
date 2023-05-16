@@ -12,6 +12,7 @@ class NonCommercialBooksOnlyForDesktop implements Scope
 {
     public function apply(Builder $builder, Model $model): void
     {
+        logger('is_mobile:' . (bool)Agent::isMobile());
         if (Agent::isMobile()) {
             $builder->whereNot('book_type', BookType::NON_COMMERCIAL->value);
         }
