@@ -19,7 +19,7 @@ class NonCommercialBooksOnlyForDesktop implements Scope
 
     protected function isRequestFromMobileDevice(): bool
     {
-        return str(request()->userAgent()->contains('Dart'))
+        return str(request()->userAgent())->contains('Dart')
             || Agent::isMobile();
     }
 }
