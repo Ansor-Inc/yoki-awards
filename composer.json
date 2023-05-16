@@ -12,6 +12,7 @@
     "ext-gd": "*",
     "akaunting/laravel-setting": "^1.2",
     "guzzlehttp/guzzle": "^7.2",
+    "jenssegers/agent": "^2.6",
     "laravel/framework": "^v10.9.0",
     "laravel/sanctum": "^3.0",
     "laravel/socialite": "^5.5",

@@ -5,13 +5,15 @@ namespace Modules\Book\Entities\Scopes;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;
-use Modules\Book\Enums\BookStatus;
+use Jenssegers\Agent\Facades\Agent;
+use Modules\Book\Enums\BookType;
 
-class OnlyApprovedBooksScope implements Scope
+class NonCommercialBooksOnlyForDesktop implements Scope
 {
-
     public function apply(Builder $builder, Model $model): void
     {
-        $builder->where('status', BookStatus::APPROVED->value);
+        if (Agent::isMobile()) {
+            $builder->whereNot('book_type', BookType::NON_COMMERCIAL->value);
+        }
     }
 }
