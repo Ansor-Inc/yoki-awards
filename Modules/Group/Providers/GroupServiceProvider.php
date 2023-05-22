@@ -28,7 +28,7 @@ class GroupServiceProvider extends ServiceProvider
         $this->app->bind(BlackListRepositoryInterface::class, BlackListRepository::class);
     }
 
-    public function registerViews()
+    public function registerViews(): void
     {
         $viewPath = resource_path('views/modules/' . $this->moduleNameLower);
 

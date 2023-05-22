@@ -50,7 +50,7 @@ class GroupController extends Controller
         $group = $this->groupRepository->createGroup($request->getSanitized());
 
         if ($group) {
-            Notification::send(AdminUser::all(), new GroupCreated($group));
+//            Notification::send(AdminUser::all(), new GroupCreated($group));
             return response([
                 'message' => 'Group created successfully, Please wait for admin approval!',
                 'group' => GroupResource::make($group)

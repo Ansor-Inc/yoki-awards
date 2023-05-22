@@ -22,7 +22,7 @@ class GroupCreated extends Notification
         $this->group = $group;
     }
 
-    public function via($notifiable)
+    public function via($notifiable): array
     {
         return ['database'];
     }
@@ -33,13 +33,10 @@ class GroupCreated extends Notification
      * @param mixed $notifiable
      * @return array
      */
-    public function toArray($notifiable)
+    public function toArray($notifiable): array
     {
         return [
-            'body' => view('group::group-created-notification', [
-                'group' => $this->group,
-                'owner' => $this->group->owner
-            ])->render(),
+            'body' => '',
         ];
     }
 }

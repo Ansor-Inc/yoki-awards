@@ -5,6 +5,7 @@ namespace Modules\Purchase\Payment;
 use Modules\Purchase\Payment\Contracts\PaymentDriverContract;
 use Modules\Purchase\Payment\Drivers\Click\Click;
 use Modules\Purchase\Payment\Drivers\Payme\Payme;
+use Modules\Purchase\Payment\Drivers\Payze\Payze;
 use Modules\Purchase\Payment\Enums\PaymentSystem;
 use Modules\Purchase\Payment\Exceptions\PaymentException;
 
@@ -16,7 +17,8 @@ class Payment
     {
         $this->driver = match ($paymentSystem) {
             PaymentSystem::PAYME => app(Payme::class),
-            PaymentSystem::CLICK => app(Click::class)
+            PaymentSystem::CLICK => app(Click::class),
+            PaymentSystem::PAYZE => app(Payze::class)
         };
 
         return $this;

@@ -39,6 +39,7 @@ class MembershipController extends Controller
     public function joinGroup(Group $group)
     {
         $this->authorize('joinGroup', $group);
+
         $membership = $this->membershipRepository->createMembership($group, request()->user());
 
         return $membership->approved ?

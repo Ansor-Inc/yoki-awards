@@ -45,32 +45,32 @@ class Purchase extends Model
         return $this->state === PurchaseStatus::COMPLETED->value;
     }
 
-    public function scopeCompleted($query)
+    public function scopeCompleted($query): void
     {
         $query->where('state', PurchaseStatus::COMPLETED->value);
     }
 
-    public function scopePending($query)
+    public function scopePending($query): void
     {
         $query->where('state', PurchaseStatus::PENDING_PAYMENT->value);
     }
 
-    public function scopeCanceled($query)
+    public function scopeCanceled($query): void
     {
         $query->where('state', PurchaseStatus::CANCELED->value);
     }
 
-    public function scopeOfBook($query, Book $book)
+    public function scopeOfBook($query, Book $book): void
     {
         $query->where('book_id', $book->id);
     }
 
-    public function complete()
+    public function complete(): void
     {
         $this->update(['state' => PurchaseStatus::COMPLETED->value]);
     }
 
-    public function cancel()
+    public function cancel(): void
     {
         $this->update(['state' => PurchaseStatus::CANCELED->value]);
     }

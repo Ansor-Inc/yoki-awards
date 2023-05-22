@@ -21,6 +21,7 @@
     "league/flysystem-aws-s3-v3": "^3.5",
     "nwidart/laravel-modules": "^10.0.0",
     "overtrue/laravel-like": "^5.1",
+    "payzeio/laravel-payze": "^3.0",
     "predis/predis": "^2.1",
     "sentry/sentry-laravel": "^3.2",
     "socialiteproviders/facebook": "^4.1",
