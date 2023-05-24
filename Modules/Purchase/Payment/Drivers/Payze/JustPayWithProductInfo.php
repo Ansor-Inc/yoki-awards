@@ -6,6 +6,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
 use Modules\Purchase\Entities\Purchase;
+use Modules\Purchase\Payment\Enums\PaymentSystem;
 use PayzeIO\LaravelPayze\Enums\Currency;
 use PayzeIO\LaravelPayze\Enums\Language;
 use PayzeIO\LaravelPayze\Exceptions\ApiCredentialsException;
@@ -86,11 +87,11 @@ class JustPayWithProductInfo
             'currency' => $this->currency,
             'preauthorize' => false,
             'lang' => $this->lang,
-//            'hookUrlV2' => route('payment-system.handle', [
-//                'paymentSystem' => PaymentSystem::PAYZE->value,
-//                'purchaseId' => $this->purchase->id
-//            ]),
-            'hookUrlV2' => 'https://5b5c-82-215-99-226.ngrok-free.app/billing/payze/handle?purchaseId=' . $this->purchase->id,
+            'hookUrlV2' => route('payment-system.handle', [
+                'paymentSystem' => PaymentSystem::PAYZE->value,
+                'purchaseId' => $this->purchase->id
+            ]),
+            //  'hookUrlV2' => 'https://5b5c-82-215-99-226.ngrok-free.app/billing/payze/handle?purchaseId=' . $this->purchase->id,
             'info' => [
                 'image' => $this->productInfo->image,
                 'name' => $this->productInfo->name

@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Modules\Purchase\Entities\Purchase;
 use Modules\Purchase\Enums\PurchaseStatus;
+use Modules\Purchase\Exceptions\InsufficientBalanceException;
+use Modules\Purchase\Exceptions\InvalidPurchaseException;
 
 class CompletePurchaseAction
 {
@@ -16,15 +18,15 @@ class CompletePurchaseAction
         $fromBalance = $request->input('from_balance');
 
         if (!$purchase->isPending()) {
-            throw new Exception("Completed or cancelled purchase!");
+            throw new InvalidPurchaseException("Completed or cancelled purchase!");
         }
 
         if ((float)$purchase->amount !== (float)$fromBalance) {
-            throw new Exception('Purchase amount does not equal to from balance field!');
+            throw new InvalidPurchaseException('Purchase amount does not equal to from balance field!');
         }
 
         if ($user->getBalance() < $fromBalance) {
-            throw new Exception("User does not have enough balance!");
+            throw new InsufficientBalanceException("User does not have enough balance!");
         }
 
         DB::transaction(function () use ($purchase, $user, $fromBalance) {
