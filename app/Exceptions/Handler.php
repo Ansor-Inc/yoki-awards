@@ -3,6 +3,8 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Modules\Purchase\Exceptions\InvalidPurchaseException;
+use Modules\Purchase\Payment\Exceptions\PaymentException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -22,7 +24,7 @@ class Handler extends ExceptionHandler
      * @var array<int, class-string<\Throwable>>
      */
     protected $dontReport = [
-        //
+        InvalidPurchaseException::class
     ];
 
     /**

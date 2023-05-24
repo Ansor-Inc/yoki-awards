@@ -26,7 +26,7 @@ class Payme implements PaymentDriverContract
     /**
      * @throws PaymentException
      */
-    public function run()
+    public function run(): void
     {
         $this->request = request();
 
@@ -50,32 +50,32 @@ class Payme implements PaymentDriverContract
     /**
      * @throws PaymentException
      */
-    private function checkPerformTransaction()
+    private function checkPerformTransaction(): void
     {
         app(CheckPerformTransaction::class)->execute($this->request);
     }
 
-    private function checkTransaction()
+    private function checkTransaction(): void
     {
         app(CheckTransaction::class)->execute($this->request);
     }
 
-    private function createTransaction()
+    private function createTransaction(): void
     {
         app(CreateTransaction::class)->execute($this->request);
     }
 
-    private function performTransaction()
+    private function performTransaction(): void
     {
         app(PerformTransaction::class)->execute($this->request);
     }
 
-    private function cancelTransaction()
+    private function cancelTransaction(): void
     {
         app(CancelTransaction::class)->execute($this->request);
     }
 
-    private function getStatement()
+    private function getStatement(): void
     {
         app(GetStatement::class)->execute($this->request);
     }

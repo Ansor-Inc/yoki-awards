@@ -2,8 +2,6 @@
 
 namespace Modules\Purchase\Payment\Enums;
 
-use phpDocumentor\Reflection\Types\Self_;
-
 enum PaymentSystem: string
 {
     case PAYME = 'payme';

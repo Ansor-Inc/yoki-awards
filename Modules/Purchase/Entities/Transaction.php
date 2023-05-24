@@ -3,6 +3,7 @@
 namespace Modules\Purchase\Entities;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\Purchase\Payment\DataFormat;
 
@@ -91,5 +92,10 @@ class Transaction extends Model
         }
 
         return $payload;
+    }
+
+    public function purchase(): BelongsTo
+    {
+        return $this->belongsTo(Purchase::class);
     }
 }

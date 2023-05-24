@@ -13,7 +13,7 @@ class TransactionRepository implements TransactionRepositoryInterface
         return Transaction::query()
             ->where('payment_system', $paymentSystem->value)
             ->where('system_transaction_id', $id)
-            ->first();
+            ->firstOrFail();
     }
 
     public function getTransactionsByPeriod(string $from, string $to, PaymentSystem $paymentSystem)
