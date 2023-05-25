@@ -19,14 +19,15 @@ use Modules\User\Entities\User;
 
 class Group extends Model
 {
-    use HasGroupAdmins, HasGroupPermissions;
+    use HasGroupAdmins;
+    use HasGroupPermissions;
 
     protected $guarded = ['id'];
 
     protected $casts = ['degree_scope' => 'array'];
 
     //Actions to-do when model is booted
-    protected static function booted()
+    protected static function booted(): void
     {
         static::addGlobalScope('approved', fn($query) => $query->approved()); //Always retrieve only approved groups
     }
@@ -105,12 +106,12 @@ class Group extends Model
     }
 
     //Scopes:
-    public function scopeFilter($query, array $filters)
+    public function scopeFilter($query, array $filters): void
     {
         (new GroupFilter($query))->apply($filters);
     }
 
-    public function scopeApproved($query)
+    public function scopeApproved($query): void
     {
         $query->where('status', GroupStatus::APPROVED->value);
     }

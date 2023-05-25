@@ -42,7 +42,7 @@ class GroupController extends Controller
     {
         $group = $this->groupRepository->getGroupByInviteLink($inviteLink);
 
-        return is_null($group) ? response(['message' => 'Invalid link!'], 404) : GroupResource::make($group);
+        return is_null($group) ? response(['message' => 'Invalid link!'], 404) : GroupListingResource::make($group);
     }
 
     public function createGroup(CreateGroupRequest $request)
