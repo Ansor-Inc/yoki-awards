@@ -14,11 +14,11 @@ class ApplyToBeBloggerRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'firstname' => ['required', 'string'],
-            'lastname' => ['required', 'string'],
-            'email' => ['required', 'email'],
-            'phone' => ['required', 'string'],
-            'telegram_username' => ['required', 'string']
+            'firstname' => ['sometimes', 'nullable', 'string'],
+            'lastname' => ['sometimes', 'nullable', 'string'],
+            'email' => ['sometimes', 'nullable', 'email'],
+            'phone' => ['sometimes', 'nullable', 'string'],
+            'telegram_username' => ['sometimes', 'nullable', 'string']
         ];
     }
 

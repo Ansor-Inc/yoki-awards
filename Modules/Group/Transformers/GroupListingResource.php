@@ -5,6 +5,14 @@ namespace Modules\Group\Transformers;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\User\Transformers\UserResource;
 
+/**
+ * @property mixed $id
+ * @property mixed $title
+ * @property mixed $status
+ * @property mixed $members_count
+ * @property mixed $is_private
+ * @property mixed $current_user_join_status
+ */
 class GroupListingResource extends JsonResource
 {
     public function toArray($request): array
