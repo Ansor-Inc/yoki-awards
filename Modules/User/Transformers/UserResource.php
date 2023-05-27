@@ -33,7 +33,7 @@ class UserResource extends JsonResource
             'email' => $this->email,
             'region' => $this->region,
             'registered_at' => $this->created_at?->format('d.m.Y'),
-            'roles' => $this->getRoleNames()->first()
+            'role' => $this->getRoleNames()->first()
         ];
     }
 }
