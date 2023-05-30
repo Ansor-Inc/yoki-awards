@@ -10,9 +10,9 @@ class WysiwygMediaUploadController extends BaseController
 {
     public function upload(Request $request)
     {
-        $request->validate(['file' => ['required']]);
+        $request->validate(['upload' => ['required']]);
 
-        $temporaryFile = $request->file('file');
+        $temporaryFile = $request->file('upload');
 
         if (!$temporaryFile->isFile() || !in_array($temporaryFile->getMimeType(), ['image/png', 'image/jpeg', 'image/gif', 'image/svg+xml'])) {
             return response()->json([
