@@ -9,6 +9,4 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 interface NotificationRepositoryInterface
 {
     public function getNotifications(Authenticatable $user, ?int $perPage): ArrayAccess|LengthAwarePaginator;
-
-    public function markNotificationAsRead(int $notificationId): void;
 }

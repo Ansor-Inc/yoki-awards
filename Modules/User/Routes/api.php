@@ -52,5 +52,7 @@ Route::middleware(['auth:sanctum', 'verified.device'])->group(function () {
 
 
     Route::post('/fcm-token', [AccountController::class, 'setFcmToken']);
+
     Route::get('/notifications', [NotificationController::class, 'index']);
+    Route::put('/notifications/{notification}', [NotificationController::class, 'markAsRead']);
 });

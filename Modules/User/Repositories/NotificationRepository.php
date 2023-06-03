@@ -14,9 +14,4 @@ class NotificationRepository implements NotificationRepositoryInterface
     {
         return $perPage ? $user->notifications()->paginate($perPage) : $user->notifications()->get();
     }
-
-    public function markNotificationAsRead(int $notificationId): void
-    {
-        // TODO: Implement markNotificationAsRead() method.
-    }
 }

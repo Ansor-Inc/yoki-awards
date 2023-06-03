@@ -2,23 +2,29 @@
 
 namespace Modules\User\Http\Controllers;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Notifications\DatabaseNotification;
 use Modules\User\Http\Requests\GetNotificationsRequest;
-use Modules\User\Interfaces\NotificationRepositoryInterface;
 use Modules\User\Transformers\NotificationResource;
 
-class NotificationController
+class NotificationController extends Controller
 {
-    public function __construct(private NotificationRepositoryInterface $notificationRepository)
-    {
-    }
-
     public function index(GetNotificationsRequest $request): AnonymousResourceCollection
     {
-        return NotificationResource::collection(
-            $this->notificationRepository->getNotifications(
-                user: $request->user(),
-                perPage: $request->input('per_page'))
-        );
+        $user = auth()->user();
+
+        $notifications = $request->has('per_page') ?
+            $user->notifications()->latest()->paginate($request->input('per_page')) :
+            $user->notifications()->latest()->get();
+
+        return NotificationResource::collection($notifications);
+    }
+
+    public function markAsRead(DatabaseNotification $notification)
+    {
+        $notification->markAsRead();
+
+        return $this->success();
     }
 }
